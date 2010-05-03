@@ -29,7 +29,7 @@ mkdir -p ${SCHEMA_DIR}
 CONTENT_COPY_DIR=${BUNDLE_ROOT}/remote
 
 PYTHONPATH=${PYXB_ROOT}
-PATH=${PYXB_ROOT}/scripts:/usr/bin:/bin
+PATH=${PYXB_ROOT}/scripts:/usr/bin:/bin:/usr/local/bin
 export PATH PYTHONPATH
 
 generateBindings () {
