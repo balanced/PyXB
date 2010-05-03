@@ -1866,7 +1866,7 @@ class Generator (object):
         """
         return self.__bindingStyle
     def setBindingStyle (self, binding_style):
-        raise pyxb.IncompleteImplementationError('No support for binding style configuration')
+        #raise pyxb.IncompleteImplementationError('No support for binding style configuration')
         self.__bindingStyle = binding_style
         return self
     __bindingStyle = None
