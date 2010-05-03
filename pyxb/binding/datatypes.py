@@ -49,6 +49,7 @@ import pyxb.utils.domutils as domutils
 import pyxb.utils.utility as utility
 import basis
 import re
+import base64
 
 _PrimitiveDatatypes = []
 _DerivedDatatypes = []
@@ -748,14 +749,57 @@ class hexBinary (basis.simpleTypeDefinition, types.LongType):
 
 _PrimitiveDatatypes.append(hexBinary)
 
-class base64Binary (basis.simpleTypeDefinition):
-    """@attention: Not implemented"""
+class base64Binary (basis.simpleTypeDefinition, str):
     _XsdBaseType = anySimpleType
     _ExpandedName = pyxb.namespace.XMLSchema.createExpandedName('base64Binary')
 
+    __length = None
+    def length (self):
+        """Return the length of the value, in octets."""
+        return self.__length
+
+    @classmethod
+    def _ConvertArguments (cls, args, kw):
+        dom_node = kw.pop('_dom_node', None)
+        if dom_node is not None:
+            text_content = domutils.ExtractTextContent(dom_node)
+            if text_content is not None:
+                args = (domutils.ExtractTextContent(dom_node),) + args
+                kw['_apply_whitespace_facet'] = True
+        apply_whitespace_facet = kw.pop('_apply_whitespace_facet', True)
+        if (0 < len(args)) and isinstance(args[0], types.StringTypes):
+            cf_whitespace = getattr(cls, '_CF_whiteSpace', None)
+            if cf_whitespace is not None:
+                if isinstance(args[0], unicode): # lexical space, already base64 encoded
+                    norm_str = unicode(cf_whitespace.normalizeString(args[0]).replace(' ', ''))
+                else: # value space
+                    norm_str = args[0]
+                args = (norm_str,) + args[1:]
+        return cls._ConvertArguments_vx(args, kw)
+
+    def __new__ (cls, *args, **kw):
+        if not isinstance(args[0], types.StringTypes):
+            raise BadTypeValueError('%s value must be either a string or unicode type' % (cls.__class__.__name__,))
+        args = cls._ConvertArguments(args, kw)
+        if isinstance(args[0], unicode):
+            try:
+                value = base64.b64decode(args[0])
+            except TypeError:
+                raise BadTypeValueError('%s when provided as an instance of the unicode type, value must be base64 encoded' % (cls.__class__.__name__,))
+        else:
+            value = args[0]
+        rem_args = args[1:]
+        rv = super(base64Binary, cls).__new__(cls, value, *rem_args, **kw)
+        rv.__length = len(value)
+        return rv
+
+    @classmethod
+    def XsdLiteral (cls, value):
+        return base64.b64encode(value)
+
     @classmethod
     def XsdValueLength (cls, value):
-        raise NotImplementedError('No length calculation for base64Binary')
+        return value.length()
 
 _PrimitiveDatatypes.append(base64Binary)
 
