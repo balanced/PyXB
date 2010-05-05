@@ -50,6 +50,7 @@ import pyxb.utils.utility as utility
 import basis
 import re
 import base64
+import math
 
 _PrimitiveDatatypes = []
 _DerivedDatatypes = []
@@ -760,22 +761,8 @@ class base64Binary (basis.simpleTypeDefinition, str):
 
     @classmethod
     def _ConvertArguments (cls, args, kw):
-        dom_node = kw.pop('_dom_node', None)
-        if dom_node is not None:
-            text_content = domutils.ExtractTextContent(dom_node)
-            if text_content is not None:
-                args = (domutils.ExtractTextContent(dom_node),) + args
-                kw['_apply_whitespace_facet'] = True
-        apply_whitespace_facet = kw.pop('_apply_whitespace_facet', True)
-        if (0 < len(args)) and isinstance(args[0], types.StringTypes):
-            cf_whitespace = getattr(cls, '_CF_whiteSpace', None)
-            if cf_whitespace is not None:
-                if isinstance(args[0], unicode): # lexical space, already base64 encoded
-                    norm_str = unicode(cf_whitespace.normalizeString(args[0]).replace(' ', ''))
-                else: # value space
-                    norm_str = args[0]
-                args = (norm_str,) + args[1:]
-        return cls._ConvertArguments_vx(args, kw)
+        kw.setdefault('_apply_whitespace_facet', isinstance(args[0], unicode))
+        return super(base64Binary, cls)._ConvertArguments(args, kw)
 
     def __new__ (cls, *args, **kw):
         if not isinstance(args[0], types.StringTypes):
@@ -783,14 +770,19 @@ class base64Binary (basis.simpleTypeDefinition, str):
         args = cls._ConvertArguments(args, kw)
         if isinstance(args[0], unicode):
             try:
-                value = base64.b64decode(args[0])
+                lexical_data = args[0].replace(' ', '')
+                value = base64.b64decode(lexical_data)
             except TypeError:
                 raise BadTypeValueError('%s when provided as an instance of the unicode type, value must be base64 encoded' % (cls.__class__.__name__,))
         else:
             value = args[0]
+            lexical_data = base64.b64encode(value)
         rem_args = args[1:]
         rv = super(base64Binary, cls).__new__(cls, value, *rem_args, **kw)
-        rv.__length = len(value)
+        if len(lexical_data):
+            while lexical_data[-1] == '=':
+                lexical_data = lexical_data[:-1]
+        rv.__length = math.floor(len(lexical_data) * 3 / 4)
         return rv
 
     @classmethod
