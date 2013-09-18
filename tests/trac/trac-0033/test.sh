@@ -3,5 +3,5 @@ fail () {
   exit 1
 }
 
-python tread.py || fail trac33
+python3 tread.py || fail trac33
 echo 'trac33 passed'

@@ -21,5 +21,5 @@ pyxbgen \
   --module-prefix=bindings \
   --archive-path=.:+ \
 || fail s0 generation
-python check.py || fail validation
+python3 check.py || fail validation
 echo ${test_name} passed

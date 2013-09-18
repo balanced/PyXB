@@ -15,7 +15,7 @@ pyxbgen \
     -u branch2.xsd -m branch2 \
 || fail translation failed
 
-python check.py || fail binding validation failed
+python3 check.py || fail binding validation failed
 
 echo 1>&2 "${test_name} passed"
 

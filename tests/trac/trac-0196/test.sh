@@ -34,7 +34,7 @@ for ea in qq qu uq uu ; do
 done
 pyxbgen --archive-path .:+ -m mix -u mix.xsd || fail generating mix
 
-python check.py || fail validating forms
+python3 check.py || fail validating forms
 echo ${test_name} passed
 
 

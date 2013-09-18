@@ -6,4 +6,4 @@ pyxbgen \
   --archive-path '.:+' \
   --schema-location profile.xsd --module profile
 
-python check.py
+python3 check.py

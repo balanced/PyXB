@@ -46,10 +46,8 @@ BooleanType = bool
 ListType = list
 """The type underlying C{list}"""
 
-TextType = str    #!python3!
-#python3:TextType = str
+TextType = str
 """The type used to represent text in either Python 2 (C{unicode}) or Python 3 (C{str})."""
 
-DataType = bytes     #!python3!
-#python3:DataType = bytes
+DataType = bytes
 """The type used to represent data (8-bit) in either Python 2 (C{str}) or Python 3 (C{bytes})."""

@@ -10,7 +10,7 @@ fail () {
 if [ ! -f in.xhtml ] ; then
   wget -O in.xhtml ${TEST_URI} || fail Unable to retrieve test document
 fi
-python rewrite.py || fail Unable to rewrite test document
+python3 rewrite.py || fail Unable to rewrite test document
 
 xmllint --format in.xhtml > inf.xhtml
 xmllint --format out.xhtml > outf.xhtml
@@ -23,7 +23,7 @@ echo "See deltas for differences"
 
 # Test most primitive generation of documents
 rm -f genout.xhtml
-python generate.py \
+python3 generate.py \
   && diff expout.xhtml genout.xhtml \
   || fail generate did not match expected
 

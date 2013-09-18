@@ -6,5 +6,5 @@ fail () {
 }
 
 pyxbgen -u sample.xsd -m sample || fail unable to generate bindings
-python check.py || fail check failed
+python3 check.py || fail check failed
 echo ${test_name} passed

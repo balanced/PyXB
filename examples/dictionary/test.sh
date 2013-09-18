@@ -1,2 +1,2 @@
 sh genbindings.sh
-python showdict.py
+python3 showdict.py
