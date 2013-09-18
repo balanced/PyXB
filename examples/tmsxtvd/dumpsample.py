@@ -1,4 +1,4 @@
-from __future__ import print_function
+
 import tmstvd
 import pyxb.utils.domutils as domutils
 import xml.dom.minidom

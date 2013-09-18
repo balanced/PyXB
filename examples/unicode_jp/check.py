@@ -2,7 +2,7 @@
 #
 # Validate the Japanese GML bindings
 
-from __future__ import print_function
+
 import os.path
 import pyxb.utils.saxutils
 import fgd_gml
@@ -52,7 +52,7 @@ class ExampleUnicode_JP (unittest.TestCase):
             self.assertEqual(self.shift_jis, name)
 
     def testTransliteration (self):
-        instance = fgd_gml.hyouji_kubun_rekkyo_gata(u'•\Ž¦')
+        instance = fgd_gml.hyouji_kubun_rekkyo_gata('•\Ž¦')
         self.assertEqual(instance, fgd_gml.hyouji_kubun_rekkyo_gata.hyouji)
 
 if __name__ == '__main__':

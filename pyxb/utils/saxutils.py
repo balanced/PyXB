@@ -22,7 +22,7 @@ element in the stream.  These classes are extended for specific parsing needs
 (e.g., L{pyxb.binding.saxer}).
 """
 
-from __future__ import print_function
+
 import xml.sax
 import xml.sax.handler
 import pyxb.namespace
@@ -437,7 +437,7 @@ class _EntityResolver (object):
     """Dummy used to prevent the SAX parser from crashing when it sees
     processing instructions that we don't care about."""
     def resolveEntity (self, public_id, system_id):
-        return io.StringIO(u'')
+        return io.StringIO('')
 
 _CreateParserModules = []
 def SetCreateParserModules (create_parser_modules):

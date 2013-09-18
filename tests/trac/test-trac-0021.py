@@ -51,7 +51,7 @@ class TestTrac0021 (unittest.TestCase):
         instance = complex("hi")
         self.assertRaises(pyxb.NotSimpleContentError, instance.value)
         elt = instance.orderedContent()[0]
-        self.assertTrue(isinstance(elt.value, basestring))
+        self.assertTrue(isinstance(elt.value, str))
         self.assertEqual("hi", elt.value)
 
 

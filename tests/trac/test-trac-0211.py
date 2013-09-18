@@ -58,7 +58,7 @@ class TestTrac0211 (unittest.TestCase):
         self.assertEqual(bsv4, cv4.value())
 
         # Disallow creation from XML
-        xmlt = u'<Int><ival>4</ival></Int>'
+        xmlt = '<Int><ival>4</ival></Int>'
         with self.assertRaises(pyxb.NonElementValidationError) as cm:
             instance = CreateFromDocument(xmlt)
         e = cm.exception
@@ -77,7 +77,7 @@ class TestTrac0211 (unittest.TestCase):
 
     def testInvalidSimple (self):
         # Disallow creation from XML
-        xmlt = u'<ival><ival>4</ival></ival>'
+        xmlt = '<ival><ival>4</ival></ival>'
         with self.assertRaises(pyxb.NonElementValidationError) as cm:
             instance = CreateFromDocument(xmlt)
         e = cm.exception
@@ -102,19 +102,19 @@ class TestTrac0211 (unittest.TestCase):
         self.assertEqual(4, instance)
 
     def testBasicMixed (self):
-        xmlt = u'<Mixed><mString>body</mString></Mixed>'
+        xmlt = '<Mixed><mString>body</mString></Mixed>'
         xmld = xmlt.encode('utf-8')
         instance = CreateFromDocument(xmld)
         self.assertEqual(instance.toxml('utf-8', root_only=True), xmld)
-        xmlt = u'<Mixed>pre<mString>body</mString>post</Mixed>'
+        xmlt = '<Mixed>pre<mString>body</mString>post</Mixed>'
         xmld = xmlt.encode('utf-8')
         instance = CreateFromDocument(xmld)
         self.assertEqual(instance.toxml('utf-8', root_only=True), xmld)
         self.assertEqual(3, len(instance.orderedContent()))
         nec = list(pyxb.NonElementContent(instance))
         self.assertEqual(2, len(nec))
-        self.assertEqual(nec[0], u'pre')
-        self.assertEqual(nec[1], u'post')
+        self.assertEqual(nec[0], 'pre')
+        self.assertEqual(nec[1], 'post')
 
         # Yes, I know this is weird.  It's what PyXB does with this:
         # consume what's type-compatible as an element, and append the
@@ -138,11 +138,11 @@ class TestTrac0211 (unittest.TestCase):
         oc = instance.orderedContent()
         self.assertEqual(3, len(oc))
         oc0 = oc[0].value
-        self.assertTrue(isinstance(oc0, unicode))
-        self.assertEqual(u'4', oc0)
+        self.assertTrue(isinstance(oc0, str))
+        self.assertEqual('4', oc0)
 
     def testBasicSimples (self):
-        xmlt = u'<ival>4</ival>'
+        xmlt = '<ival>4</ival>'
         xmld = xmlt.encode('utf-8')
         instance = CreateFromDocument(xmld)
         self.assertEqual(instance.toxml('utf-8', root_only=True), xmld)
@@ -151,35 +151,35 @@ class TestTrac0211 (unittest.TestCase):
         self.assertEqual(instance.toxml('utf-8', root_only=True), xmld)
         self.assertEqual(instance, 4)
 
-        xmlt = u'<Int units="m">23</Int>'
+        xmlt = '<Int units="m">23</Int>'
         xmld = xmlt.encode('utf-8')
         instance = CreateFromDocument(xmld)
         self.assertEqual(instance.toxml('utf-8', root_only=True), xmld)
         self.assertEqual(instance.value(), 23)
-        self.assertEqual(instance.units, u"m")
+        self.assertEqual(instance.units, "m")
         instance = Int(23, units="m")
         self.assertEqual(instance.toxml('utf-8', root_only=True), xmld)
         self.assertEqual(instance.value(), 23)
-        self.assertEqual(instance.units, u"m")
+        self.assertEqual(instance.units, "m")
 
-        xmlt = u'<sval>text</sval>'
+        xmlt = '<sval>text</sval>'
         xmld = xmlt.encode('utf-8')
         instance = CreateFromDocument(xmld)
         self.assertEqual(instance.toxml('utf-8', root_only=True), xmld)
-        self.assertEqual(instance, u'text')
-        instance = sval(u'text')
+        self.assertEqual(instance, 'text')
+        instance = sval('text')
         self.assertEqual(instance.toxml('utf-8', root_only=True), xmld)
-        self.assertEqual(instance, u'text')
+        self.assertEqual(instance, 'text')
 
-        xmlt = u'<Str version="3">text</Str>'
+        xmlt = '<Str version="3">text</Str>'
         xmld = xmlt.encode('utf-8')
         instance = CreateFromDocument(xmld)
         self.assertEqual(instance.toxml('utf-8', root_only=True), xmld)
-        self.assertEqual(instance.value(), u'text')
+        self.assertEqual(instance.value(), 'text')
         self.assertEqual(instance.version, 3)
-        instance = Str(u'text', version=3)
+        instance = Str('text', version=3)
         self.assertEqual(instance.toxml('utf-8', root_only=True), xmld)
-        self.assertEqual(instance.value(), u'text')
+        self.assertEqual(instance.value(), 'text')
         self.assertEqual(instance.version, 3)
 
 if __name__ == '__main__':

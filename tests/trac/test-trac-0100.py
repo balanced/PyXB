@@ -55,7 +55,7 @@ class TestTrac0100 (unittest.TestCase):
         self.assertEqual(instance.attrib2, "text2")
         wca = instance.wildcardAttributeMap()
         self.assertEqual(1, len(wca))
-        (attr, val) = wca.items()[0]
+        (attr, val) = list(wca.items())[0]
         self.assertEqual(attr.namespaceURI(), "urn:other")
         self.assertEqual(attr.localName(), "attrib3")
         self.assertEqual(val, "text3")

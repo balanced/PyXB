@@ -325,12 +325,12 @@ def ResolveSiblingNamespaces (sibling_namespaces):
                 continue
             if not ns.resolveDefinitions(allow_unresolved=True):
                 deps = dependency_map.setdefault(ns, set())
-                for (c, dcs) in ns._unresolvedDependents().iteritems():
+                for (c, dcs) in ns._unresolvedDependents().items():
                     for dc in dcs:
                         dns = dc.expandedName().namespace()
                         if dns != ns:
                             deps.add(dns)
-                _log.info('Holding incomplete resolution %s depending on: ', ns.uri(), u' ; '.join([ unicode(_dns) for _dns in deps ]))
+                _log.info('Holding incomplete resolution %s depending on: ', ns.uri(), ' ; '.join([ str(_dns) for _dns in deps ]))
                 need_resolved_set.add(ns)
         # Exception termination check: if we have the same set of incompletely
         # resolved namespaces, and each has the same number of unresolved
@@ -342,7 +342,7 @@ def ResolveSiblingNamespaces (sibling_namespaces):
             state.append( (ns, len(ns._unresolvedComponents())) )
         state = tuple(state)
         if last_state == state:
-            raise pyxb.LogicError('Unexpected external dependency in sibling namespaces: %s' % (u"\n  ".join( [unicode(_ns) for _ns in need_resolved_set ]),))
+            raise pyxb.LogicError('Unexpected external dependency in sibling namespaces: %s' % ("\n  ".join( [str(_ns) for _ns in need_resolved_set ]),))
         last_state = state
 
 class NamespaceContext (object):
@@ -350,16 +350,16 @@ class NamespaceContext (object):
     """
 
     def __str__ (self):
-        rv = [ u'NamespaceContext ' ]
+        rv = [ 'NamespaceContext ' ]
         if self.defaultNamespace() is not None:
-            rv.extend([ '(defaultNamespace=', unicode(self.defaultNamespace()), ') '])
+            rv.extend([ '(defaultNamespace=', str(self.defaultNamespace()), ') '])
         if self.targetNamespace() is not None:
-            rv.extend([ '(targetNamespace=', unicode(self.targetNamespace()), ') '])
+            rv.extend([ '(targetNamespace=', str(self.targetNamespace()), ') '])
         rv.append("\n")
-        for (pfx, ns) in self.inScopeNamespaces().iteritems():
+        for (pfx, ns) in self.inScopeNamespaces().items():
             if pfx is not None:
-                rv.append('  xmlns:%s=%s' % (pfx, unicode(ns)))
-        return u''.join(rv)
+                rv.append('  xmlns:%s=%s' % (pfx, str(ns)))
+        return ''.join(rv)
 
     __TargetNamespaceAttributes = { }
     @classmethod
@@ -405,7 +405,7 @@ class NamespaceContext (object):
         """Return a prefix associated with the given namespace in this
         context, or None if the namespace is the default or is not in
         scope."""
-        for (pfx, ns) in self.__inScopeNamespaces.iteritems():
+        for (pfx, ns) in self.__inScopeNamespaces.items():
             if namespace == ns:
                 return pfx
         return None
@@ -603,7 +603,7 @@ class NamespaceContext (object):
         @raise pyxb.SchemaValidationError: The prefix is not in scope
         @raise pyxb.SchemaValidationError: No prefix is given and the default namespace is absent
         """
-        assert isinstance(name, (str, unicode))
+        assert isinstance(name, str)
         if 0 <= name.find(':'):
             (prefix, local_name) = name.split(':', 1)
             assert self.inScopeNamespaces() is not None

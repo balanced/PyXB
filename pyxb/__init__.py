@@ -127,7 +127,7 @@ _XMLStyle = XMLStyle_saxer
 _XMLStyleMap = { 'minidom' : XMLStyle_minidom,
                  'saxdom' : XMLStyle_saxdom,
                  'saxer' : XMLStyle_saxer }
-_XMLStyleMapReverse = dict([ (_v, _k) for (_k, _v) in _XMLStyleMap.iteritems() ])
+_XMLStyleMapReverse = dict([ (_v, _k) for (_k, _v) in _XMLStyleMap.items() ])
 
 _XMLStyle_envvar = 'PYXB_XML_STYLE'
 

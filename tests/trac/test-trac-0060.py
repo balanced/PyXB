@@ -103,7 +103,7 @@ class TestTrac_0060 (unittest.TestCase):
         wc = CreateFromDocument(xmls)
         instance = wc.wildcardElements()[0]
         self.assertTrue(isinstance(instance, Integer))
-        self.assertTrue(isinstance(instance.child, long))
+        self.assertTrue(isinstance(instance.child, int))
         self.assertEqual(self.AnInteger, instance.child)
 
     def testWildcardIntegerBad (self):
@@ -140,13 +140,13 @@ class TestTrac_0060 (unittest.TestCase):
         wc = CreateFromDocument(xmls)
         instance = wc.wildcardElements()[0]
         self.assertTrue(isinstance(instance, Integer))
-        self.assertTrue(isinstance(instance.child, long))
+        self.assertTrue(isinstance(instance.child, int))
         self.assertEqual(self.AnInteger, instance.child)
         dom = pyxb.utils.domutils.StringToDOM(xmls)
         wc = CreateFromDOM(dom)
         instance = wc.wildcardElements()[0]
         self.assertTrue(isinstance(instance, Integer))
-        self.assertTrue(isinstance(instance.child, long))
+        self.assertTrue(isinstance(instance.child, int))
         self.assertEqual(self.AnInteger, instance.child)
 
     def testStrict (self):
@@ -226,13 +226,13 @@ class TestTrac_0060 (unittest.TestCase):
         wc = CreateFromDocument(xmls)
         instance = wc.wildcardElements()[0]
         self.assertTrue(isinstance(instance, Integer))
-        self.assertTrue(isinstance(instance.child, long))
+        self.assertTrue(isinstance(instance.child, int))
         self.assertEqual(self.AnInteger, instance.child)
         dom = pyxb.utils.domutils.StringToDOM(xmls)
         wc = CreateFromDOM(dom)
         instance = wc.wildcardElements()[0]
         self.assertTrue(isinstance(instance, Integer))
-        self.assertTrue(isinstance(instance.child, long))
+        self.assertTrue(isinstance(instance.child, int))
         self.assertEqual(self.AnInteger, instance.child)
 
         xmls = self.makeWC(self.BaseUntyped)
@@ -293,13 +293,13 @@ class TestTrac_0060 (unittest.TestCase):
         wc = CreateFromDocument(xmls)
         instance = wc.wildcardElements()[0]
         self.assertTrue(isinstance(instance, Integer))
-        self.assertTrue(isinstance(instance.child, long))
+        self.assertTrue(isinstance(instance.child, int))
         self.assertEqual(self.AnInteger, instance.child)
         dom = pyxb.utils.domutils.StringToDOM(xmls)
         wc = CreateFromDOM(dom)
         instance = wc.wildcardElements()[0]
         self.assertTrue(isinstance(instance, Integer))
-        self.assertTrue(isinstance(instance.child, long))
+        self.assertTrue(isinstance(instance.child, int))
         self.assertEqual(self.AnInteger, instance.child)
 
         xmls = self.makeWC(self.BaseUntyped)

@@ -32,16 +32,16 @@ class BasicTest (unittest.TestCase):
             , ( "\"1'\\n'2\"", '1\'\n\'2' ) # expanded newline to escape sequence (single quotes)
             , ( "\"1\\x22\\n\\x222\"", '1"\n"2' ) # escape double quotes around expanded newline
             , ( "r'1\\'\\n\\'2'", r'1\'\n\'2' )   # preserve escaped quote and newline
-            , ( r'u"1\u00042"', u"1\0042" )       # unicode expanded octal
-            , ( r'u"1\u00222&3"', u'1"2&3' )      # unicode escape double quotes
-            , ( r'u"one' + "'" + r'two"', u"one'two" ) # unicode embedded single quote
+            , ( r'u"1\u00042"', "1\0042" )       # unicode expanded octal
+            , ( r'u"1\u00222&3"', '1"2&3' )      # unicode escape double quotes
+            , ( r'u"one' + "'" + r'two"', "one'two" ) # unicode embedded single quote
             , ( "r'\\i\\c*'", r'\i\c*' )               # backslashes as in patterns
-            , ( u'u"0"', u'\u0030' )                   # expanded unicode works
-            , ( u'u"\\u0022"', u'"' )      # unicode double quotes are escaped
-            , ( u'u"\\u0022"', u'\u0022' ) # single quotes don't change that expanded unicode works
-            , ( u'u"\\u0022"', ur'\u0022' ) # raw has no effect on unicode escapes
-            , ( u"u\"'\"", u"'" )           # unicode single quote works
-            , ( u"u\"\\u00220\\u0022\"", u'"\u0030"' ) # unicode with double quotes works
+            , ( 'u"0"', '\u0030' )                   # expanded unicode works
+            , ( 'u"\\u0022"', '"' )      # unicode double quotes are escaped
+            , ( 'u"\\u0022"', '\u0022' ) # single quotes don't change that expanded unicode works
+            , ( 'u"\\u0022"', r'\u0022' ) # raw has no effect on unicode escapes
+            , ( "u\"'\"", "'" )           # unicode single quote works
+            , ( "u\"\\u00220\\u0022\"", '"\u0030"' ) # unicode with double quotes works
             )
 
 
@@ -80,11 +80,11 @@ class BasicTest (unittest.TestCase):
 
     def testMakeIdentifier (self):
         self.assertEqual('id', MakeIdentifier('id'))
-        self.assertEqual('id', MakeIdentifier(u'id'))
-        self.assertEqual('id_sep', MakeIdentifier(u'id_sep'))
-        self.assertEqual('id_sep', MakeIdentifier(u'id sep'))
-        self.assertEqual('id_sep_too', MakeIdentifier(u'id-sep too'))
-        self.assertEqual('idid', MakeIdentifier(u'id&id'))
+        self.assertEqual('id', MakeIdentifier('id'))
+        self.assertEqual('id_sep', MakeIdentifier('id_sep'))
+        self.assertEqual('id_sep', MakeIdentifier('id sep'))
+        self.assertEqual('id_sep_too', MakeIdentifier('id-sep too'))
+        self.assertEqual('idid', MakeIdentifier('id&id'))
         self.assertEqual('id', MakeIdentifier('_id'))
         self.assertEqual('id_', MakeIdentifier('_id_'))
         self.assertEqual('emptyString', MakeIdentifier(''))

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from __future__ import print_function
+
 import logging
 if __name__ == '__main__':
     logging.basicConfig()
@@ -14,7 +14,7 @@ def buildTest (num_reps, constraint='minOccurs="0" maxOccurs="1"'):
     edefs = []
     cdefs = []
     duse = []
-    for r in xrange(num_reps):
+    for r in range(num_reps):
         edefs.append('<xs:element name="rep%d" type="xs:string"/>' % (r,))
         cdefs.append('<xs:element ref="rep%d" %s/>' % (r, constraint))
         duse.append('<rep%d>text_%d</rep%d>' % (r, r, r))
@@ -33,7 +33,7 @@ def buildTest (num_reps, constraint='minOccurs="0" maxOccurs="1"'):
 
     return (schema, xmls)
 
-for size in xrange(1, max_reps):
+for size in range(1, max_reps):
     (schema, xmls) = buildTest(size)
 
     t0 = time.time()

@@ -19,10 +19,11 @@ import re
 import os
 import errno
 import pyxb
-import urlparse
+import urllib.parse
 import time
 import datetime
 import logging
+import sys
 
 _log = logging.getLogger(__name__)
 
@@ -64,7 +65,7 @@ def IteratedCompareMixed (lhs, rhs):
     ri = iter(rhs)
     while True:
         try:
-            (lv, rv) = (li.next(), ri.next())
+            (lv, rv) = (next(li), next(ri))
             if lv is None:
                 if rv is None:
                     continue
@@ -107,7 +108,7 @@ def _DefaultXMLIdentifierToPython (identifier):
     @return: C{unicode(identifier)}
     """
 
-    return unicode(identifier)
+    return str(identifier)
 
 def _SetXMLIdentifierToPython (xml_identifier_to_python):
     """Configure a callable L{MakeIdentifier} uses to pre-process an XM Lidentifier.
@@ -638,7 +639,7 @@ class Graph:
         order = []
         nodes = set(self.__nodes)
         edge_map = {}
-        for (d, srcs) in self.__edgeMap.iteritems():
+        for (d, srcs) in self.__edgeMap.items():
             edge_map[d] = srcs.copy()
         while nodes:
             freeset = set()
@@ -651,7 +652,7 @@ class Graph:
             order.append(freeset)
             nodes.difference_update(freeset)
             new_edge_map = {}
-            for (d, srcs) in edge_map.iteritems():
+            for (d, srcs) in edge_map.items():
                 srcs.difference_update(freeset)
                 if 0 != len(srcs):
                     new_edge_map[d] = srcs
@@ -697,10 +698,10 @@ def NormalizeLocation (uri, parent_uri=None, prefix_map=None):
     else:
         #if (0 > parent_uri.find(':')) and (not parent_uri.endswith(os.sep)):
         #    parent_uri = parent_uri + os.sep
-        abs_uri = urlparse.urljoin(parent_uri, uri)
+        abs_uri = urllib.parse.urljoin(parent_uri, uri)
     if prefix_map is None:
         prefix_map = LocationPrefixRewriteMap_
-    for (pfx, sub) in prefix_map.iteritems():
+    for (pfx, sub) in prefix_map.items():
         if abs_uri.startswith(pfx):
             abs_uri = sub + abs_uri[len(pfx):]
     if 0 > abs_uri.find(':'):
@@ -713,8 +714,8 @@ def DataFromURI (uri, archive_directory=None):
 
     If the uri does not include a scheme (e.g., C{http:}), it is
     assumed to be a file path on the local system."""
-    import urllib
-    import urllib2
+    import urllib.request, urllib.parse, urllib.error
+    import urllib.request, urllib.error, urllib.parse
     stream = None
     exc = None
     # Only something that has a colon is a non-file URI.  Some things
@@ -722,12 +723,12 @@ def DataFromURI (uri, archive_directory=None):
     # but allow urllib (which apparently works better on Windows).
     if 0 <= uri.find(':'):
         try:
-            stream = urllib2.urlopen(uri)
+            stream = urllib.request.urlopen(uri)
         except Exception as e:
             exc = e
         if stream is None:
             try:
-                stream = urllib.urlopen(uri)
+                stream = urllib.request.urlopen(uri)
                 exc = None
             except:
                 # Prefer urllib exception
@@ -752,7 +753,7 @@ def DataFromURI (uri, archive_directory=None):
         pass
     xmld = stream.read()
     if archive_directory:
-        base_name = os.path.basename(os.path.normpath(urlparse.urlparse(uri)[2]))
+        base_name = os.path.basename(os.path.normpath(urllib.parse.urlparse(uri)[2]))
         counter = 1
         dest_file = os.path.join(archive_directory, base_name)
         while os.path.isfile(dest_file):
@@ -826,7 +827,7 @@ def HashForText (text):
 
     @return: A C{str}, generally a sequence of hexadecimal "digit"s.
     """
-    if isinstance(text, unicode):
+    if isinstance(text, str):
         text = text.encode('utf-8')
     return __Hasher(text).hexdigest()
 
@@ -847,7 +848,7 @@ def _NewUUIDString ():
     """
     if __HaveUUID:
         return uuid.uuid1().urn
-    return '%s:%08.8x' % (time.strftime('%Y%m%d%H%M%S'), random.randint(0, 0xFFFFFFFFL))
+    return '%s:%08.8x' % (time.strftime('%Y%m%d%H%M%S'), random.randint(0, 0xFFFFFFFF))
 
 class UniqueIdentifier (object):
     """Records a unique identifier, generally associated with a
@@ -891,7 +892,7 @@ class UniqueIdentifier (object):
             uid = args[0]
         if isinstance(uid, UniqueIdentifier):
             uid = uid.uid()
-        if not isinstance(uid, basestring):
+        if not isinstance(uid, str):
             raise TypeError('UniqueIdentifier uid must be a string')
         rv = cls.__ExistingUIDs.get(uid)
         if rv is None:
@@ -928,7 +929,7 @@ class UniqueIdentifier (object):
             return False
         elif isinstance(other, UniqueIdentifier):
             other_uid = other.uid()
-        elif isinstance(other, basestring):
+        elif isinstance(other, str):
             other_uid = other
         else:
             raise TypeError('UniqueIdentifier: Cannot compare with type %s' % (type(other),))
@@ -976,7 +977,7 @@ class UTCOffsetTimeZone (datetime.tzinfo):
         """
 
         if spec is not None:
-            if isinstance(spec, basestring):
+            if isinstance(spec, str):
                 if 'Z' == spec:
                     self.__utcOffset_min = 0
                 else:
@@ -1104,7 +1105,7 @@ class PrivateTransient_mixin (pyxb.cscRoot):
         if skipped is None:
             skipped = set()
             for cl in self.__class__.mro():
-                for (k, v) in cl.__dict__.iteritems():
+                for (k, v) in cl.__dict__.items():
                     if k.endswith(self.__Attribute):
                         cl2 = k[:-len(self.__Attribute)]
                         skipped.update([ '%s__%s' % (cl2, _n) for _n in v ])
@@ -1205,7 +1206,7 @@ class Location (object):
 
     def __init__ (self, location_base=None, line_number=None, column_number=None):
         if isinstance(location_base, str):
-            location_base = intern(location_base)
+            location_base = sys.intern(location_base)
         self.__locationBase = location_base
         self.__lineNumber = line_number
         self.__columnNumber = column_number

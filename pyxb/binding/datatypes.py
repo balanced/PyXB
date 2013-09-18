@@ -46,7 +46,7 @@ instance of either SimpleTypeDefinition or ComplexTypeDefinition.
 from pyxb.exceptions_ import *
 import pyxb.utils.types_
 import pyxb.namespace
-import pyxb.utils.unicode
+import pyxb.utils.str
 from . import basis
 import re
 import binascii
@@ -62,7 +62,7 @@ _ListDatatypes = []
 # We use unicode as the Python type for anything that isn't a normal
 # primitive type.  Presumably, only enumeration and pattern facets
 # will be applied.
-class anySimpleType (basis.simpleTypeDefinition, unicode):
+class anySimpleType (basis.simpleTypeDefinition, str):
     """XMLSchema datatype U{anySimpleType<http://www.w3.org/TR/xmlschema-2/#dt-anySimpleType>}."""
     _XsdBaseType = None
     _ExpandedName = pyxb.namespace.XMLSchema.createExpandedName('anySimpleType')
@@ -73,7 +73,7 @@ class anySimpleType (basis.simpleTypeDefinition, unicode):
 # anySimpleType is not treated as a primitive, because its variety
 # must be absent (not atomic).
 
-class string (basis.simpleTypeDefinition, unicode):
+class string (basis.simpleTypeDefinition, str):
     """XMLSchema datatype U{string<http://www.w3.org/TR/xmlschema-2/#string>}."""
     _XsdBaseType = anySimpleType
     _ExpandedName = pyxb.namespace.XMLSchema.createExpandedName('string')
@@ -203,9 +203,9 @@ class duration (basis.simpleTypeDefinition, datetime.timedelta):
                 raise SimpleTypeValueError(cls, args)
             text = args[0]
         if kw.get('_nil'):
-            data = dict(zip(cls.__PythonFields, len(cls.__PythonFields) * [0,]))
+            data = dict(list(zip(cls.__PythonFields, len(cls.__PythonFields) * [0,])))
             negative_duration = False
-        elif isinstance(text, (str, unicode)):
+        elif isinstance(text, str):
             match = cls.__Lexical_re.match(text)
             if match is None:
                 raise SimpleTypeValueError(cls, text)
@@ -258,7 +258,7 @@ class duration (basis.simpleTypeDefinition, datetime.timedelta):
             data['hours'] = 0
         elif isinstance(text, pyxb.utils.types_.IntType) and (1 < len(args)):
             # Apply the arguments as in the underlying Python constructor
-            data = dict(zip(cls.__PythonFields[:len(args)], args))
+            data = dict(list(zip(cls.__PythonFields[:len(args)], args)))
             negative_duration = False
         else:
             raise SimpleTypeValueError(cls, text)
@@ -354,7 +354,7 @@ class _PyXBDateTime_base (basis.simpleTypeDefinition):
         lexical_re = cls.__LexicalREMap.get(cls)
         if lexical_re is None:
             pattern = '^' + cls._Lexical_fmt + '%Z?$'
-            for (k, v) in cls.__PatternMap.iteritems():
+            for (k, v) in cls.__PatternMap.items():
                 pattern = pattern.replace(k, v)
             lexical_re = re.compile(pattern)
             cls.__LexicalREMap[cls] = lexical_re
@@ -363,7 +363,7 @@ class _PyXBDateTime_base (basis.simpleTypeDefinition):
             raise SimpleTypeValueError(cls, text)
         match_map = match.groupdict()
         kw = { }
-        for (k, v) in match_map.iteritems():
+        for (k, v) in match_map.items():
             if (k in cls.__LexicalIntegerFields) and (v is not None):
                 kw[k] = pyxb.utils.types_.IntType(v)
         if '-' == match_map.get('negYear'):
@@ -421,7 +421,7 @@ class _PyXBDateTime_base (basis.simpleTypeDefinition):
             use_kw.setdefault('day', cls._DefaultDay)
             dt = datetime.datetime(tzinfo=tzoffs, **use_kw)
             dt -= tzoffs.utcoffset(dt)
-            for k in kw.iterkeys():
+            for k in kw.keys():
                 kw[k] = getattr(dt, k)
             kw['tzinfo'] = cls._UTCTimeZone
 
@@ -837,7 +837,7 @@ class base64Binary (basis.simpleTypeDefinition, pyxb.utils.types_.DataType):
 
 _PrimitiveDatatypes.append(base64Binary)
 
-class anyURI (basis.simpleTypeDefinition, unicode):
+class anyURI (basis.simpleTypeDefinition, str):
     """XMLSchema datatype U{anyURI<http://www.w3.org/TR/xmlschema-2/#anyURI>}."""
     _XsdBaseType = anySimpleType
     _ExpandedName = pyxb.namespace.XMLSchema.createExpandedName('anyURI')
@@ -848,11 +848,11 @@ class anyURI (basis.simpleTypeDefinition, unicode):
 
     @classmethod
     def XsdLiteral (cls, value):
-        return unicode(value)
+        return str(value)
 
 _PrimitiveDatatypes.append(anyURI)
 
-class QName (basis.simpleTypeDefinition, unicode):
+class QName (basis.simpleTypeDefinition, str):
     """XMLSchema datatype U{QName<http://www.w3.org/TR/xmlschema-2/#QName>}."""
     _XsdBaseType = anySimpleType
     _ExpandedName = pyxb.namespace.XMLSchema.createExpandedName('QName')
@@ -881,11 +881,11 @@ class QName (basis.simpleTypeDefinition, unicode):
         if self.find(':'):
             (self.__prefix, self.__localName) = self.split(':', 1)
         else:
-            self.__localName = unicode(self)
+            self.__localName = str(self)
 
     @classmethod
     def XsdLiteral (cls, value):
-        return unicode(value)
+        return str(value)
 
     @classmethod
     def _XsdConstraintsPreCheck_vb (cls, value):
@@ -1021,7 +1021,7 @@ class NMTOKEN (token):
     NMTOKEN is an identifier that can start with any character that is
     legal in it."""
     _ExpandedName = pyxb.namespace.XMLSchema.createExpandedName('NMTOKEN')
-    _ValidRE = pyxb.utils.unicode.XML1p0e2.NmToken_re
+    _ValidRE = pyxb.utils.str.XML1p0e2.NmToken_re
 _DerivedDatatypes.append(NMTOKEN)
 
 class NMTOKENS (basis.STD_list):
@@ -1033,7 +1033,7 @@ class Name (token):
 
     See U{http://www.w3.org/TR/2000/WD-xml-2e-20000814.html#NT-Name}."""
     _ExpandedName = pyxb.namespace.XMLSchema.createExpandedName('Name')
-    _ValidRE = pyxb.utils.unicode.XML1p0e2.Name_re
+    _ValidRE = pyxb.utils.str.XML1p0e2.Name_re
 _DerivedDatatypes.append(Name)
 
 class NCName (Name):
@@ -1041,7 +1041,7 @@ class NCName (Name):
 
     See U{http://www.w3.org/TR/1999/REC-xml-names-19990114/#NT-NCName}."""
     _ExpandedName = pyxb.namespace.XMLSchema.createExpandedName('NCName')
-    _ValidRE = pyxb.utils.unicode.XML1p0e2.NCName_re
+    _ValidRE = pyxb.utils.str.XML1p0e2.NCName_re
 _DerivedDatatypes.append(NCName)
 
 class ID (NCName):
@@ -1106,11 +1106,11 @@ _DerivedDatatypes.append(negativeInteger)
 class long (integer):
     """XMLSchema datatype U{long<http://www.w3.org/TR/xmlschema-2/#long>}."""
     _ExpandedName = pyxb.namespace.XMLSchema.createExpandedName('long')
-_DerivedDatatypes.append(long)  #python3:int:long
+_DerivedDatatypes.append(int)  #python3:int:long
 
 class int (basis.simpleTypeDefinition, pyxb.utils.types_.IntType):
     """XMLSchema datatype U{int<http://www.w3.org/TR/xmlschema-2/#int>}."""
-    _XsdBaseType = long         #python3:int:long
+    _XsdBaseType = int         #python3:int:long
     _ExpandedName = pyxb.namespace.XMLSchema.createExpandedName('int')
 
     @classmethod
@@ -1178,7 +1178,7 @@ def _BuildAutomaton ():
     import pyxb.utils.fac as fac
 
     counters = set()
-    cc_0 = fac.CounterCondition(min=0L, max=None, metadata=pyxb.utils.utility.Location('http://www.w3.org/TR/2001/REC-xmlschema-1-20010502/#key-urType', 1, 1))
+    cc_0 = fac.CounterCondition(min=0, max=None, metadata=pyxb.utils.utility.Location('http://www.w3.org/TR/2001/REC-xmlschema-1-20010502/#key-urType', 1, 1))
     counters.add(cc_0)
     states = set()
     final_update = set()

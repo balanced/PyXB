@@ -98,7 +98,7 @@ class TestFAC (unittest.TestCase):
     def testFollow (self):
         m = self.a.follow
         self.assertEqual(1, len(m))
-        self.assertEqual([((), frozenset())], m.items())
+        self.assertEqual([((), frozenset())], list(m.items()))
 
     def testValidateAutomaton (self):
         a = Symbol('a')
@@ -142,7 +142,7 @@ class TestFAC (unittest.TestCase):
         tt = All(Symbol('a'), Symbol('b'))
         au = tt.buildAutomaton()
         self.assertEqual(1, len(au.states))
-        st = iter(au.states).next()
+        st = next(iter(au.states))
         self.assertTrue(st.isUnorderedCatenation)
 
     # Example from Kilpelainen & Tuhkanen, "Towards Efficient
@@ -286,7 +286,7 @@ class TestFAC (unittest.TestCase):
         self.assertTrue(cfg.isAccepting())
         cfg = cfg.step('t')
         self.assertFalse(cfg.isAccepting())
-        for _ in xrange(12):
+        for _ in range(12):
             cfg = cfg.step('m')
         self.assertTrue(cfg.isAccepting())
         self.assertRaises(UnrecognizedSymbolError, cfg.step, 'm')

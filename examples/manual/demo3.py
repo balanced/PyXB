@@ -1,4 +1,4 @@
-from __future__ import print_function
+
 import po3
 
 order = po3.CreateFromDocument(open('po3.xml').read())

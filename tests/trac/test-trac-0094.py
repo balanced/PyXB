@@ -9,7 +9,7 @@ import pyxb.binding.basis
 import pyxb.utils.domutils
 
 import os.path
-xsd=u'''<?xml version="1.0" encoding="utf-8"?>
+xsd='''<?xml version="1.0" encoding="utf-8"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
   <xs:element name="anything" type="xs:anyType" nillable="true"/>
         <xs:element name="container">
@@ -40,7 +40,7 @@ pyxb.utils.domutils.BindingDOMSupport.DeclareNamespace(pyxb.namespace.XMLSchema,
 
 class TestTrac_0094 (unittest.TestCase):
     body = 'something'
-    xmlt = u'''<anything xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="xs:string">%s</anything>''' % (body,)
+    xmlt = '''<anything xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="xs:string">%s</anything>''' % (body,)
     xmld = xmlt.encode('utf-8')
 
     def testFromXML (self):

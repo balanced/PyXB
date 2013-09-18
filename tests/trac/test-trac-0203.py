@@ -8,7 +8,7 @@ import pyxb.utils.domutils
 from xml.dom import Node
 
 import os.path
-xst = u'''<?xml version="1.0" encoding="UTF-8"?>
+xst = '''<?xml version="1.0" encoding="UTF-8"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
  <xs:complexType name="XsdWithHyphens">
     <xs:sequence>

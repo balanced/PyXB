@@ -27,12 +27,12 @@ import unittest
 class TestPO1 (unittest.TestCase):
     street_content = '''95 Main St.
 Anytown, AS  12345-6789'''
-    street_xmlt = u'<street>%s</street>' % (street_content,)
+    street_xmlt = '<street>%s</street>' % (street_content,)
     street_xmld = street_xmlt.encode('utf-8')
     street_dom = pyxb.utils.domutils.StringToDOM(street_xmlt).documentElement
 
-    address1_xmlt = u'<name>Customer</name><street>95 Main St</street>'
-    address2_xmlt = u'<name>Sugar Mama</name><street>24 E. Dearling Ave.</street>'
+    address1_xmlt = '<name>Customer</name><street>95 Main St</street>'
+    address2_xmlt = '<name>Sugar Mama</name><street>24 E. Dearling Ave.</street>'
 
     def tearDown (self):
         pyxb.RequireValidWhenGenerating(True)
@@ -57,7 +57,7 @@ Anytown, AS  12345-6789'''
 
     def testDOM_CTD_element (self):
         # NB: USAddress is a CTD, not an element.
-        xmlt = u'<shipTo>%s</shipTo>' % (self.address1_xmlt,)
+        xmlt = '<shipTo>%s</shipTo>' % (self.address1_xmlt,)
         xmld = xmlt.encode('utf-8')
         dom = pyxb.utils.domutils.StringToDOM(xmlt)
         addr2 = USAddress.Factory(_dom_node=dom.documentElement)
@@ -103,8 +103,8 @@ Anytown, AS  12345-6789'''
         try:
             pyxb.RequireValidWhenGenerating(False)
             self.assertFalse(pyxb.RequireValidWhenGenerating())
-            xmlt = u'<ns1:purchaseOrder xmlns:ns1="http://www.example.com/PO1"><shipTo><street>General Delivery</street><name>Robert Smith</name></shipTo></ns1:purchaseOrder>'
-            xmlta = u'<ns1:purchaseOrder xmlns:ns1="http://www.example.com/PO1"><shipTo><name>Robert Smith</name><street>General Delivery</street></shipTo></ns1:purchaseOrder>'
+            xmlt = '<ns1:purchaseOrder xmlns:ns1="http://www.example.com/PO1"><shipTo><street>General Delivery</street><name>Robert Smith</name></shipTo></ns1:purchaseOrder>'
+            xmlta = '<ns1:purchaseOrder xmlns:ns1="http://www.example.com/PO1"><shipTo><name>Robert Smith</name><street>General Delivery</street></shipTo></ns1:purchaseOrder>'
             xmlds = [ _xmlt.encode('utf-8') for _xmlt in (xmlt, xmlta) ]
             self.assertTrue(po.toxml("utf-8", root_only=True) in xmlds)
         finally:

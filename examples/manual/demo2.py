@@ -1,4 +1,4 @@
-from __future__ import print_function
+
 import po2
 
 order = po2.CreateFromDocument(open('po1.xml').read())

@@ -4,7 +4,7 @@ if __name__ == '__main__':
     logging.basicConfig()
 _log = logging.getLogger(__name__)
 import unittest
-from pyxb.utils.unicode import *
+from pyxb.utils.str import *
 
 class TestCodePointSet (unittest.TestCase):
     def testConstructor (self):
@@ -114,23 +114,23 @@ class TestCodePointSet (unittest.TestCase):
 
     def testAsPattern (self):
         c = CodePointSet()
-        self.assertEqual(u'[]', c.asPattern())
+        self.assertEqual('[]', c.asPattern())
         c.add(':')
-        self.assertEqual(u'[\u003A]', c.asPattern())
+        self.assertEqual('[\u003A]', c.asPattern())
 
         n = c.negate()
         if SupportsWideUnicode:
-            self.assertEqual(u'[\\x00-\u0039\u003B-\U0010FFFF]', n.asPattern())
+            self.assertEqual('[\\x00-\u0039\u003B-\U0010FFFF]', n.asPattern())
         else:
-            self.assertEqual(u'[\\x00-\u0039\u003B-\uFFFF]', n.asPattern())
+            self.assertEqual('[\\x00-\u0039\u003B-\uFFFF]', n.asPattern())
 
         c = CodePointSet()
         c.add(']')
-        self.assertEqual(u'[\]]', c.asPattern())
+        self.assertEqual('[\]]', c.asPattern())
         c = CodePointSet()
         c.add('-')
         c.add('+')
-        self.assertEqual(u'[+\-]', c.asPattern())
+        self.assertEqual('[+\-]', c.asPattern())
 
 
     def testAsSingleCharacter (self):
@@ -141,8 +141,8 @@ class TestCodePointSet (unittest.TestCase):
         c.add('B')
         self.assertTrue(c.asSingleCharacter() is None)
         self.assertEqual('G', CodePointSet('G').asSingleCharacter())
-        self.assertEqual(u"\u0041", CodePointSet(65).asSingleCharacter())
-        self.assertEqual(u"\uFFFF", CodePointSet(0xFFFF).asSingleCharacter())
+        self.assertEqual("\u0041", CodePointSet(65).asSingleCharacter())
+        self.assertEqual("\uFFFF", CodePointSet(0xFFFF).asSingleCharacter())
 
 class TestXML1p0e2 (unittest.TestCase):
     def testChar (self):

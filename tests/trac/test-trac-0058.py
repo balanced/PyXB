@@ -29,7 +29,7 @@ import unittest
 
 class TestTrac_0058 (unittest.TestCase):
     def testRoundTrip (self):
-        xmlt = u'<iopt xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"></iopt>'
+        xmlt = '<iopt xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"></iopt>'
         xmld = xmlt.encode('utf-8')
         instance = CreateFromDocument(xmlt)
         self.assertTrue(instance._isNil())

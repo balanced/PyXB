@@ -48,7 +48,7 @@ from pyxb.binding import facets
 from pyxb.utils import domutils
 import pyxb.utils.utility
 import copy
-import urlparse
+import urllib.parse
 import os.path
 
 _log = logging.getLogger(__name__)
@@ -592,7 +592,7 @@ class _NamedComponent_mixin (pyxb.utils.utility.PrivateTransient_mixin, pyxb.csc
                 anon_name = 'ANON_IN_GROUP'
             if unique_id is not None:
                 anon_name = '%s_%s' % (anon_name, unique_id)
-            anon_name = pyxb.utils.utility.MakeUnique(anon_name, set(namespace.categoryMap(self.__AnonymousCategory).iterkeys()))
+            anon_name = pyxb.utils.utility.MakeUnique(anon_name, set(namespace.categoryMap(self.__AnonymousCategory).keys()))
         self.__anonymousName = anon_name
         namespace.addCategoryObject(self.__AnonymousCategory, anon_name, self)
     def _anonymousName (self, namespace=None):
@@ -1813,9 +1813,9 @@ class ComplexTypeDefinition (_SchemaComponent_mixin, _NamedComponent_mixin, pyxb
         exists) will be returned.
         """
         if reset or (self.__localScopedDeclarations is None):
-            rve = [ _ed for _ed in self.__scopedElementDeclarations.itervalues() if (self == _ed.scope()) ]
+            rve = [ _ed for _ed in self.__scopedElementDeclarations.values() if (self == _ed.scope()) ]
             rve.sort(key=lambda _x: _x.expandedName())
-            rva = [ _ad for _ad in self.__scopedAttributeDeclarations.itervalues() if (self == _ad.scope()) ]
+            rva = [ _ad for _ad in self.__scopedAttributeDeclarations.values() if (self == _ad.scope()) ]
             rva.sort(key=lambda _x: _x.expandedName())
             self.__localScopedDeclarations = rve
             self.__localScopedDeclarations.extend(rva)
@@ -2143,7 +2143,7 @@ class ComplexTypeDefinition (_SchemaComponent_mixin, _NamedComponent_mixin, pyxb
 
         # Past the last point where we might not resolve this instance.  Store
         # the attribute uses, also recording local attribute declarations.
-        self.__attributeUses = frozenset(use_map.itervalues())
+        self.__attributeUses = frozenset(iter(use_map.values()))
         if not self._scopeIsIndeterminate():
             for au in self.__attributeUses:
                 assert not au.attributeDeclaration()._scopeIsIndeterminate(), 'indeterminate scope for %s' % (au,)
@@ -2920,7 +2920,7 @@ class ModelGroup (_ParticleTree_mixin, _SchemaComponent_mixin, _Annotated_mixin)
             comp = 'CHOICE'
         elif self.C_SEQUENCE == self.compositor():
             comp = 'SEQUENCE'
-        return '%s:(%s)' % (comp, u",".join( [ unicode(_p) for _p in self.particles() ] ) )
+        return '%s:(%s)' % (comp, ",".join( [ str(_p) for _p in self.particles() ] ) )
 
 class Particle (_ParticleTree_mixin, _SchemaComponent_mixin, pyxb.namespace.resolution._Resolvable_mixin):
     """An XMLSchema U{Particle<http://www.w3.org/TR/xmlschema-1/#cParticle>} component."""
@@ -3012,9 +3012,9 @@ class Particle (_ParticleTree_mixin, _SchemaComponent_mixin, pyxb.namespace.reso
         if term is not None:
             self.__term = term
 
-        assert isinstance(min_occurs, (types.IntType, types.LongType))
+        assert isinstance(min_occurs, int)
         self.__minOccurs = min_occurs
-        assert (max_occurs is None) or isinstance(max_occurs, (types.IntType, types.LongType))
+        assert (max_occurs is None) or isinstance(max_occurs, int)
         self.__maxOccurs = max_occurs
         if self.__maxOccurs is not None:
             if self.__minOccurs > self.__maxOccurs:
@@ -3569,9 +3569,9 @@ class Annotation (_SchemaComponent_mixin):
         user_information = kw.pop('user_information', None)
         super(Annotation, self).__init__(**kw)
         if (user_information is not None) and (not isinstance(user_information, list)):
-            user_information = [ unicode(user_information) ]
+            user_information = [ str(user_information) ]
         if (application_information is not None) and (not isinstance(application_information, list)):
-            application_information = [ unicode(application_information) ]
+            application_information = [ str(application_information) ]
         self.__userInformation = user_information
         self.__applicationInformation = application_information
 
@@ -3669,7 +3669,7 @@ class SimpleTypeDefinition (_SchemaComponent_mixin, _NamedComponent_mixin, pyxb.
     # including those constraints inherited parent types.
     __facets = None
     def facets (self):
-        assert (self.__facets is None) or (type(self.__facets) == types.DictType)
+        assert (self.__facets is None) or (type(self.__facets) == dict)
         return self.__facets
 
     # The facets.FundamentalFacet instances that describe this type
@@ -3835,20 +3835,20 @@ class SimpleTypeDefinition (_SchemaComponent_mixin, _NamedComponent_mixin, pyxb.
         elif self.VARIETY_list == self.variety():
             elts.append('list of %s' % (self.itemTypeDefinition().name(),))
         elif self.VARIETY_union == self.variety():
-            elts.append('union of %s' % (u" ".join([unicode(_mtd.name()) for _mtd in self.memberTypeDefinitions()],)))
+            elts.append('union of %s' % (" ".join([str(_mtd.name()) for _mtd in self.memberTypeDefinitions()],)))
         else:
             # Gets here if the type has not been resolved.
             elts.append('?')
             #raise pyxb.LogicError('Unexpected variety %s' % (self.variety(),))
         if self.__facets:
             felts = []
-            for (k, v) in self.__facets.iteritems():
+            for (k, v) in self.__facets.items():
                 if v is not None:
-                    felts.append(unicode(v))
-            elts.append(u"\n  %s" % (','.join(felts),))
+                    felts.append(str(v))
+            elts.append("\n  %s" % (','.join(felts),))
         if self.__fundamentalFacets:
             elts.append("\n  ")
-            elts.append(u','.join( [unicode(_f) for _f in self.__fundamentalFacets ]))
+            elts.append(','.join( [str(_f) for _f in self.__fundamentalFacets ]))
         return 'STD[%s]' % (''.join(elts),)
 
     def _updateFromOther_csc (self, other):
@@ -3954,7 +3954,7 @@ class SimpleTypeDefinition (_SchemaComponent_mixin, _NamedComponent_mixin, pyxb.
         else:
             raise pyxb.IncompleteImplementationError('No implementation for xml:%s' % (name,))
         bi.__facets = { }
-        for v in bi.pythonSupport().__dict__.itervalues():
+        for v in bi.pythonSupport().__dict__.values():
             if isinstance(v, facets.ConstrainingFacet):
                 bi.__facets[v.__class__] = v
         return bi
@@ -4116,7 +4116,7 @@ class SimpleTypeDefinition (_SchemaComponent_mixin, _NamedComponent_mixin, pyxb.
     def __resolveBuiltin (self):
         if self.hasPythonSupport():
             self.__facets = { }
-            for v in self.pythonSupport().__dict__.itervalues():
+            for v in self.pythonSupport().__dict__.values():
                 if isinstance(v, facets.ConstrainingFacet):
                     self.__facets[v.__class__] = v
                     if v.ownerTypeDefinition() is None:
@@ -4183,7 +4183,7 @@ class SimpleTypeDefinition (_SchemaComponent_mixin, _NamedComponent_mixin, pyxb.
         if 0 < len(facet_map):
             assert self.__baseTypeDefinition == self.SimpleUrTypeDefinition()
             self.__facets = facet_map
-            assert type(self.__facets) == types.DictType
+            assert type(self.__facets) == dict
         if 0 < len(fundamental_facets):
             self.__fundamentalFacets = frozenset(fundamental_facets)
         return self
@@ -4207,7 +4207,7 @@ class SimpleTypeDefinition (_SchemaComponent_mixin, _NamedComponent_mixin, pyxb.
                     for ai in range(0, cn.attributes.length):
                         attr = cn.attributes.item(ai)
                         # Convert name from unicode to string
-                        kw[unicode(attr.localName)] = attr.value
+                        kw[str(attr.localName)] = attr.value
                     try:
                         fi.setFromKeywords(**kw)
                     except pyxb.PyXBException as e:
@@ -4231,14 +4231,14 @@ class SimpleTypeDefinition (_SchemaComponent_mixin, _NamedComponent_mixin, pyxb.
             if pstd != datatypes.anySimpleType:
                 base_facets.update(pstd._FacetMap())
         elif self.__baseTypeDefinition.facets():
-            assert type(self.__baseTypeDefinition.facets()) == types.DictType
+            assert type(self.__baseTypeDefinition.facets()) == dict
             base_facets.update(self.__baseTypeDefinition.facets())
         base_facets.update(self.facets())
 
         self.__facets = self.__localFacets
-        for fc in base_facets.iterkeys():
+        for fc in base_facets.keys():
             self.__facets.setdefault(fc, base_facets[fc])
-        assert type(self.__facets) == types.DictType
+        assert type(self.__facets) == dict
 
     def _createRestriction (self, owner, body):
         """Create a new simple type with this as its base.
@@ -4706,7 +4706,7 @@ class Schema (_SchemaComponent_mixin):
 
     def schemaHasAttribute (self, attr_name):
         """Return True iff the schema has an attribute with the given (nc)name."""
-        if isinstance(attr_name, basestring):
+        if isinstance(attr_name, str):
             attr_name = pyxb.namespace.ExpandedName(None, attr_name)
         return attr_name in self.__attributeMap
 
@@ -4718,7 +4718,7 @@ class Schema (_SchemaComponent_mixin):
         has not been defined and has no default.
         @raise KeyError: C{attr_name} is not a valid attribute for a C{schema} element.
         """
-        if isinstance(attr_name, basestring):
+        if isinstance(attr_name, str):
             attr_name = pyxb.namespace.ExpandedName(None, attr_name)
         return self.__attributeMap[attr_name]
 
@@ -4741,7 +4741,7 @@ class Schema (_SchemaComponent_mixin):
         if self.__location is not None:
             schema_path = self.__location
             if 0 <= schema_path.find(':'):
-                schema_path = urlparse.urlparse(schema_path)[2] # .path
+                schema_path = urllib.parse.urlparse(schema_path)[2] # .path
             self.__locationTag = os.path.split(schema_path)[1].split('.')[0]
 
         self.__generationUID = kw.get('generation_uid')
@@ -4770,7 +4770,7 @@ class Schema (_SchemaComponent_mixin):
         self.__attributeMap = self.__attributeMap.copy()
         self.__annotations = []
         # @todo: This isn't right if namespaces are introduced deeper in the document
-        self.__referencedNamespaces = self._namespaceContext().inScopeNamespaces().values()
+        self.__referencedNamespaces = list(self._namespaceContext().inScopeNamespaces().values())
 
     __TopLevelComponentMap = {
         'element' : ElementDeclaration,
@@ -4805,7 +4805,7 @@ class Schema (_SchemaComponent_mixin):
         """
         schema_location = kw.pop('absolute_schema_location', pyxb.utils.utility.NormalizeLocation(kw.get('schema_location'), kw.get('parent_uri'), kw.get('prefix_map')))
         kw['location_base'] = kw['schema_location'] = schema_location
-        assert isinstance(schema_location, basestring), 'Unexpected value %s type %s for schema_location' % (schema_location, type(schema_location))
+        assert isinstance(schema_location, str), 'Unexpected value %s type %s for schema_location' % (schema_location, type(schema_location))
         uri_content_archive_directory = kw.get('uri_content_archive_directory')
         return cls.CreateFromDocument(pyxb.utils.utility.DataFromURI(schema_location, archive_directory=uri_content_archive_directory), **kw)
 
@@ -4889,7 +4889,7 @@ class Schema (_SchemaComponent_mixin):
             ebv = self.schemaAttribute('%sDefault' % (attr,))
         rv = 0
         if ebv == self._SA_All:
-            for v in candidate_map.itervalues():
+            for v in candidate_map.values():
                 rv += v
         else:
             for candidate in ebv.split():

@@ -42,10 +42,10 @@ import unittest
 
 class TestTrac0131 (unittest.TestCase):
     # Unicode string, UTF-8 encoding (per declaration at script top)
-    strt = u'Sign of Leser-Trélat'
+    strt = 'Sign of Leser-Trélat'
     strd = strt.encode('utf-8')
-    base_xmlt = u'<bar><e>' + strt + u'</e></bar>'
-    declared_xmlt = u'<?xml version="1.0" encoding="UTF-8"?>' + base_xmlt
+    base_xmlt = '<bar><e>' + strt + '</e></bar>'
+    declared_xmlt = '<?xml version="1.0" encoding="UTF-8"?>' + base_xmlt
 
     def setUp (self):
         self.__xmlStyle = pyxb._XMLStyle
