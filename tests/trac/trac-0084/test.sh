@@ -5,6 +5,6 @@ fail () {
   exit 1
 }
 
-python tryit.py || fail 'Unable to read generated code'
+python3 tryit.py || fail 'Unable to read generated code'
 echo 'Successfully read code, passed'
 

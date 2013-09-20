@@ -8,5 +8,5 @@ fail () {
 pyxbgen \
   --schema-location=8_3_2_resource.xsd --module=resources \
 || fail s1 generation
-python check.py || fail validation
+python3 check.py || fail validation
 echo ${test_name} passed

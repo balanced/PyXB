@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 # Sample URIs:
 # http://www.weather.gov/forecasts/xml/DWMLgen/wsdl/ndfdXML.wsdl

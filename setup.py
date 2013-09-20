@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 
 
@@ -8,12 +8,9 @@ version = '1.2.4-DEV'
 import distutils.sysconfig
 
 py_ver = distutils.sysconfig.get_python_version()
-#python3:# Require Python 2.0 or higher
-#python3:if (py_ver < '3.0'):
-#python3:    raise ValueError('PyXB requires Python version 3.x (you have %s)' % (py_ver,))
-# Require Python 2.6 or higher, but not 3.x  #!python3!
-if (py_ver < '2.6') or (py_ver >= '3.0'):    #!python3!
-    raise ValueError('PyXB requires Python version 2.x where x >= 6 (you have %s)' % (py_ver,)) #!python3!
+# Require Python 2.0 or higher
+if (py_ver < '3.0'):
+    raise ValueError('PyXB requires Python version 3.x (you have %s)' % (py_ver,))
 
 import os
 import stat

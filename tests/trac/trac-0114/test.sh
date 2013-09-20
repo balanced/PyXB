@@ -10,5 +10,5 @@ fail () {
   exit 1
 }
 
-python check.py || fail trac0114
+python3 check.py || fail trac0114
 echo 'trac0114 passed'

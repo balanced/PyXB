@@ -7,5 +7,5 @@ fail () {
 
 rm -f poc.py*
 pyxbgen -u poc.xsd -m poc || fail unable to generate binding
-python pocSample.py || fail could not process sample
+python3 pocSample.py || fail could not process sample
 echo trac/133 passed

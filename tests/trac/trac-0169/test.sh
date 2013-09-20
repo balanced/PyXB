@@ -10,4 +10,4 @@ pyxbgen \
    --logging-config-file=logging.cfg \
    -u root.xsd -m trac169
 grep -q 'WARNING Skipping apparent redundant inclusion' pyxbgen.log || fail Did not produce warning
-python check.py
+python3 check.py

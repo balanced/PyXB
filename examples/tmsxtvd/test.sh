@@ -1,2 +1,2 @@
 sh genbindings.sh
-python dumpsample.py
+python3 dumpsample.py

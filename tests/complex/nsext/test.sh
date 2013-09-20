@@ -17,7 +17,7 @@ pyxbgen \
   --archive-to-file=common.wxs || fail cannot generate base schema
 
 #pyxbdump common.wxs
-python tst-base.py || fail base binding test
+python3 tst-base.py || fail base binding test
 
 echo '**************************'
 
@@ -26,7 +26,7 @@ pyxbgen \
   --archive-to-file=common4app.wxs || fail bindings for extended
   
 # pyxbdump common4app.wxs
-python tst-extend.py || exit 1
+python3 tst-extend.py || exit 1
 
 # Use this to verify dependency checking
 mv common.wxs common.wxs-
@@ -40,6 +40,6 @@ pyxbgen \
   --schema-location=app.xsd --module=app \
   || ( echo "Failed application schema" ; exit 1 )
 
-python tst-app.py || exit 1
+python3 tst-app.py || exit 1
 
 echo "nsext TESTS PASSED"

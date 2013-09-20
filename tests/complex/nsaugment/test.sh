@@ -16,7 +16,7 @@ pyxbgen \
 
 #pyxbdump common.wxs
 
-python tst-common.py || fail common binding test
+python3 tst-common.py || fail common binding test
 
 echo '**************************'
 
@@ -30,6 +30,6 @@ pyxbgen \
   --schema-location=app.xsd --module=app > bad.log 2>&1 \
   || fail unable to generate app-augmented bindings
 
-python tst-app.py || fail app-augmented bindings test
+python3 tst-app.py || fail app-augmented bindings test
 
 echo "nsaugment TESTS PASSED"

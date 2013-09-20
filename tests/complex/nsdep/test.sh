@@ -9,8 +9,8 @@ pyxbgen \
   --archive-to-file=bindings/D.wxs \
  || exit 1
 
-python tst-a.py || exit 1
+python3 tst-a.py || exit 1
 
-python tst-b.py || exit 1
+python3 tst-b.py || exit 1
 
 echo nsdep tests passed

@@ -46,7 +46,7 @@ instance of either SimpleTypeDefinition or ComplexTypeDefinition.
 from pyxb.exceptions_ import *
 import pyxb.utils.types_
 import pyxb.namespace
-import pyxb.utils.str
+import pyxb.utils.unicode
 from . import basis
 import re
 import binascii
@@ -1021,7 +1021,7 @@ class NMTOKEN (token):
     NMTOKEN is an identifier that can start with any character that is
     legal in it."""
     _ExpandedName = pyxb.namespace.XMLSchema.createExpandedName('NMTOKEN')
-    _ValidRE = pyxb.utils.str.XML1p0e2.NmToken_re
+    _ValidRE = pyxb.utils.unicode.XML1p0e2.NmToken_re
 _DerivedDatatypes.append(NMTOKEN)
 
 class NMTOKENS (basis.STD_list):
@@ -1033,7 +1033,7 @@ class Name (token):
 
     See U{http://www.w3.org/TR/2000/WD-xml-2e-20000814.html#NT-Name}."""
     _ExpandedName = pyxb.namespace.XMLSchema.createExpandedName('Name')
-    _ValidRE = pyxb.utils.str.XML1p0e2.Name_re
+    _ValidRE = pyxb.utils.unicode.XML1p0e2.Name_re
 _DerivedDatatypes.append(Name)
 
 class NCName (Name):
@@ -1041,7 +1041,7 @@ class NCName (Name):
 
     See U{http://www.w3.org/TR/1999/REC-xml-names-19990114/#NT-NCName}."""
     _ExpandedName = pyxb.namespace.XMLSchema.createExpandedName('NCName')
-    _ValidRE = pyxb.utils.str.XML1p0e2.NCName_re
+    _ValidRE = pyxb.utils.unicode.XML1p0e2.NCName_re
 _DerivedDatatypes.append(NCName)
 
 class ID (NCName):
@@ -1106,11 +1106,11 @@ _DerivedDatatypes.append(negativeInteger)
 class long (integer):
     """XMLSchema datatype U{long<http://www.w3.org/TR/xmlschema-2/#long>}."""
     _ExpandedName = pyxb.namespace.XMLSchema.createExpandedName('long')
-_DerivedDatatypes.append(int)  #python3:int:long
+_DerivedDatatypes.append(long)  #python3:long:long
 
 class int (basis.simpleTypeDefinition, pyxb.utils.types_.IntType):
     """XMLSchema datatype U{int<http://www.w3.org/TR/xmlschema-2/#int>}."""
-    _XsdBaseType = int         #python3:int:long
+    _XsdBaseType = long         #python3:long:long
     _ExpandedName = pyxb.namespace.XMLSchema.createExpandedName('int')
 
     @classmethod
