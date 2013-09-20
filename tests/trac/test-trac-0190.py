@@ -47,13 +47,13 @@ class TestTrac_0190 (unittest.TestCase):
 
     def testUnicode (self):
         with self.assertRaises(pyxb.SimpleFacetValueError) as cm:
-            i = UC(u'\xf6')
+            i = UC('\xf6')
         e = cm.exception
         self.assertEqual(e.type, tUC)
-        self.assertEqual(e.value, u'\xf6')
+        self.assertEqual(e.value, '\xf6')
         self.assertTrue(isinstance(e.facet, pyxb.binding.facets.CF_pattern))
         self.assertRaises(UnicodeEncodeError, str, e.details())  #!python3!
-        self.assertEqual(e.details(), u'Type tUC pattern constraint violated by value \xf6')
+        self.assertEqual(e.details(), 'Type tUC pattern constraint violated by value \xf6')
 
 if __name__ == '__main__':
     unittest.main()

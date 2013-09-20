@@ -26,7 +26,7 @@ interface is supported, and only for storing the XML information, not for
 converting it back into document format.
 """
 
-from __future__ import print_function
+
 import xml.dom
 import pyxb.utils.saxutils
 import pyxb.utils.types_
@@ -43,8 +43,8 @@ def _DumpDOM (n, depth=0):
     if (xml.dom.Node.ELEMENT_NODE == n.nodeType):
         print('%sElement[%d] %s %s with %d children' % (pfx, n._indexInParent(), n, pyxb.namespace.ExpandedName(n.name), len(n.childNodes)))
         ins = pyxb.namespace.resolution.NamespaceContext.GetNodeContext(n).inScopeNamespaces()
-        print('%s%s' % (pfx, ' ; '.join([ '%s=%s' % (_k, _v.uri()) for (_k, _v) in ins.items()])))
-        for (k, v) in n.attributes.iteritems():
+        print('%s%s' % (pfx, ' ; '.join([ '%s=%s' % (_k, _v.uri()) for (_k, _v) in list(ins.items())])))
+        for (k, v) in n.attributes.items():
             print('%s %s=%s' % (pfx, pyxb.namespace.ExpandedName(k), v))
         for cn in n.childNodes:
             _DumpDOM(cn, depth+1)

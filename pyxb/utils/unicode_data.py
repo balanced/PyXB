@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # Unicode property and category maps.
 
-from pyxb.utils.unicode import CodePointSet
+from pyxb.utils.str import CodePointSet
 
 # Unicode code blocks: 96 blocks
 BlockMap = {

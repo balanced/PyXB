@@ -32,24 +32,24 @@ import unittest
 class TestTrac0212 (unittest.TestCase):
 
     def testBasicMixed (self):
-        xmlt = u'<Mixed><mString>body</mString></Mixed>'
+        xmlt = '<Mixed><mString>body</mString></Mixed>'
         xmld = xmlt.encode('utf-8')
         instance = CreateFromDocument(xmld)
         self.assertEqual(instance.toxml('utf-8', root_only=True), xmld)
-        xmlt = u'<Mixed>pre<mString>body</mString>post</Mixed>'
+        xmlt = '<Mixed>pre<mString>body</mString>post</Mixed>'
         xmld = xmlt.encode('utf-8')
         instance = CreateFromDocument(xmld)
         self.assertEqual(instance.toxml('utf-8', root_only=True), xmld)
         oc = instance.orderedContent()
         self.assertEqual(3, len(oc))
-        self.assertEqual(u'pre', oc[0].value)
+        self.assertEqual('pre', oc[0].value)
         self.assertEqual(instance.mString, oc[1].value)
-        self.assertEqual(u'post', oc[2].value)
+        self.assertEqual('post', oc[2].value)
         nec = list(pyxb.NonElementContent(instance))
         self.assertEqual(2, len(nec))
-        self.assertEqual(nec[0], u'pre')
-        self.assertEqual(nec[1], u'post')
-        self.assertEqual(u'prepost', ''.join(pyxb.NonElementContent(instance)))
+        self.assertEqual(nec[0], 'pre')
+        self.assertEqual(nec[1], 'post')
+        self.assertEqual('prepost', ''.join(pyxb.NonElementContent(instance)))
 
 if __name__ == '__main__':
     unittest.main()

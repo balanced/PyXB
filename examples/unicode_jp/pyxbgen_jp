@@ -23,7 +23,7 @@ pyxb.utils.saxutils.SetCreateParserModules(['drv_libxml2'])
 
 _AllAsciiMatch_re = re.compile(r'^[ -~]+$')
 def ConvertJPIdentifier (identifier):
-    identifier = unicode(identifier)
+    identifier = str(identifier)
     if _AllAsciiMatch_re.match(identifier):
         return identifier
     identifier = _tagger2.parse(_tagger1.parse(identifier.encode('utf-8')))
@@ -37,8 +37,8 @@ try:
     _tagger2 = MeCab.Tagger("-Oyomi")
     pyxb.utils.utility._SetXMLIdentifierToPython(ConvertJPIdentifier)
 except ImportError as e:
-    print 'WARNING: No Kanji/Hiragana/Katana-to-ASCII transliteration available'
-    print e
+    print('WARNING: No Kanji/Hiragana/Katana-to-ASCII transliteration available')
+    print(e)
 
 # The rest of this is the standard pyxbgen, with the WSDL support code
 # removed.
@@ -64,7 +64,7 @@ import traceback
 try:
     tns = generator.namespaces().pop()
     modules = generator.bindingModules()
-    print 'Python for %s requires %d modules' % (tns, len(modules))
+    print('Python for %s requires %d modules' % (tns, len(modules)))
 
     top_module = None
     path_dirs = set()
@@ -73,7 +73,7 @@ try:
 
     generator.writeNamespaceArchive()
 except Exception as e:
-    print 'Exception generating bindings: %s' % (e,)
+    print('Exception generating bindings: %s' % (e,))
     traceback.print_exception(*sys.exc_info())
     sys.exit(3)
 

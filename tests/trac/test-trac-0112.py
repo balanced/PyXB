@@ -37,7 +37,7 @@ targetNamespace="urn:trac0112" version="1.0">
 </xs:schema>
 '''
 
-xmlt = u'''<?xml version="1.0" encoding="utf-8"?><Element xmlns="urn:trac0112"><Inner><C>true</C></Inner></Element>'''
+xmlt = '''<?xml version="1.0" encoding="utf-8"?><Element xmlns="urn:trac0112"><Inner><C>true</C></Inner></Element>'''
 xmld = xmlt.encode('utf-8')
 
 

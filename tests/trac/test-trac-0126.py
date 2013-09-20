@@ -39,13 +39,13 @@ class TestTrac0126 (unittest.TestCase):
         self.assertEqual(None, instance.Optional)
 
         pyxb.RequireValidWhenGenerating(False)
-        xmlt = u'<Element/>'
+        xmlt = '<Element/>'
         xmld = xmlt.encode('utf-8')
         self.assertEqual(instance.toDOM().documentElement.toxml("utf-8"), xmld)
         pyxb.RequireValidWhenGenerating(True)
         self.assertRaises(pyxb.MissingAttributeError, instance.toDOM)
         instance.Required = 'value'
-        xmlt = u'<Element Required="value"/>'
+        xmlt = '<Element Required="value"/>'
         xmld = xmlt.encode('utf-8')
         self.assertEqual(instance.toDOM().documentElement.toxml("utf-8"), xmld)
 

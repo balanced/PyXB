@@ -25,15 +25,15 @@ class TestCollision (unittest.TestCase):
 
     def testBasic (self):
         instance = color(color_.red, color_=color_.green)
-        xmlt = u'<color color="green"><color>red</color></color>'
+        xmlt = '<color color="green"><color>red</color></color>'
         xmld = xmlt.encode('utf-8')
         self.assertEqual(instance.toxml("utf-8", root_only=True), xmld)
         instance.color = color_.blue
-        xmlt = u'<color color="green"><color>blue</color></color>'
+        xmlt = '<color color="green"><color>blue</color></color>'
         xmld = xmlt.encode('utf-8')
         self.assertEqual(instance.toxml("utf-8", root_only=True), xmld)
         instance.color_ = color_.red
-        xmlt = u'<color color="red"><color>blue</color></color>'
+        xmlt = '<color color="red"><color>blue</color></color>'
         xmld = xmlt.encode('utf-8')
         self.assertEqual(instance.toxml("utf-8", root_only=True), xmld)
 

@@ -161,7 +161,7 @@ class ExpandedName (object):
             assert 1 == len(args)
             ln = args[0]
             ns = None
-            if isinstance(ln, basestring):
+            if isinstance(ln, str):
                 pass
             elif isinstance(ln, tuple) and (2 == len(ln)):
                 (ns, ln) = ln
@@ -178,7 +178,7 @@ class ExpandedName (object):
         if (ns is None) and (fallback_namespace is not None):
             if fallback_namespace.isAbsentNamespace():
                 ns = fallback_namespace
-        if isinstance(ns, (str, unicode)):
+        if isinstance(ns, str):
             ns = NamespaceForURI(ns, create_if_missing=True)
         if isinstance(ns, ExpandedName):
             ns = ns.namespace()
@@ -206,7 +206,7 @@ class ExpandedName (object):
         return tuple.__hash__(self.__expandedName)
 
     def __otherForCompare (self, other):
-        if isinstance(other, (str, unicode)):
+        if isinstance(other, str):
             other = ( None, other )
         if not isinstance(other, tuple):
             other = other.__uriTuple
@@ -358,8 +358,8 @@ class _NamespaceCategory_mixin (pyxb.cscRoot):
         @note: This is a high-cost operation, as every item in every category
         map must be examined to see whether its value field matches
         C{existing_def}."""
-        for (cat, registry) in self.__categoryMap.iteritems():
-            for (k, v) in registry.items(): # NB: Not iteritems
+        for (cat, registry) in self.__categoryMap.items():
+            for (k, v) in list(registry.items()): # NB: Not iteritems
                 if v == existing_def:
                     del registry[k]
                     if replacement_def is not None:
@@ -384,18 +384,18 @@ class _NamespaceCategory_mixin (pyxb.cscRoot):
 
     def _namedObjects (self):
         objects = set()
-        for category_map in self.__categoryMap.itervalues():
-            objects.update(category_map.itervalues())
+        for category_map in self.__categoryMap.values():
+            objects.update(iter(category_map.values()))
         return objects
 
     def _loadNamedObjects (self, category_map):
         """Add the named objects from the given map into the set held by this namespace.
         It is an error to name something which is already present."""
-        self.configureCategories(category_map.iterkeys())
-        for category in category_map.iterkeys():
+        self.configureCategories(iter(category_map.keys()))
+        for category in category_map.keys():
             current_map = self.categoryMap(category)
             new_map = category_map[category]
-            for (local_name, component) in new_map.iteritems():
+            for (local_name, component) in new_map.items():
                 existing_component = current_map.get(local_name)
                 if existing_component is None:
                     current_map[local_name] = component
@@ -428,8 +428,8 @@ class _NamespaceCategory_mixin (pyxb.cscRoot):
         module_record.resetCategoryObjects()
         self.configureCategories([archive.NamespaceArchive._AnonymousCategory()])
         origin_set = module_record.origins()
-        for (cat, cat_map) in self.__categoryMap.iteritems():
-            for (n, v) in cat_map.iteritems():
+        for (cat, cat_map) in self.__categoryMap.items():
+            for (n, v) in cat_map.items():
                 if isinstance(v, archive._ArchivableObject_mixin) and (v._objectOrigin() in origin_set):
                     v._objectOrigin().addCategoryMember(cat, n, v)
 
@@ -696,7 +696,7 @@ class Namespace (_NamespaceCategory_mixin, resolution._NamespaceResolution_mixin
     @classmethod
     def AvailableNamespaces (cls):
         """Return a set of all Namespace instances defined so far."""
-        return cls.__AbsentNamespaces.union(cls.__Registry.itervalues())
+        return cls.__AbsentNamespaces.union(iter(cls.__Registry.values()))
 
     def __init__ (self, uri,
                   description=None,
@@ -963,7 +963,7 @@ class Namespace (_NamespaceCategory_mixin, resolution._NamespaceResolution_mixin
         if self.__initialNamespaceContext is None:
             isn = { }
             if self.__contextInScopeNamespaces is not None:
-                for (k, v) in self.__contextInScopeNamespaces.iteritems():
+                for (k, v) in self.__contextInScopeNamespaces.items():
                     isn[k] = self.__identifyNamespace(v)
             kw = { 'target_namespace' : self
                  , 'default_namespace' : self.__identifyNamespace(self.__contextDefaultNamespace)
@@ -982,7 +982,7 @@ class Namespace (_NamespaceCategory_mixin, resolution._NamespaceResolution_mixin
         create the initial context."""
         if nsval is None:
             return self
-        if isinstance(nsval, (str, unicode)):
+        if isinstance(nsval, str):
             nsval = globals().get(nsval)
         if isinstance(nsval, Namespace):
             return nsval

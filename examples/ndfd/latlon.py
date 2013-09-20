@@ -1,11 +1,11 @@
-from __future__ import print_function
+
 import DWML
 import datetime
 import pyxb
 import pyxb.utils.domutils as domutils
 import pyxb.binding.datatypes as xsd
 import pyxb.xmlschema.structures as structures
-import urllib2
+import urllib.request, urllib.error, urllib.parse
 import time
 import sys
 
@@ -47,7 +47,7 @@ weather_params = ndfd.weatherParametersType(maxt=True, mint=True, temp=True, sky
 
 # The schema didn't say the other parameters are optional (even though
 # they are), so set them to false if not already initialized.
-for eu in weather_params._ElementMap.values():
+for eu in list(weather_params._ElementMap.values()):
     if eu.value(weather_params) is None:
         eu.set(weather_params, False)
 
@@ -112,10 +112,10 @@ soap_addr = service.port[0].wildcardElements()[0]
 endpoint = soap_addr.location
 
 # Execute the request
-uri = urllib2.Request(endpoint,
+uri = urllib.request.Request(endpoint,
                       soap_message,
                       { 'SOAPAction' : soap_action, 'Content-Type': 'text/xml' } )
-rxml = urllib2.urlopen(uri).read()
+rxml = urllib.request.urlopen(uri).read()
 #rxml = open('rawresp.xml').read()
 
 # Save the raw SOAP-wrapped response

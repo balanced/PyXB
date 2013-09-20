@@ -45,7 +45,7 @@ class TestCTD (unittest.TestCase):
         # interesting stuff.  I suppose that ought to be a
         # configuration option.
         self.assertEqual('test', simple('test').value())
-        xmlt = u'<tca:simple xmlns:tca="URN:testCTD">test</tca:simple>'
+        xmlt = '<tca:simple xmlns:tca="URN:testCTD">test</tca:simple>'
         xmld = xmlt.encode('utf-8')
         instance = CreateFromDocument(xmlt)
         self.assertEqual('test', instance.value())
@@ -94,7 +94,7 @@ class TestCTD (unittest.TestCase):
         self.assertEqual(5432, instance.port)
         self.assertRaises(pyxb.MissingAttributeError, ToDOM, instance)
         instance.capitalized = False
-        xmlt = u'<tca:emptyWithAttr capitalized="false" xmlns:tca="URN:testCTD"/>'
+        xmlt = '<tca:emptyWithAttr capitalized="false" xmlns:tca="URN:testCTD"/>'
         xmld = xmlt.encode('utf-8')
         self.assertEqual(ToDOM(instance).toxml("utf-8"), xmld)
 
@@ -106,7 +106,7 @@ class TestCTD (unittest.TestCase):
         self.assertEqual('irish', instance2.language)
         instance2.language = 'french'
         instance2.capitalized = False
-        xmlt = u'<tca:emptyWithAttr capitalized="false" language="french" xmlns:tca="URN:testCTD"/>'
+        xmlt = '<tca:emptyWithAttr capitalized="false" language="french" xmlns:tca="URN:testCTD"/>'
         xmld = xmlt.encode('utf-8')
         self.assertEqual(ToDOM(instance2).toxml("utf-8"), xmld)
         self.assertNotEqual(instance.language, instance2.language)
@@ -129,7 +129,7 @@ class TestCTD (unittest.TestCase):
         self.assertEqual(restrictedEWA_._AttributeMap['capitalized'], emptyWithAttr_._AttributeMap['capitalized'])
 
     def testEmptyWithAttrGroups (self):
-        xmlt = u'<tca:emptyWithAttrGroups bMember1="xxx" xmlns:tca="URN:testCTD"/>'
+        xmlt = '<tca:emptyWithAttrGroups bMember1="xxx" xmlns:tca="URN:testCTD"/>'
         xmld = xmlt.encode('utf-8')
         instance = CreateFromDocument(xmlt)
         self.assertEqual('gM1', instance.groupMember1)
@@ -143,7 +143,7 @@ class TestCTD (unittest.TestCase):
         self.assertEqual('refDefault', instance.tlAttr)
 
     def testUnrecognizedAttribute (self):
-        xmlt = u'<emptyWithAttr capitalized="false" garbage="what is this" xmlns="URN:testCTD"/>'
+        xmlt = '<emptyWithAttr capitalized="false" garbage="what is this" xmlns="URN:testCTD"/>'
         doc = pyxb.utils.domutils.StringToDOM(xmlt)
         self.assertRaises(UnrecognizedAttributeError, emptyWithAttr.createFromDOM, doc.documentElement)
 

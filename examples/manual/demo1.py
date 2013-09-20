@@ -1,4 +1,4 @@
-from __future__ import print_function
+
 import po1
 
 xml = open('po1.xml').read()

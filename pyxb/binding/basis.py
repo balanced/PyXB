@@ -217,7 +217,7 @@ class _TypeBinding_mixin (utility.Locatable_mixin):
             # Types that descend from string will, when constructed from an
             # element with empty content, appear to have no constructor value,
             # while in fact an empty string should have been passed.
-            if issubclass(type(self), basestring):
+            if issubclass(type(self), str):
                 self.__constructedWithValue = True
     def _constructedWithValue (self):
         return self.__constructedWithValue
@@ -365,7 +365,7 @@ class _TypeBinding_mixin (utility.Locatable_mixin):
         value_type = type(value)
         # All string-based PyXB binding types use unicode, not str
         if str == value_type:
-            value_type = unicode
+            value_type = str
 
         # See if we got passed a Python value which needs to be "downcasted"
         # to the _TypeBinding_mixin version.
@@ -374,7 +374,7 @@ class _TypeBinding_mixin (utility.Locatable_mixin):
 
         # See if we have a numeric type that needs to be cast across the
         # numeric hierarchy.  int to long is the *only* conversion we accept.
-        if isinstance(value, int) and issubclass(cls, long):
+        if isinstance(value, int) and issubclass(cls, int):
             return cls(value)
 
         # Same, but for boolean, which Python won't let us subclass
@@ -383,7 +383,7 @@ class _TypeBinding_mixin (utility.Locatable_mixin):
 
         # See if we have convert_string_values on, and have a string type that
         # somebody understands.
-        if convert_string_values and (unicode == value_type):
+        if convert_string_values and (str == value_type):
             return cls(value)
 
         # Maybe this is a union?
@@ -476,11 +476,11 @@ class _TypeBinding_mixin (utility.Locatable_mixin):
         attribute_settings = { }
         if dom_node is not None:
             attribute_settings.update(self.__AttributesFromDOM(dom_node))
-        for fu in self._AttributeMap.itervalues():
+        for fu in self._AttributeMap.values():
             iv = kw.pop(fu.id(), None)
             if iv is not None:
                 attribute_settings[fu.name()] = iv
-        for (attr_en, value_lex) in attribute_settings.iteritems():
+        for (attr_en, value_lex) in attribute_settings.items():
             self._setAttribute(attr_en, value_lex)
 
     def toDOM (self, bds=None, parent=None, element_name=None):
@@ -501,7 +501,7 @@ class _TypeBinding_mixin (utility.Locatable_mixin):
         if bds is None:
             bds = domutils.BindingDOMSupport()
         need_xsi_type = bds.requireXSIType()
-        if isinstance(element_name, (str, unicode)):
+        if isinstance(element_name, str):
             element_name = pyxb.namespace.ExpandedName(bds.defaultNamespace(), element_name)
         if (element_name is None) and (self._element() is not None):
             element_binding = self._element()
@@ -588,8 +588,8 @@ class _TypeBinding_mixin (utility.Locatable_mixin):
         is the expanded name if the type has one, or the Python type name if
         it does not."""
         if cls._ExpandedName is not None:
-            return unicode(cls._ExpandedName)
-        return unicode(cls)
+            return str(cls._ExpandedName)
+        return str(cls)
 
     def _diagnosticName (self):
         """The best name available for this instance in diagnostics.
@@ -598,7 +598,7 @@ class _TypeBinding_mixin (utility.Locatable_mixin):
         otherwise it is the best name for the type of the instance per L{_Name}."""
         if self.__element is None:
             return self._Name()
-        return unicode(self.__element.name())
+        return str(self.__element.name())
 
 class _DynamicCreate_mixin (pyxb.cscRoot):
     """Helper to allow overriding the implementation class.
@@ -832,10 +832,10 @@ class simpleTypeDefinition (_TypeBinding_mixin, utility._DeconflictSymbols_mixin
                 args = (domutils.ExtractTextContent(dom_node),) + args
                 kw['_apply_whitespace_facet'] = True
         apply_whitespace_facet = kw.pop('_apply_whitespace_facet', from_xml)
-        if (0 < len(args)) and isinstance(args[0], types.StringTypes) and apply_whitespace_facet:
+        if (0 < len(args)) and isinstance(args[0], str) and apply_whitespace_facet:
             cf_whitespace = getattr(cls, '_CF_whiteSpace', None)
             if cf_whitespace is not None:
-                norm_str = unicode(cf_whitespace.normalizeString(args[0]))
+                norm_str = str(cf_whitespace.normalizeString(args[0]))
                 args = (norm_str,) + args[1:]
         kw['_from_xml'] = from_xml
         return cls._ConvertArguments_vx(args, kw)
@@ -1023,7 +1023,7 @@ class simpleTypeDefinition (_TypeBinding_mixin, utility._DeconflictSymbols_mixin
                 # the value, though, since a subsequent check after
                 # initialization should succceed.
                 try:
-                    clazz_facets = clazz._FacetMap().values()
+                    clazz_facets = list(clazz._FacetMap().values())
                 except AttributeError:
                     cache_result = False
                     clazz_facets = []
@@ -1266,7 +1266,7 @@ class STD_union (simpleTypeDefinition):
         return cls._ValidatedMember(value).xsdLiteral()
 
 
-class STD_list (simpleTypeDefinition, types.ListType):
+class STD_list (simpleTypeDefinition, list):
     """Base class for collection datatypes.
 
     This class descends from the Python list type, and incorporates
@@ -1313,7 +1313,7 @@ class STD_list (simpleTypeDefinition, types.ListType):
         # resulting list of tokens.
         if 0 < len(args):
             arg1 = args[0]
-            if isinstance(arg1, types.StringTypes):
+            if isinstance(arg1, str):
                 args = (arg1.split(),) + args[1:]
                 arg1 = args[0]
             if isinstance(arg1, collections.Iterable):
@@ -1794,7 +1794,7 @@ class element (utility._DeconflictSymbols_mixin, _DynamicCreate_mixin):
         return 'Element %s' % (self.name(),)
 
     def _description (self, name_only=False, user_documentation=True):
-        name = unicode(self.name())
+        name = str(self.name())
         if name_only:
             return name
         desc = [ name, ' (', self.typeDefinition()._description(name_only=True), ')' ]
@@ -1806,7 +1806,7 @@ class element (utility._DeconflictSymbols_mixin, _DynamicCreate_mixin):
             desc.extend([', substitutes for ', self.substitutionGroup()._description(name_only=True) ])
         if user_documentation and (self.documentation() is not None):
             desc.extend(["\n", self.documentation() ])
-        return u''.join(desc)
+        return ''.join(desc)
 
 class enumeration_mixin (pyxb.cscRoot):
     """Marker in case we need to know that a PST has an enumeration constraint facet."""
@@ -1814,22 +1814,22 @@ class enumeration_mixin (pyxb.cscRoot):
     @classmethod
     def values (cls):
         """Return a list of values that the enumeration can take."""
-        return cls._CF_enumeration.values()
+        return list(cls._CF_enumeration.values())
 
     @classmethod
     def itervalues (cls):
         """Return a generator for the values that the enumeration can take."""
-        return cls._CF_enumeration.itervalues()
+        return iter(cls._CF_enumeration.values())
 
     @classmethod
     def items (cls):
         """Return the associated L{pyxb.binding.facet._EnumerationElement} instances."""
-        return cls._CF_enumeration.items()
+        return list(cls._CF_enumeration.items())
 
     @classmethod
     def iteritems (cls):
         """Generate the associated L{pyxb.binding.facet._EnumerationElement} instances."""
-        return cls._CF_enumeration.iteritems()
+        return iter(cls._CF_enumeration.items())
 
 class _Content (object):
     """Base for any wrapper added to L{complexTypeDefinition.orderedContent}."""
@@ -1864,9 +1864,9 @@ class _Content (object):
                 self.__input = iter(input)
             def __iter__ (self):
                 return self
-            def next (self):
+            def __next__ (self):
                 while True:
-                    content = self.__input.next()
+                    content = next(self.__input)
                     if isinstance(content, cls):
                         return content.value
         return _Iterator(input)
@@ -1924,7 +1924,7 @@ class NonElementContent (_Content):
     The value will be unicode text, and should be appended as character
     data."""
     def __init__ (self, value):
-        super(NonElementContent, self).__init__(unicode(value))
+        super(NonElementContent, self).__init__(str(value))
 
 class complexTypeDefinition (_TypeBinding_mixin, utility._DeconflictSymbols_mixin, _DynamicCreate_mixin):
     """Base for any Python class that serves as the binding for an
@@ -2043,7 +2043,7 @@ class complexTypeDefinition (_TypeBinding_mixin, utility._DeconflictSymbols_mixi
         self.reset()
         self._setAttributesFromKeywordsAndDOM(kw, dom_node)
         did_set_kw_elt = False
-        for fu in self._ElementMap.itervalues():
+        for fu in self._ElementMap.values():
             iv = kw.pop(fu.id(), None)
             if iv is not None:
                 did_set_kw_elt = True
@@ -2109,7 +2109,7 @@ class complexTypeDefinition (_TypeBinding_mixin, utility._DeconflictSymbols_mixi
         disabled validation.  Consequently, it may not generate valid XML.
         """
         order = []
-        for ed in self._ElementMap.itervalues():
+        for ed in self._ElementMap.values():
             value = ed.value(self)
             if value is None:
                 continue
@@ -2159,7 +2159,7 @@ class complexTypeDefinition (_TypeBinding_mixin, utility._DeconflictSymbols_mixi
         content to the binding declaration type.
         """
         rv = { }
-        for eu in self._ElementMap.itervalues():
+        for eu in self._ElementMap.values():
             value = eu.value(self)
             if value is None:
                 continue
@@ -2175,7 +2175,7 @@ class complexTypeDefinition (_TypeBinding_mixin, utility._DeconflictSymbols_mixi
         return rv
 
     def _validateAttributes (self):
-        for au in self._AttributeMap.itervalues():
+        for au in self._AttributeMap.values():
             au.validate(self)
 
     def _validateBinding_vx (self):
@@ -2303,7 +2303,7 @@ class complexTypeDefinition (_TypeBinding_mixin, utility._DeconflictSymbols_mixi
 
     def _resetContent (self, reset_elements=False):
         if reset_elements:
-            for eu in self._ElementMap.itervalues():
+            for eu in self._ElementMap.values():
                 eu.reset(self)
         nv = None
         if self._ContentTypeTag in (self._CT_MIXED, self._CT_ELEMENT_ONLY):
@@ -2336,7 +2336,7 @@ class complexTypeDefinition (_TypeBinding_mixin, utility._DeconflictSymbols_mixi
         """
 
         self._resetContent(reset_elements=True)
-        for au in self._AttributeMap.itervalues():
+        for au in self._AttributeMap.values():
             au.reset(self)
         self._resetAutomaton()
         return self
@@ -2443,7 +2443,7 @@ class complexTypeDefinition (_TypeBinding_mixin, utility._DeconflictSymbols_mixi
                         value = element.CreateDOMBinding(node, None, _fallback_namespace=fallback_namespace)
                     else:
                         _log.warning('Unable to convert DOM node %s at %s to binding', expanded_name, getattr(node, 'location', '[UNAVAILABLE]'))
-        if (not maybe_element) and isinstance(value, basestring) and (self._ContentTypeTag in (self._CT_EMPTY, self._CT_ELEMENT_ONLY)):
+        if (not maybe_element) and isinstance(value, str) and (self._ContentTypeTag in (self._CT_EMPTY, self._CT_ELEMENT_ONLY)):
             if (0 == len(value.strip())) and not self._isNil():
                 return self
         if maybe_element and (self.__automatonConfiguration is not None):
@@ -2559,7 +2559,7 @@ class complexTypeDefinition (_TypeBinding_mixin, utility._DeconflictSymbols_mixi
 
     def _setDOMFromAttributes (self, dom_support, element):
         """Add any appropriate attributes from this instance into the DOM element."""
-        for au in self._AttributeMap.itervalues():
+        for au in self._AttributeMap.values():
             if pyxb.GlobalValidationConfig.forDocument:
                 au.validate(self)
             au.addDOMAttribute(dom_support, self, element)
@@ -2622,12 +2622,12 @@ class complexTypeDefinition (_TypeBinding_mixin, utility._DeconflictSymbols_mixi
                 desc.append(', element-only content')
         if (0 < len(cls._AttributeMap)) or (cls._AttributeWildcard is not None):
             desc.append("\nAttributes:\n  ")
-            desc.append("\n  ".join([ _au._description(user_documentation=False) for _au in cls._AttributeMap.itervalues() ]))
+            desc.append("\n  ".join([ _au._description(user_documentation=False) for _au in cls._AttributeMap.values() ]))
             if cls._AttributeWildcard is not None:
                 desc.append("\n  Wildcard attribute(s)")
         if (0 < len(cls._ElementMap)) or cls._HasWildcardElement:
             desc.append("\nElements:\n  ")
-            desc.append("\n  ".join([ _eu._description(user_documentation=False) for _eu in cls._ElementMap.itervalues() ]))
+            desc.append("\n  ".join([ _eu._description(user_documentation=False) for _eu in cls._ElementMap.values() ]))
             if cls._HasWildcardElement:
                 desc.append("\n  Wildcard element(s)")
         return ''.join(desc)

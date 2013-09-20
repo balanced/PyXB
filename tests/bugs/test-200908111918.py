@@ -70,7 +70,7 @@ Multi-line.
 With " and ' characters even.
 ''')
 
-        desc1 = u'''tComplex, element-only content
+        desc1 = '''tComplex, element-only content
 Attributes:
   attr: attr ({http://www.w3.org/2001/XMLSchema}string), optional
   Wildcard attribute(s)
@@ -78,7 +78,7 @@ Elements:
   elt: elt ({http://www.w3.org/2001/XMLSchema}string), local to tComplex
   element: element (tComplex), local to tComplex
   Wildcard element(s)'''
-        desc2 = u'''tComplex, element-only content
+        desc2 = '''tComplex, element-only content
 Attributes:
   attr: attr ({http://www.w3.org/2001/XMLSchema}string), optional
   Wildcard attribute(s)

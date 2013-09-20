@@ -1,4 +1,4 @@
-from __future__ import print_function
+
 import pyxb.utils.domutils
 import xml.dom.minidom
 import cablelabs.core as core

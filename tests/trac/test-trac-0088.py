@@ -10,7 +10,7 @@ import pyxb.binding.basis
 import pyxb.utils.domutils
 
 import os.path
-xsd=u'''<?xml version="1.0" encoding="utf-8"?>
+xsd='''<?xml version="1.0" encoding="utf-8"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
         <xs:simpleType name="tEnum">
                 <xs:restriction base="xs:token">
@@ -36,14 +36,14 @@ import unittest
 
 class TestTrac_0088 (unittest.TestCase):
     def test (self):
-        enums = tEnum._CF_enumeration.items()
+        enums = list(tEnum._CF_enumeration.items())
         self.assertEqual(3, len(enums))
         self.assertEqual(enums[0].tag(), 'emptyString')
-        self.assertEqual(enums[0].value(), u'°')
+        self.assertEqual(enums[0].value(), '°')
         self.assertEqual(enums[1].tag(), 'm')
-        self.assertEqual(enums[1].value(), u'm²')
+        self.assertEqual(enums[1].value(), 'm²')
         self.assertEqual(enums[2].tag(), 'm_')
-        self.assertEqual(enums[2].value(), u'm³')
+        self.assertEqual(enums[2].value(), 'm³')
 
 if __name__ == '__main__':
     unittest.main()

@@ -44,11 +44,11 @@ import unittest
 
 class TestTrac0079 (unittest.TestCase):
     def testDocumentation (self):
-        self.assertEqual(str.documentation(), u'elt str')
-        self.assertEqual(anon.documentation(), u'elt anon')
-        self.assertEqual(cpl.__doc__, u'ctd cpl')
-        self.assertEqual(cpl.text.__doc__, u'elt cpl.text')
-        self.assertEqual(anon.typeDefinition().__doc__, u'elt anon')
+        self.assertEqual(str.documentation(), 'elt str')
+        self.assertEqual(anon.documentation(), 'elt anon')
+        self.assertEqual(cpl.__doc__, 'ctd cpl')
+        self.assertEqual(cpl.text.__doc__, 'elt cpl.text')
+        self.assertEqual(anon.typeDefinition().__doc__, 'elt anon')
 
 if __name__ == '__main__':
     unittest.main()

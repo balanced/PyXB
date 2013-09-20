@@ -364,12 +364,12 @@ class State (object):
 
     def _facText (self):
         rv = []
-        rv.extend(map(str, self.__transitionSet))
+        rv.extend(list(map(str, self.__transitionSet)))
         if self.__finalUpdate is not None:
             if 0 == len(self.__finalUpdate):
                 rv.append('Final (no conditions)')
             else:
-                rv.append('Final if %s' % (' '.join(map(lambda _ui: str(_ui.counterCondition), self.__finalUpdate))))
+                rv.append('Final if %s' % (' '.join([str(_ui.counterCondition) for _ui in self.__finalUpdate])))
         return '\n'.join(rv)
 
 class CounterCondition (object):
@@ -950,7 +950,7 @@ class Configuration (Configuration_ABC):
     def reset (self):
         fac = self.__automaton
         self.__state = None
-        self.__counterValues = dict(zip(fac.counterConditions, len(fac.counterConditions) * (1,)))
+        self.__counterValues = dict(list(zip(fac.counterConditions, len(fac.counterConditions) * (1,))))
         self.__subConfiguration = None
         self.__subAutomata = None
 
@@ -999,7 +999,7 @@ class Configuration (Configuration_ABC):
                 # subautomata that require symbols before a transition
                 # out of this node is allowed.
                 (include_local, sub_initial) = self.__state.subAutomataInitialTransitions(self.__subAutomata)
-                transitions.extend(map(lambda _xit: _xit.makeEnterAutomatonTransition(), sub_initial))
+                transitions.extend([_xit.makeEnterAutomatonTransition() for _xit in sub_initial])
             if include_local:
                 # Transitions within this layer
                 for xit in filter(update_filter, self.__state.transitionSet):
@@ -1011,14 +1011,14 @@ class Configuration (Configuration_ABC):
                         # We do not care if the destination is nullable; alternatives
                         # to it are already being handled with different transitions.
                         (_, sub_initial) = xit.destination.subAutomataInitialTransitions()
-                        transitions.extend(map(lambda _xit: xit.chainTo(_xit.makeEnterAutomatonTransition()), sub_initial))
+                        transitions.extend([xit.chainTo(_xit.makeEnterAutomatonTransition()) for _xit in sub_initial])
                 if (self.__superConfiguration is not None) and self.isAccepting():
                     # Transitions that leave this automaton
                     lxit = self.makeLeaveAutomatonTransition()
                     supxit = self.__superConfiguration.candidateTransitions(symbol)
-                    transitions.extend(map(lambda _sx: lxit.chainTo(_sx), supxit))
+                    transitions.extend([lxit.chainTo(_sx) for _sx in supxit])
         assert len(frozenset(transitions)) == len(transitions)
-        return filter(update_filter, filter(match_filter, transitions))
+        return list(filter(update_filter, list(filter(match_filter, transitions))))
 
     def acceptableSymbols (self):
         return [ _xit.consumedSymbol() for _xit in self.candidateTransitions()]
@@ -1043,7 +1043,7 @@ class Configuration (Configuration_ABC):
                 return False
             # Any unprocessed sub-automata must be nullable
             if self.__subAutomata is not None:
-                if not functools.reduce(operator.and_, map(lambda _sa: _sa.nullable, self.__subAutomata), True):
+                if not functools.reduce(operator.and_, [_sa.nullable for _sa in self.__subAutomata], True):
                     return False
             # This state must be accepting
             return self.__state.isAccepting(self.__counterValues)
@@ -1091,7 +1091,7 @@ class Configuration (Configuration_ABC):
         return other
 
     def __str__ (self):
-        return '%s: %s' % (self.__state, ' ; '.join([ '%s=%u' % (_c,_v) for (_c,_v) in self.__counterValues.iteritems()]))
+        return '%s: %s' % (self.__state, ' ; '.join([ '%s=%u' % (_c,_v) for (_c,_v) in self.__counterValues.items()]))
 
 class MultiConfiguration (Configuration_ABC):
     """Support parallel execution of state machine.
@@ -1244,14 +1244,14 @@ class Automaton (object):
 
     def __str__ (self):
         rv = []
-        rv.append('sigma = %s' % (' '.join(map(lambda _s: str(_s.symbol), self.__states))))
+        rv.append('sigma = %s' % (' '.join([str(_s.symbol) for _s in self.__states])))
         rv.append('states = %s' % (' '.join(map(str, self.__states))))
         for s in self.__states:
             if s.subAutomata is not None:
-                for i in xrange(len(s.subAutomata)):
+                for i in range(len(s.subAutomata)):
                     rv.append('SA %s.%u is %x:\n  ' % (str(s), i, id(s.subAutomata[i])) + '\n  '.join(str(s.subAutomata[i]).split('\n')))
         rv.append('counters = %s' % (' '.join(map(str, self.__counterConditions))))
-        rv.append('initial = %s' % (' ; '.join([ '%s on %s' % (_s, _s.symbol) for _s in filter(lambda _s: _s.isInitial, self.__states)])))
+        rv.append('initial = %s' % (' ; '.join([ '%s on %s' % (_s, _s.symbol) for _s in [_s for _s in self.__states if _s.isInitial]])))
         rv.append('initial transitions:\n%s' % ('\n'.join(map(str, self.initialTransitions))))
         rv.append('States:')
         for s in self.__states:
@@ -1448,7 +1448,7 @@ class Node (object):
         """A map from nodes to their position in the term tree."""
         if self.__nodePosMap is None:
             npm = {}
-            for (p,n) in self.posNodeMap.iteritems():
+            for (p,n) in self.posNodeMap.items():
                 npm[n] = p
             self.__nodePosMap = npm
         return self.__nodePosMap
@@ -1463,7 +1463,7 @@ class Node (object):
     def _PosConcatUpdateInstruction (cls, pos, psi):
         """Implement definition 11.2 in B{HOV09}"""
         rv = {}
-        for (q, v) in psi.iteritems():
+        for (q, v) in psi.items():
             rv[pos + q] = v
         return rv
 
@@ -1493,10 +1493,10 @@ class Node (object):
             assert isinstance(nci, NumericalConstraint)
             assert nci not in counter_map
             counter_map[pos] = ctr_cond_ctor(nci.min, nci.max, nci.metadata)
-        counters = counter_map.values()
+        counters = list(counter_map.values())
 
         state_map = { }
-        for pos in self.follow.iterkeys():
+        for pos in self.follow.keys():
             sym = self.posNodeMap.get(pos)
             assert isinstance(sym, LeafNode)
             assert sym not in state_map
@@ -1517,16 +1517,16 @@ class Node (object):
                     final_update.add(UpdateInstruction(nci, False))
             state_map[pos] = state_ctor(sym.metadata, is_initial=is_initial, final_update=final_update, is_unordered_catenation=isinstance(sym, All))
             if isinstance(sym, All):
-                state_map[pos]._set_subAutomata(*map(lambda _s: _s.buildAutomaton(state_ctor, ctr_cond_ctor, containing_state=state_map[pos]), sym.terms))
-        states = state_map.values()
+                state_map[pos]._set_subAutomata(*[_s.buildAutomaton(state_ctor, ctr_cond_ctor, containing_state=state_map[pos]) for _s in sym.terms])
+        states = list(state_map.values())
 
-        for (spos, transition_set) in self.follow.iteritems():
+        for (spos, transition_set) in self.follow.items():
             src = state_map[spos]
             phi = []
             for (dpos, psi) in transition_set:
                 dst = state_map[dpos]
                 uiset = set()
-                for (counter, action) in psi.iteritems():
+                for (counter, action) in psi.items():
                     uiset.add(UpdateInstruction(counter_map[counter], self.INCREMENT == action))
                 phi.append(Transition(dst, uiset))
             src._set_transitionSet(phi)
@@ -1570,8 +1570,8 @@ class Node (object):
         maps using positions."""
         rv = []
         rv.append('r\t= %s' % (str(self),))
-        states = list(self.follow.iterkeys())
-        rv.append('sym(r)\t= %s' % (' '.join(map(str, map(self.posNodeMap.get, states)))))
+        states = list(self.follow.keys())
+        rv.append('sym(r)\t= %s' % (' '.join(map(str, list(map(self.posNodeMap.get, states))))))
         rv.append('first(r)\t= %s' % (' '.join(map(str, self.first))))
         rv.append('last(r)\t= %s' % (' '.join(map(str, self.last))))
         rv.append('C\t= %s' % (' '.join(map(str, self.counterPositions))))
@@ -1581,7 +1581,7 @@ class Node (object):
             for (dpos, transition_set) in self.follow[spos]:
                 dst = self.posNodeMap[dpos]
                 uv = []
-                for (c, u) in transition_set.iteritems():
+                for (c, u) in transition_set.items():
                     uv.append('%s %s' % (u == self.INCREMENT and "inc" or "rst", str(c)))
                 rv.append('%s -%s-> %s ; %s' % (str(spos), dst.metadata, str(dpos), ' ; '.join(uv)))
         return '\n'.join(rv)
@@ -1604,13 +1604,13 @@ class MultiTermNode (Node):
         self.__terms = terms
 
     def clone (self):
-        cterms = map(lambda _s: _s.clone(), self.__terms)
+        cterms = [_s.clone() for _s in self.__terms]
         return super(MultiTermNode, self).clone(*cterms)
 
     def _walkTermTree (self, position, pre, post, arg):
         if pre is not None:
             pre(self, position, arg)
-        for c in xrange(len(self.__terms)):
+        for c in range(len(self.__terms)):
             self.__terms[c]._walkTermTree(position + (c,), pre, post, arg)
         if post is not None:
             post(self, position, arg)
@@ -1689,7 +1689,7 @@ class NumericalConstraint (Node):
         rv = {}
         pp = (0,)
         last_r1 = set(self.__term.last)
-        for (q, transition_set) in self.__term.follow.iteritems():
+        for (q, transition_set) in self.__term.follow.items():
             rv[pp+q] = self._PosConcatTransitionSet(pp, transition_set)
             if q in last_r1:
                 last_r1.remove(q)
@@ -1736,13 +1736,13 @@ class Choice (MultiTermNode):
 
     def _first (self):
         rv = set()
-        for c in xrange(len(self.terms)):
+        for c in range(len(self.terms)):
             rv.update([ (c,) + _fc for _fc in self.terms[c].first])
         return rv
 
     def _last (self):
         rv = set()
-        for c in xrange(len(self.terms)):
+        for c in range(len(self.terms)):
             rv.update([ (c,) + _lc for _lc in self.terms[c].last])
         return rv
 
@@ -1754,8 +1754,8 @@ class Choice (MultiTermNode):
 
     def _follow (self):
         rv = {}
-        for c in xrange(len(self.terms)):
-            for (q, transition_set) in self.terms[c].follow.iteritems():
+        for c in range(len(self.terms)):
+            for (q, transition_set) in self.terms[c].follow.items():
                 pp = (c,)
                 rv[pp + q] = self._PosConcatTransitionSet(pp, transition_set)
         return rv
@@ -1811,11 +1811,11 @@ class Sequence (MultiTermNode):
 
     def _follow (self):
         rv = {}
-        for c in xrange(len(self.terms)):
+        for c in range(len(self.terms)):
             pp = (c,)
-            for (q, transition_set) in self.terms[c].follow.iteritems():
+            for (q, transition_set) in self.terms[c].follow.items():
                 rv[pp + q] = self._PosConcatTransitionSet(pp, transition_set)
-        for c in xrange(len(self.terms)-1):
+        for c in range(len(self.terms)-1):
             t = self.terms[c]
             pp = (c,)
             # Link from the last of one term to the first of the next term.
@@ -1887,14 +1887,14 @@ class All (MultiTermNode, LeafNode):
         if 1 == len(terms):
             return terms[0]
         disjuncts = []
-        for i in xrange(len(terms)):
+        for i in range(len(terms)):
             n = terms[i]
-            rem = map(lambda _s: _s.clone(), terms[:i] + terms[i+1:])
+            rem = [_s.clone() for _s in terms[:i] + terms[i+1:]]
             disjuncts.append(Sequence(n, cls.CreateTermTree(*rem)))
         return Choice(*disjuncts)
 
     def __str__ (self):
-        return u'&(' + ','.join([str(_t) for _t in self.terms]) + ')'
+        return '&(' + ','.join([str(_t) for _t in self.terms]) + ')'
 
 class Symbol (LeafNode):
     """A leaf term that is a symbol.
