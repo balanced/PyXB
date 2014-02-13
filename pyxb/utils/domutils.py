@@ -62,7 +62,7 @@ def StringToDOM (xml_text, **kw):
         parser = pyxb.utils.saxutils.make_parser()
         # minidom.parseString operates on text.  In Python 2, this means don't
         # feed it unicode.  In Python 3 this means don't feed it bytes.
-        if isinstance(xmlt, unicode):                #!python3!
+        if isinstance(xmlt, str):                #!python3!
             xmlt = xmlt.encode(pyxb._InputEncoding)  #!python3!
 #python3:        if isinstance(xmlt, pyxb.utils.types_.DataType):
 #python3:            xmlt = xmlt.decode(pyxb._InputEncoding)
@@ -263,7 +263,7 @@ class _BDSNamespaceSupport (object):
         C{unicode}.
         """
 
-        if isinstance(default_namespace, basestring):
+        if isinstance(default_namespace, str):
             default_namespace = pyxb.namespace.NamespaceForURI(default_namespace, create_if_missing=True)
         if (default_namespace is not None) and default_namespace.isAbsentNamespace():
             raise pyxb.UsageError('Default namespace must not be an absent namespace')
@@ -334,7 +334,7 @@ class _BDSNamespaceSupport (object):
 
         if (namespace is None) or namespace.isAbsentNamespace():
             return None
-        if isinstance(namespace, basestring):
+        if isinstance(namespace, str):
             namespace = pyxb.namespace.NamespaceForURI(namespace, create_if_missing=True)
         if (self.__defaultNamespace == namespace) and enable_default_namespace:
             return None
@@ -393,11 +393,11 @@ class _BDSNamespaceSupport (object):
             self.__prefixes.update(inherit_from.__prefixes)
         if default_namespace is not None:
             self.setDefaultNamespace(default_namespace)
-        prefixes = set(self.__namespacePrefixMap.itervalues())
+        prefixes = set(self.__namespacePrefixMap.values())
         prefixes.update(self.__prefixes)
         if namespace_prefix_map is not None:
             prefixes = set()
-            for (ns, pfx) in namespace_prefix_map.iteritems():
+            for (ns, pfx) in namespace_prefix_map.items():
                 ns = pyxb.namespace.NamespaceInstance(ns)
                 if pfx in prefixes:
                     raise pyxb.LogicError('Cannot assign same prefix to multiple namespacess: %s' % (pfx,))
@@ -548,7 +548,7 @@ class BindingDOMSupport (object):
         ns = self.__namespaceSupport.defaultNamespace()
         if ns is not None:
             self.document().documentElement.setAttributeNS(pyxb.namespace.XMLNamespaces.uri(), 'xmlns', ns.uri())
-        for ( ns, pfx ) in self.__namespaceSupport.namespaces().iteritems():
+        for ( ns, pfx ) in self.__namespaceSupport.namespaces().items():
             assert pfx is not None
             self.document().documentElement.setAttributeNS(pyxb.namespace.XMLNamespaces.uri(), 'xmlns:%s' % (pfx,), ns.uri())
         return self.document()
@@ -572,7 +572,7 @@ class BindingDOMSupport (object):
             parent = self.document().documentElement
         if parent is None:
             parent = self.__document
-        if isinstance(expanded_name, (str, unicode)):
+        if isinstance(expanded_name, str):
             expanded_name = pyxb.namespace.ExpandedName(None, expanded_name)
         if not isinstance(expanded_name, pyxb.namespace.ExpandedName):
             raise pyxb.LogicError('Invalid type %s for expanded name' % (type(expanded_name),))
@@ -632,7 +632,7 @@ class BindingDOMSupport (object):
             (ns_uri, node_name) = self._makeURINodeNamePair(node)
             clone_node = docnode.createElementNS(ns_uri, node_name)
             attrs = node.attributes
-            for ai in xrange(attrs.length):
+            for ai in range(attrs.length):
                 clone_node.setAttributeNodeNS(self._deepClone(attrs.item(ai), docnode))
             for child in node.childNodes:
                 clone_node.appendChild(self._deepClone(child, docnode))

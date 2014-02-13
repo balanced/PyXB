@@ -1,5 +1,5 @@
 # examples/manual/demo4c.py
-from __future__ import print_function
+
 
 import pyxb
 import po4

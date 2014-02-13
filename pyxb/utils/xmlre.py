@@ -34,7 +34,7 @@ U{http://www.xmlschemareference.com/examples/Ch14/regexpDemo.xsd},
 with a sample document at U{
 http://www.xmlschemareference.com/examples/Ch14/regexpDemo.xml}"""
 
-import pyxb.utils.unicode
+import pyxb.utils.str
 import re
 import logging
 
@@ -48,17 +48,17 @@ def _InitializeAllEsc ():
     """Set the values in _AllEsc without introducing C{k} and C{v} into
     the module."""
 
-    _AllEsc.update({ u'.': pyxb.utils.unicode.WildcardEsc })
-    for k, v in pyxb.utils.unicode.SingleCharEsc.iteritems():
-        _AllEsc[u'\\' + unicode(k)] = v
-    for k, v in pyxb.utils.unicode.MultiCharEsc.iteritems():
-        _AllEsc[u'\\' + unicode(k)] = v
-    for k, v in pyxb.utils.unicode.catEsc.iteritems():
-        _AllEsc[u'\\' + unicode(k)] = v
-    for k, v in pyxb.utils.unicode.complEsc.iteritems():
-        _AllEsc[u'\\' + unicode(k)] = v
-    for k, v in pyxb.utils.unicode.IsBlockEsc.iteritems():
-        _AllEsc[u'\\' + unicode(k)] = v
+    _AllEsc.update({ '.': pyxb.utils.str.WildcardEsc })
+    for k, v in pyxb.utils.str.SingleCharEsc.items():
+        _AllEsc['\\' + str(k)] = v
+    for k, v in pyxb.utils.str.MultiCharEsc.items():
+        _AllEsc['\\' + str(k)] = v
+    for k, v in pyxb.utils.str.catEsc.items():
+        _AllEsc['\\' + str(k)] = v
+    for k, v in pyxb.utils.str.complEsc.items():
+        _AllEsc['\\' + str(k)] = v
+    for k, v in pyxb.utils.str.IsBlockEsc.items():
+        _AllEsc['\\' + str(k)] = v
 _InitializeAllEsc()
 
 class RegularExpressionError (ValueError):
@@ -139,7 +139,7 @@ def _MatchPosCharGroup(text, position):
         if position >= len(text):
             raise RegularExpressionError(position, "Incomplete character class expression, missing closing ']'")
         ch = text[position]
-        if ch == u'[':
+        if ch == '[':
             # Only allowed if this is a subtraction
             if not tokens or tokens[-1] is not DASH:
                 raise RegularExpressionError(position, "'[' character not allowed in character class")
@@ -149,17 +149,17 @@ def _MatchPosCharGroup(text, position):
             tokens.pop()
             position = position - 1
             break
-        elif ch == u']':
+        elif ch == ']':
             # End
             break
-        elif ch == u'\\':
+        elif ch == '\\':
             cps, position = _MatchCharClassEsc(text, position)
             single_char = cps.asSingleCharacter()
             if single_char is not None:
                 tokens.append(single_char)
             else:
                 tokens.append(cps)
-        elif ch == u'-':
+        elif ch == '-':
             # We need to distinguish between "-" and "\-".  So we use
             # DASH for a plain "-", and u"-" for a "\-".
             tokens.append(DASH)
@@ -173,16 +173,16 @@ def _MatchPosCharGroup(text, position):
 
     # At the start or end of the character group, a dash has to be a literal
     if tokens[0] is DASH:
-        tokens[0] = u'-'
+        tokens[0] = '-'
     if tokens[-1] is DASH:
-        tokens[-1] = u'-'
-    result_cps = pyxb.utils.unicode.CodePointSet()
+        tokens[-1] = '-'
+    result_cps = pyxb.utils.str.CodePointSet()
     cur_token = 0
     while cur_token < len(tokens):
         start = tokens[cur_token]
         if cur_token + 2 < len(tokens) and tokens[cur_token + 1] is DASH:
             end = tokens[cur_token + 2]
-            if not isinstance(start, unicode) or not isinstance(end, unicode):
+            if not isinstance(start, str) or not isinstance(end, str):
                 if start is DASH or end is DASH:
                     raise RegularExpressionError(start_position, 'Two dashes in a row is not allowed in the middle of a character class.')
                 raise RegularExpressionError(start_position, 'Dashes must be surrounded by characters, not character class escapes. %r %r' %(start, end))
@@ -193,7 +193,7 @@ def _MatchPosCharGroup(text, position):
         else:
             if start is DASH:
                 raise RegularExpressionError(start_position, 'Dash without an initial character')
-            elif isinstance(start, unicode):
+            elif isinstance(start, str):
                 result_cps.add(ord(start))
             else:
                 result_cps.extend(start)
@@ -222,7 +222,7 @@ def _MatchCharClassExpr(text, position):
     '''
     if position >= len(text):
         raise RegularExpressionError(position, 'Missing character class expression')
-    if u'[' != text[position]:
+    if '[' != text[position]:
         raise RegularExpressionError(position, "Expected start of character class expression, got '%s'" % (text[position],))
     position = position + 1
     if position >= len(text):
@@ -237,13 +237,13 @@ def _MatchCharClassExpr(text, position):
         result_cps = result_cps.negate()
 
     if has_following_subtraction:
-        assert text[position] == u'-'
-        assert text[position + 1] == u'['
+        assert text[position] == '-'
+        assert text[position + 1] == '['
         position = position + 1
         sub_cps, position = _MatchCharClassExpr(text, position)
         result_cps.subtract(sub_cps)
 
-    if position >= len(text) or text[position] != u']':
+    if position >= len(text) or text[position] != ']':
         raise RegularExpressionError(position, "Expected ']' to end character class")
     return result_cps, position + 1
 
@@ -267,7 +267,7 @@ def MaybeMatchCharacterClass (text, position):
     c = text[position]
     np = position + 1
     if '.' == c:
-        return (pyxb.utils.unicode.WildcardEsc, np)
+        return (pyxb.utils.str.WildcardEsc, np)
     if '[' == c:
         return _MatchCharClassExpr(text, position)
     if '\\' == c:
@@ -284,7 +284,7 @@ def XMLToPython (pattern):
 
     @return: A Unicode string specifying a Python regular expression
     that matches the same language as C{pattern}."""
-    assert isinstance(pattern, unicode)
+    assert isinstance(pattern, str)
     new_pattern_elts = []
     new_pattern_elts.append('^')
     position = 0
@@ -292,11 +292,11 @@ def XMLToPython (pattern):
         cg = MaybeMatchCharacterClass(pattern, position)
         if cg is None:
             ch = pattern[position]
-            if ch == u'^' or ch == u'$':
+            if ch == '^' or ch == '$':
                 # These characters have no special meaning in XSD.  But they
                 # match start and end of string in Python, so they have to
                 # be escaped.
-                new_pattern_elts.append(u'\\' + ch)
+                new_pattern_elts.append('\\' + ch)
             else:
                 new_pattern_elts.append(ch)
             position += 1

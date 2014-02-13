@@ -88,7 +88,7 @@ def api_role(role, rawtext, text, lineno, inliner, options={}, content=[]):
         node = nodes.reference(rawtext, label, refuri=uri, **options)
     else:
         # cannot find reference, then just inline the text
-        print 'WARNING: Unable to find %s in API' % (text,)
+        print('WARNING: Unable to find %s in API' % (text,))
         node = nodes.literal(rawtext, text)
 
     return [node], []
@@ -127,7 +127,7 @@ def pyex_role(role, rawtext, text, lineno, inliner, options={}, content=[]):
     if mo is not None:
         ( label, text ) = mo.group(1, 2)
     exc = text.strip()
-    print 'Python exception %s as %s' % (text, label)
+    print('Python exception %s as %s' % (text, label))
 
     uri = pyex_fmt % (exc,)
     if label is None:

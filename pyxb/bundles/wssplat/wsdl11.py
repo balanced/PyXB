@@ -271,32 +271,32 @@ class tDefinitions (raw_wsdl11.tDefinitions):
         global pyxb
         import pyxb.xmlschema
 
-        print 'PS %s' % (generation_uid,)
+        print('PS %s' % (generation_uid,))
         if self.__schema is not None:
-            print 'Already have schema'
+            print('Already have schema')
             return self.__schema
         for t in self.types:
             for wc in t.wildcardElements():
                 if isinstance(wc, xml.dom.Node) and pyxb.namespace.XMLSchema.nodeIsNamed(wc, 'schema'):
                     # Try to load component models for any namespace referenced by this.
                     # Probably shouldn't need to do this except for imported ones.
-                    for ns in self.namespaceContext().inScopeNamespaces().itervalues():
+                    for ns in self.namespaceContext().inScopeNamespaces().values():
                         try:
                             ns.validateComponentModel()
                         except Exception as e:
-                            print 'Error validating component model for %s: %s' % (ns.uri(), e)
+                            print('Error validating component model for %s: %s' % (ns.uri(), e))
                     self.__schema = pyxb.xmlschema.schema.CreateFromDOM(wc, namespace_context=self.namespaceContext(), generation_uid=generation_uid)
                 elif isinstance(wc, pyxb.xmlschema.schema):
                     self.__schema = wc
                 else:
-                    print 'No match: %s %s' % (wc.namespaceURI, namespace.localName)
+                    print('No match: %s %s' % (wc.namespaceURI, namespace.localName))
                 if self.__schema is not None:
                     return self.__schema
         return None
 
     def __finalizeReferences (self):
         tns = self.namespaceContext().targetNamespace()
-        for m in tns.messages().itervalues():
+        for m in tns.messages().values():
             for p in m.part:
                 if (p.element is not None) and (p.elementReference is None):
                     elt_en = p._namespaceContext().interpretQName(p.element)

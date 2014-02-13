@@ -31,7 +31,7 @@ import re
 _CamelCase_re = re.compile(r'_\w')
 
 def MakeCamelCase (identifier):
-    return _CamelCase_re.sub(lambda _m: _m.group(0)[1].upper(), unicode(identifier))
+    return _CamelCase_re.sub(lambda _m: _m.group(0)[1].upper(), str(identifier))
 
 class TestTrac0141 (unittest.TestCase):
     def tearDown (cls):

@@ -53,45 +53,45 @@ class TestTrac0221 (unittest.TestCase):
             self.assertNotEqual(None, v)
 
     def testValueForUnicode (self):
-        self.assertEqual(english.one, english._valueForUnicode(u'one'))
-        self.assertEqual(None, english._valueForUnicode(u'no such element'))
-        self.assertEqual(english.bd, english._valueForUnicode(u'b@d'))
+        self.assertEqual(english.one, english._valueForUnicode('one'))
+        self.assertEqual(None, english._valueForUnicode('no such element'))
+        self.assertEqual(english.bd, english._valueForUnicode('b@d'))
 
     def testProcessing (self):
         v = CreateFromDocument('<eng>one</eng>')
         self.assertEqual(english.one, v)
         v = CreateFromDocument('<pow>8</pow>')
         self.assertEqual(po2._elementForValue(8).value(), v)
-        self.assertEqual(v, po2._valueForUnicode(u'8'))
+        self.assertEqual(v, po2._valueForUnicode('8'))
 
     def testDirect (self):
         v = po2(8)
         self.assertEqual(po2._elementForValue(8).value(), v)
         self.assertTrue(isinstance(v, po2))
-        v = po2(u'8')
+        v = po2('8')
         self.assertEqual(po2._elementForValue(8).value(), v)
         self.assertTrue(isinstance(v, po2))
         self.assertRaises(SimpleFacetValueError, po2, 9)
 
-        v = english(u'b@d')
+        v = english('b@d')
         self.assertEqual(english.bd, v)
-        self.assertRaises(SimpleFacetValueError, eng, u'bd')
+        self.assertRaises(SimpleFacetValueError, eng, 'bd')
 
     def testLegacy (self):
-        self.assertEqual(english.one, english._CF_enumeration.elementForValue(u'one').value())
+        self.assertEqual(english.one, english._CF_enumeration.elementForValue('one').value())
 
     def testElementForValue (self):
-        e1 = english._elementForValue(u'one')
+        e1 = english._elementForValue('one')
         self.assertEqual(english.one, e1.value())
         self.assertEqual('one', e1.tag())
-        self.assertRaises(KeyError, english._elementForValue, u'no such value')
-        ev = english._elementForValue(u'b@d')
+        self.assertRaises(KeyError, english._elementForValue, 'no such value')
+        ev = english._elementForValue('b@d')
         self.assertEqual(english.bd, ev.value())
 
         v2 = po2._elementForValue(2)
         self.assertEqual(2, v2.value())
         self.assertIsNone(v2.tag())
-        self.assertRaises(KeyError, po2._elementForValue, u'2')
+        self.assertRaises(KeyError, po2._elementForValue, '2')
 
 if __name__ == '__main__':
     unittest.main()

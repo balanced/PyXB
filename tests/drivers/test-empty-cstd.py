@@ -30,7 +30,7 @@ class TestEmptyCSTD (unittest.TestCase):
     def testWhitespace (self):
         xmls = '<time xmlns="urn:test">   </time>'
         instance = CreateFromDocument(xmls)
-        self.assertEqual(u'', instance.value())
+        self.assertEqual('', instance.value())
     def testEmpty (self):
         xmls = '<time xmlns="urn:test"/>'
         instance = CreateFromDocument(xmls)

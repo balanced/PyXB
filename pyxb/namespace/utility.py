@@ -29,7 +29,7 @@ def NamespaceInstance (namespace):
     future."""
     if isinstance(namespace, pyxb.namespace.Namespace):
         return namespace
-    if isinstance(namespace, basestring):
+    if isinstance(namespace, str):
         return NamespaceForURI(namespace, True)
     raise pyxb.LogicError('Cannot identify namespace from value of type %s' % (type(namespace),))
 
@@ -48,7 +48,7 @@ def NamespaceForURI (uri, create_if_missing=False):
     @rtype: L{Namespace} or C{None}
     @raise pyxb.LogicError: The uri is not a non-empty string
     """
-    if not isinstance(uri, (str, unicode)):
+    if not isinstance(uri, str):
         raise pyxb.LogicError('Cannot lookup absent namespaces')
     if 0 == len(uri):
         raise pyxb.LogicError('Namespace URIs must not be empty strings')

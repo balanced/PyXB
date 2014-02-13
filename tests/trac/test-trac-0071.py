@@ -78,7 +78,7 @@ class TestTrac_0071 (unittest.TestCase):
         self.assertEqual(1, len(field.value_))
         self.assertTrue(isinstance(field.value_[0], value_type))
         field.validateBinding()
-        xmlt = u'<field><name>title</name><value lang="ENG">foo</value></field>'
+        xmlt = '<field><name>title</name><value lang="ENG">foo</value></field>'
         xmld = xmlt.encode('utf-8')
         self.assertEqual(field.toxml("utf-8", root_only=True), xmld)
 
@@ -93,7 +93,7 @@ class TestTrac_0071 (unittest.TestCase):
         self.assertTrue(isinstance(field.value_[0], value_type))
         field.validateBinding()
         self.assertTrue(isinstance(field.value_[0], value_type))
-        xmlt = u'<field><name>title</name><value lang="ENG">foo</value></field>'
+        xmlt = '<field><name>title</name><value lang="ENG">foo</value></field>'
         xmld = xmlt.encode('utf-8')
         self.assertEqual(field.toxml("utf-8", root_only=True), xmld)
 

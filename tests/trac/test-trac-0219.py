@@ -33,7 +33,7 @@ import unittest
 
 class TestTrac0219 (unittest.TestCase):
     def testElement (self):
-        xmlt = u'<anything><text>eltcontent</text></anything>'
+        xmlt = '<anything><text>eltcontent</text></anything>'
         instance = CreateFromDocument(xmlt)
         self.assertEqual(1, len(instance.wildcardElements()))
         oc = instance.orderedContent()
@@ -42,12 +42,12 @@ class TestTrac0219 (unittest.TestCase):
         i = anything()
         i.append(text('eltcontent'))
         i.validateBinding()
-        xmlt = u'<anything><text>eltcontent</text></anything>'
+        xmlt = '<anything><text>eltcontent</text></anything>'
         xmld = xmlt.encode('utf-8')
         self.assertEqual(xmld, i.toxml('utf-8', root_only=True))
 
     def testMixedOnly (self):
-        xmlt = u'<anything>mixed</anything>'
+        xmlt = '<anything>mixed</anything>'
         instance = CreateFromDocument(xmlt)
         self.assertEqual(0, len(instance.wildcardElements()))
         oc = instance.orderedContent()
@@ -56,7 +56,7 @@ class TestTrac0219 (unittest.TestCase):
         i = anything()
         i.append('mixed')
         i.validateBinding()
-        xmlt = u'<anything>mixed</anything>'
+        xmlt = '<anything>mixed</anything>'
         xmld = xmlt.encode('utf-8')
         self.assertEqual(xmld, i.toxml('utf-8', root_only=True))
 

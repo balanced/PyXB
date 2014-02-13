@@ -195,11 +195,11 @@ class ReferenceEnumerationMember (ReferenceLiteral):
 
 def pythonLiteral (value, **kw):
     # For dictionaries, apply translation to all values (not keys)
-    if isinstance(value, types.DictionaryType):
-        return ', '.join([ '%s=%s' % (k, pythonLiteral(v, **kw)) for (k, v) in value.iteritems() ])
+    if isinstance(value, dict):
+        return ', '.join([ '%s=%s' % (k, pythonLiteral(v, **kw)) for (k, v) in value.items() ])
 
     # For lists, apply translation to all members
-    if isinstance(value, types.ListType):
+    if isinstance(value, list):
         return [ pythonLiteral(_v, **kw) for _v in value ]
 
     # ExpandedName is a tuple, but not here
@@ -207,7 +207,7 @@ def pythonLiteral (value, **kw):
         return pythonLiteral(ReferenceExpandedName(expanded_name=value, **kw))
 
     # For other collection types, do what you do for list
-    if isinstance(value, (types.TupleType, set)):
+    if isinstance(value, (tuple, set)):
         return type(value)(pythonLiteral(list(value), **kw))
 
     # Value is a binding value for which there should be an
@@ -231,7 +231,7 @@ def pythonLiteral (value, **kw):
             return PrefixModule(value)
 
     # String instances go out as their representation
-    if isinstance(value, types.StringTypes):
+    if isinstance(value, str):
         return utility.QuotedEscaped(value,)
 
     if isinstance(value, facets.Facet):
@@ -262,7 +262,7 @@ def pythonLiteral (value, **kw):
         return repr(value.uri())
 
     # Standard Python types
-    if isinstance(value, (types.NoneType, types.BooleanType, types.FloatType, types.IntType, types.LongType)):
+    if isinstance(value, (type(None), bool, float, int)):
         return repr(value)
 
     raise Exception('Unexpected literal type %s' % (type(value),))
@@ -302,7 +302,7 @@ def %{name} ():
         if st is not None:
             ssk = stateSortKey(st)
         keys = [ ssk ]
-        keys.extend(map(updateInstructionSortKey, sorted(xit.updateInstructions, key=updateInstructionSortKey)))
+        keys.extend(list(map(updateInstructionSortKey, sorted(xit.updateInstructions, key=updateInstructionSortKey))))
         return tuple(keys)
 
     au_src.append('    counters = set()')
@@ -347,7 +347,7 @@ def %{name} ():
         for xit in sorted(st.transitionSet, key=transitionSortKey):
             au_src.append('    transitions.append(fac.Transition(%s, [' % (state_map[xit.destination],))
             sorted_ui = sorted(xit.updateInstructions, key=updateInstructionSortKey)
-            au_src.append('        %s ]))' % (',\n        '.join(map(lambda _ui: 'fac.UpdateInstruction(%s, %r)' % (counter_map[_ui.counterCondition], _ui.doIncrement), sorted_ui))))
+            au_src.append('        %s ]))' % (',\n        '.join(['fac.UpdateInstruction(%s, %r)' % (counter_map[_ui.counterCondition], _ui.doIncrement) for _ui in sorted_ui])))
         au_src.append('    %s._set_transitionSet(transitions)' % (state_map[st],))
     au_src.append('    return fac.Automaton(states, counters, %r, containing_state=%s)' % (automaton.nullable, containing_state))
     lines.extend(au_src)
@@ -373,7 +373,7 @@ def _useEnumerationTags (td):
     # Atomic types that use strings as their representation
     if (ptd.VARIETY_atomic == ptd.variety()):
         python_support = ptd.primitiveTypeDefinition().pythonSupport()
-        return issubclass(python_support, basestring)
+        return issubclass(python_support, str)
     # Derivations from anySimpleType use strings too
     if (ptd.VARIETY_absent == ptd.variety()):
         return True
@@ -389,7 +389,7 @@ def GenerateFacets (td, generator, **kw):
     outf = binding_module.bindingIO()
     facet_instances = []
     gen_enum_tag = _useEnumerationTags(td)
-    for (fc, fi) in td.facets().iteritems():
+    for (fc, fi) in td.facets().items():
         #if (fi is None) or (fi.ownerTypeDefinition() != td):
         #    continue
         if (fi is None) and (fc in td.baseTypeDefinition().facets()):
@@ -414,7 +414,7 @@ def GenerateFacets (td, generator, **kw):
         outf.write("%s = %s(%s)\n" % binding_module.literal( (facet_var, fc, argset ), **kw))
         facet_instances.append(binding_module.literal(facet_var, **kw))
         if (fi is not None) and is_collection:
-            for i in fi.iteritems():
+            for i in fi.items():
                 if isinstance(i, facets._EnumerationElement):
                     enum_config = '%s.addEnumeration(unicode_value=%s, tag=%s)' % binding_module.literal( ( facet_var, i.unicodeValue(), i.tag() ), **kw)
                     if gen_enum_tag and (i.tag() is not None):
@@ -439,7 +439,7 @@ def GenerateFacets (td, generator, **kw):
                 fi = mtd.facets().get(facets.CF_enumeration)
                 if fi is None:
                     continue
-                for i in fi.iteritems():
+                for i in fi.items():
                     assert isinstance(i, facets._EnumerationElement)
                     etd = i.enumeration().ownerTypeDefinition()
                     enum_member = ReferenceEnumerationMember(type_definition=td, facet_instance=fi, enumeration_element=i, **kw)
@@ -486,7 +486,7 @@ def GenerateSTD (std, generator):
         template_map['superclasses'] = ', '.join(parent_classes)
     template_map['expanded_name'] = binding_module.literal(std.expandedName(), **kw)
     if std.expandedName() is not None:
-        template_map['qname'] = unicode(std.expandedName())
+        template_map['qname'] = str(std.expandedName())
     else:
         template_map['qname'] = '[anonymous]'
     template_map['namespaceReference'] = binding_module.literal(std.bindingNamespace(), **kw)
@@ -556,7 +556,7 @@ class %{std} (pyxb.binding.basis.STD_union):
 
 def elementDeclarationMap (ed, binding_module, **kw):
     template_map = { }
-    template_map['qname'] = unicode(ed.expandedName())
+    template_map['qname'] = str(ed.expandedName())
     template_map['decl_location'] = repr(ed._location())
     template_map['namespaceReference'] = binding_module.literal(ed.bindingNamespace(), **kw)
     if (ed.SCOPE_global == ed.scope()):
@@ -568,7 +568,7 @@ def elementDeclarationMap (ed, binding_module, **kw):
     else:
         template_map['scope'] = binding_module.literal(ed.scope(), **kw)
     if ed.annotation() is not None:
-        template_map['documentation'] = binding_module.literal(unicode(ed.annotation()))
+        template_map['documentation'] = binding_module.literal(str(ed.annotation()))
     if ed.abstract():
         template_map['abstract'] = binding_module.literal(ed.abstract(), **kw)
     if ed.nillable():
@@ -664,7 +664,7 @@ def BuildTermTree (node):
                     # is not worth the pain.  Create a "symbol" for the
                     # state and hold the alternatives in it.
                     assert node.C_ALL == node.compositor()
-                    assert functools.reduce(operator.and_, map(lambda _s: isinstance(_s, pyxb.utils.fac.Node), terms), True)
+                    assert functools.reduce(operator.and_, [isinstance(_s, pyxb.utils.fac.Node) for _s in terms], True)
                     term = pyxb.utils.fac.All(*terms, metadata=node)
             siblings.append(term)
 
@@ -860,7 +860,7 @@ def GenerateCTD (ctd, generator, **kw):
     template_map['namespaceReference'] = binding_module.literal(ctd.bindingNamespace(), **kw)
     template_map['expanded_name'] = binding_module.literal(ctd.expandedName(), **kw)
     if ctd.expandedName() is not None:
-        template_map['qname'] = unicode(ctd.expandedName())
+        template_map['qname'] = str(ctd.expandedName())
     else:
         template_map['qname'] = '[anonymous]'
     template_map['xsd_location'] = repr(ctd._location())
@@ -955,12 +955,12 @@ class %{ctd} (%{superclass}):
                     ef_map['aux_init'] = ', ' + ', '.join(aux_init)
                 ef_map['element_binding'] = utility.PrepareIdentifier('%s_elt' % (ef_map['id'],), class_unique, class_keywords, private=True)
                 if ed.annotation() is not None:
-                    ef_map['documentation'] = binding_module.literal(unicode(ed.annotation()))
+                    ef_map['documentation'] = binding_module.literal(str(ed.annotation()))
                 else:
                     ef_map['documentation'] = binding_module.literal(None)
             if ed.scope() != ctd:
                 definitions.append(templates.replaceInText('''
-    # Element %{id} (%{qname}) inherited from %{decl_type_en}''', decl_type_en=unicode(ed.scope().expandedName()), **ef_map))
+    # Element %{id} (%{qname}) inherited from %{decl_type_en}''', decl_type_en=str(ed.scope().expandedName()), **ef_map))
                 continue
 
             binding_module.importForDeclaration(ed)
@@ -1003,7 +1003,7 @@ class %{ctd} (%{superclass}):
         au_map = ad._templateMap()
         if ad.scope() != ctd:
             definitions.append(templates.replaceInText('''
-    # Attribute %{id} inherited from %{decl_type_en}''', decl_type_en=unicode(ad.scope().expandedName()), **au_map))
+    # Attribute %{id} inherited from %{decl_type_en}''', decl_type_en=str(ad.scope().expandedName()), **au_map))
             continue
         assert isinstance(au_map, dict)
         aur = au
@@ -1034,7 +1034,7 @@ class %{ctd} (%{superclass}):
             aux_init.insert(0, '')
             au_map['aux_init'] = ', '.join(aux_init)
         if ad.annotation() is not None:
-            au_map['documentation'] = binding_module.literal(unicode(ad.annotation()))
+            au_map['documentation'] = binding_module.literal(str(ad.annotation()))
         else:
             au_map['documentation'] = binding_module.literal(None)
 
@@ -1104,7 +1104,7 @@ def _PrepareSimpleTypeDefinition (std, generator, nsm, module_context):
     if _useEnumerationTags(std):
         enum_facet = std.facets().get(pyxb.binding.facets.CF_enumeration)
         if (enum_facet is not None) and (std == enum_facet.ownerTypeDefinition()):
-            for ei in enum_facet.iteritems():
+            for ei in enum_facet.items():
                 assert ei.tag() is None, '%s already has a tag' % (ei,)
                 ei._setTag(utility.PrepareIdentifier(ei.unicodeValue(), nsm.uniqueInClass(std)))
 
@@ -1128,9 +1128,9 @@ def _SetNameWithAccessors (component, container, is_plural, binding_module, nsm,
     assert component._scope() == container
     assert component.nameInBinding() is None, 'Use %s but binding name %s for %s' % (use_map['use'], component.nameInBinding(), component.expandedName())
     component.setNameInBinding(use_map['use'])
-    key_name = u'%s_%s_%s' % (unicode(nsm.namespace()), container.nameInBinding(), component.expandedName())
+    key_name = '%s_%s_%s' % (str(nsm.namespace()), container.nameInBinding(), component.expandedName())
     use_map['key'] = utility.PrepareIdentifier(key_name, class_unique, private=True)
-    use_map['qname'] = unicode(component.expandedName())
+    use_map['qname'] = str(component.expandedName())
     if isinstance(component, xs.structures.ElementDeclaration) and is_plural:
         use_map['appender'] = utility.PrepareIdentifier('add' + unique_name[0].upper() + unique_name[1:], class_unique)
     return use_map
@@ -1319,7 +1319,7 @@ class _ModuleNaming_mixin (object):
     def moduleContents (self):
         template_map = {}
         aux_imports = []
-        for (mr, as_path) in self.__importModulePathMap.iteritems():
+        for (mr, as_path) in self.__importModulePathMap.items():
             assert self != mr
             if as_path is not None:
                 aux_imports.append('import %s as %s' % (mr.modulePath(), as_path))
@@ -1466,7 +1466,7 @@ class _ModuleNaming_mixin (object):
                 else:
                     nsn = 'Namespace'
                 nsdef = None
-                for im in self.__importModulePathMap.iterkeys():
+                for im in self.__importModulePathMap.keys():
                     if isinstance(im, pyxb.namespace.archive.ModuleRecord):
                         if im.namespace() == namespace:
                             nsdef = self.pathFromImport(im, 'Namespace')
@@ -1591,7 +1591,7 @@ class NamespaceModule (_ModuleNaming_mixin):
     def _moduleUID_vx (self):
         if self.namespace().isAbsentNamespace():
             return 'Absent'
-        return unicode(self.namespace())
+        return str(self.namespace())
 
     def namespaceGroupMulti (self):
         return 1 < len(self.__namespaceGroup)
@@ -1776,9 +1776,9 @@ _GenerationUID = %{generation_uid_expr}
             if ns.isAbsentNamespace():
                 nss.append('Absent')
             else:
-                nss.append(unicode(ns))
+                nss.append(str(ns))
         nss.sort()
-        return u';'.join(nss)
+        return ';'.join(nss)
 
     def __str__ (self):
         return 'NGM:%s' % (self.modulePath(),)
@@ -1797,7 +1797,7 @@ def GeneratePython (schema_location=None,
         generator.addSchema(schema_text)
     modules = generator.bindingModules()
 
-    assert 1 == len(modules), '%s produced %d modules: %s' % (namespace, len(modules), u" ".join([ unicode(_m) for _m in modules]))
+    assert 1 == len(modules), '%s produced %d modules: %s' % (namespace, len(modules), " ".join([ str(_m) for _m in modules]))
     return modules.pop().moduleContents()
 
 import optparse
@@ -1817,7 +1817,7 @@ class Generator (object):
     __bindingRoot = None
 
     def __moduleFilePath (self, module_elts, inhibit_extension=False):
-        if isinstance(module_elts, basestring):
+        if isinstance(module_elts, str):
             module_elts = module_elts.split('.')
         else:
             module_elts = module_elts[:]
@@ -2653,7 +2653,7 @@ from %s import *
         # Assign Python modules to hold bindings for the schema we're
         # processing.
         for schema in self.__schemas:
-            if isinstance(schema, basestring):
+            if isinstance(schema, str):
                 schema = xs.schema.CreateFromDocument(schema, generation_uid=self.generationUID())
             origin = schema.originRecord()
             assert origin is not None

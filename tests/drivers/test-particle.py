@@ -23,13 +23,13 @@ def ToDOM (instance, tag=None):
 
 class TestParticle (unittest.TestCase):
     def test_bad_creation (self):
-        xmlt = u'<h01 xmlns="URN:test"/>'
+        xmlt = '<h01 xmlns="URN:test"/>'
         dom = pyxb.utils.domutils.StringToDOM(xmlt)
         # Creating with wrong element
         self.assertRaises(pyxb.StructuralBadDocumentError, h01b.createFromDOM, dom.documentElement)
 
     def test_h01_empty (self):
-        xmlt = u'<ns1:h01 xmlns:ns1="URN:test"/>'
+        xmlt = '<ns1:h01 xmlns:ns1="URN:test"/>'
         xmld = xmlt.encode('utf-8')
         dom = pyxb.utils.domutils.StringToDOM(xmlt)
         instance = h01.createFromDOM(dom.documentElement)
@@ -37,7 +37,7 @@ class TestParticle (unittest.TestCase):
         self.assertEqual(ToDOM(instance).toxml("utf-8"), xmld)
 
     def test_h01_elt (self):
-        xmlt = u'<ns1:h01 xmlns:ns1="URN:test"><elt/></ns1:h01>'
+        xmlt = '<ns1:h01 xmlns:ns1="URN:test"><elt/></ns1:h01>'
         xmld = xmlt.encode('utf-8')
         dom = pyxb.utils.domutils.StringToDOM(xmlt)
         instance = h01.createFromDOM(dom.documentElement)
@@ -45,12 +45,12 @@ class TestParticle (unittest.TestCase):
         self.assertEqual(ToDOM(instance).toxml("utf-8"), xmld)
 
     def test_h01_elt2 (self):
-        xmlt = u'<h01 xmlns="URN:test"><elt/><elt/></h01>'
+        xmlt = '<h01 xmlns="URN:test"><elt/><elt/></h01>'
         dom = pyxb.utils.domutils.StringToDOM(xmlt)
         self.assertRaises(UnrecognizedContentError, h01.createFromDOM, dom.documentElement)
 
     def test_h01b_empty (self):
-        xmlt = u'<ns1:h01b xmlns:ns1="URN:test"/>'
+        xmlt = '<ns1:h01b xmlns:ns1="URN:test"/>'
         xmld = xmlt.encode('utf-8')
         dom = pyxb.utils.domutils.StringToDOM(xmlt)
         instance = h01b.createFromDOM(dom.documentElement)
@@ -58,7 +58,7 @@ class TestParticle (unittest.TestCase):
         self.assertEqual(ToDOM(instance).toxml("utf-8"), xmld)
 
     def test_h01b_elt (self):
-        xmlt = u'<ns1:h01b xmlns:ns1="URN:test"><elt/></ns1:h01b>'
+        xmlt = '<ns1:h01b xmlns:ns1="URN:test"><elt/></ns1:h01b>'
         xmld = xmlt.encode('utf-8')
         dom = pyxb.utils.domutils.StringToDOM(xmlt)
         instance = h01b.createFromDOM(dom.documentElement)
@@ -66,17 +66,17 @@ class TestParticle (unittest.TestCase):
         self.assertEqual(ToDOM(instance).toxml("utf-8"), xmld)
 
     def test_h01b_elt2 (self):
-        xmlt = u'<ns1:h01b xmlns:ns1="URN:test"><elt/><elt/></ns1:h01b>'
+        xmlt = '<ns1:h01b xmlns:ns1="URN:test"><elt/><elt/></ns1:h01b>'
         dom = pyxb.utils.domutils.StringToDOM(xmlt)
         self.assertRaises(UnrecognizedContentError, h01b.createFromDOM, dom.documentElement)
 
     def test_h11_empty (self):
-        xmlt = u'<ns1:h11 xmlns:ns1="URN:test"/>'
+        xmlt = '<ns1:h11 xmlns:ns1="URN:test"/>'
         dom = pyxb.utils.domutils.StringToDOM(xmlt)
         self.assertRaises(IncompleteElementContentError, h11.createFromDOM, dom.documentElement)
 
     def test_h11_elt (self):
-        xmlt = u'<ns1:h11 xmlns:ns1="URN:test"><elt/></ns1:h11>'
+        xmlt = '<ns1:h11 xmlns:ns1="URN:test"><elt/></ns1:h11>'
         xmld = xmlt.encode('utf-8')
         dom = pyxb.utils.domutils.StringToDOM(xmlt)
         instance = h11.createFromDOM(dom.documentElement)
@@ -84,12 +84,12 @@ class TestParticle (unittest.TestCase):
         self.assertEqual(ToDOM(instance).toxml("utf-8"), xmld)
 
     def test_h24 (self):
-        xmlt = u'<h24 xmlns="URN:test"></h24>'
+        xmlt = '<h24 xmlns="URN:test"></h24>'
         dom = pyxb.utils.domutils.StringToDOM(xmlt)
         self.assertRaises(IncompleteElementContentError, h24.createFromDOM, dom.documentElement)
 
         for num_elt in range(0, 5):
-            xmlt = u'<ns1:h24 xmlns:ns1="URN:test">%s</ns1:h24>' % (''.join(num_elt * ['<elt/>']),)
+            xmlt = '<ns1:h24 xmlns:ns1="URN:test">%s</ns1:h24>' % (''.join(num_elt * ['<elt/>']),)
             dom = pyxb.utils.domutils.StringToDOM(xmlt)
             if 2 > num_elt:
                 self.assertRaises(IncompleteElementContentError, h24.createFromDOM, dom.documentElement)
@@ -102,12 +102,12 @@ class TestParticle (unittest.TestCase):
                 self.assertRaises(UnrecognizedContentError, h24.createFromDOM, dom.documentElement)
 
     def test_h24b (self):
-        xmlt = u'<ns1:h24b xmlns:ns1="URN:test"></ns1:h24b>'
+        xmlt = '<ns1:h24b xmlns:ns1="URN:test"></ns1:h24b>'
         dom = pyxb.utils.domutils.StringToDOM(xmlt)
         self.assertRaises(IncompleteElementContentError, h24b.createFromDOM, dom.documentElement)
 
         for num_elt in range(0, 5):
-            xmlt = u'<ns1:h24b xmlns:ns1="URN:test">%s</ns1:h24b>' % (''.join(num_elt * ['<elt/>']),)
+            xmlt = '<ns1:h24b xmlns:ns1="URN:test">%s</ns1:h24b>' % (''.join(num_elt * ['<elt/>']),)
             dom = pyxb.utils.domutils.StringToDOM(xmlt)
             if 2 > num_elt:
                 self.assertRaises(IncompleteElementContentError, h24b.createFromDOM, dom.documentElement)

@@ -28,28 +28,28 @@ underlying Python type.
 # read this module.  Hurrah for eliminating relative imports!
 import types
 
-IntType = types.IntType
+IntType = int
 """The type underlying C{int}."""
 
-LongType = types.LongType
+LongType = int
 """The type underlying C{long} (for Python 2).  Same as L{IntType} in Python 3."""
 
-FloatType = types.FloatType
+FloatType = float
 """The type underlying C{float}"""
 
-StringTypes = types.StringTypes
+StringTypes = str
 """The type underlying generic text types.  This changes from Python 2 (C{basestr}) to Python 3 (C{str})."""
 
-BooleanType = types.BooleanType
+BooleanType = bool
 """The type underlying C{bool}"""
 
-ListType = types.ListType
+ListType = list
 """The type underlying C{list}"""
 
-TextType = types.UnicodeType    #!python3!
+TextType = str    #!python3!
 #python3:TextType = str
 """The type used to represent text in either Python 2 (C{unicode}) or Python 3 (C{str})."""
 
-DataType = types.StringType     #!python3!
+DataType = bytes     #!python3!
 #python3:DataType = bytes
 """The type used to represent data (8-bit) in either Python 2 (C{str}) or Python 3 (C{bytes})."""

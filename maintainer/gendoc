@@ -132,15 +132,15 @@ class OptionGroupDocumentation:
 
         return "\n".join(rv)
 
-print '.. _%s-cli:' % (program,)
-print
+print('.. _%s-cli:' % (program,))
+print()
 title = "``%s`` Command Line Options" % (program,)
-print title
-print '=' * len(title)
+print(title)
+print('=' * len(title))
 
-print OptionGroupDocumentation(option_list=parser.option_list, title='Generic Options', underscore='-', sub_underscore='^', description='')
+print(OptionGroupDocumentation(option_list=parser.option_list, title='Generic Options', underscore='-', sub_underscore='^', description=''))
 for g in parser.option_groups:
-    print OptionGroupDocumentation(group=g, underscore='-', sub_underscore='^')
+    print(OptionGroupDocumentation(group=g, underscore='-', sub_underscore='^'))
     
 # LocalVariables:
 # mode:python

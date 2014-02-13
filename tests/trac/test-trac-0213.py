@@ -35,7 +35,7 @@ class TestTrac0213 (unittest.TestCase):
     def testMissingContent (self):
         import copy
 
-        xmlt = u'<Int units="m">32</Int>'
+        xmlt = '<Int units="m">32</Int>'
         xmld = xmlt.encode('utf-8')
         instance = CreateFromDocument(xmlt)
         self.assertEqual(instance.toxml('utf-8', root_only=True), xmld)

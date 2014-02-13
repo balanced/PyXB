@@ -51,7 +51,7 @@ class PyXBException (Exception):
 
     #!python3>!
     def _str_from_unicode (self):
-        return unicode(self).encode(pyxb._OutputEncoding)
+        return str(self).encode(pyxb._OutputEncoding)
     #!python3<!
 
 class PyXBVersionError (PyXBException):
@@ -75,7 +75,7 @@ class UnboundElementError (DOMGenerationError):
         self.instance = instance
 
     def __unicode__ (self):
-        return u'Instance of type %s has no bound element for start tag' % (self.instance._diagnosticName(),)
+        return 'Instance of type %s has no bound element for start tag' % (self.instance._diagnosticName(),)
     __str__ = PyXBException._str_from_unicode
 
 class SchemaValidationError (PyXBException):
@@ -161,7 +161,7 @@ class StructuralBadDocumentError (BadDocumentError):
             elif self.__elementUse is not None:
                 kw.setdefault('message', '%s not consistent with content model for %s' % (self.__content, self.__elementUse))
             else:
-                kw.setdefault('message', unicode(self.__content))
+                kw.setdefault('message', str(self.__content))
         BadDocumentError.__init__(self, **kw)
 
 class UnrecognizedDOMRootNodeError (StructuralBadDocumentError):
@@ -206,7 +206,7 @@ class ValidationError (PyXBException):
         original schema.
 
         @return: a string description of validation failure"""
-        return unicode(self)
+        return str(self)
 
 class NonElementValidationError (ValidationError):
     """Raised when an element (or a value bound to an element) appears
@@ -241,16 +241,16 @@ class NonElementValidationError (ValidationError):
             if isinstance(self.element, pyxb.binding.basis.simpleTypeDefinition):
                 value = self.element.xsdLiteral()
             elif self.element._IsSimpleTypeContent():
-                value = unicode(self.element.value())
+                value = str(self.element.value())
             else:
                 value = 'Complex value'
         elif isinstance(self.element, xml.dom.Node):
             value = 'DOM node %s' % (self.element.nodeName,)
         else:
-            value = '%s type %s' % (unicode(self.element), type(self.element))
+            value = '%s type %s' % (str(self.element), type(self.element))
         if self.location is not None:
             location = ' at %s' % (self.location,)
-        return u'%s%s not permitted%s' % (value, boundto, location)
+        return '%s%s not permitted%s' % (value, boundto, location)
     __str__ = PyXBException._str_from_unicode
 
 class ElementValidationError (ValidationError):
@@ -291,7 +291,7 @@ class AbstractElementError (ElementValidationError):
         super(AbstractElementError, self).__init__(element, location, value)
 
     def __unicode__ (self):
-        return u'Cannot instantiate abstract element %s directly' % (self.element.name(),)
+        return 'Cannot instantiate abstract element %s directly' % (self.element.name(),)
     __str__ = PyXBException._str_from_unicode
 
 class ContentInNilInstanceError (ElementValidationError):
@@ -317,7 +317,7 @@ class ContentInNilInstanceError (ElementValidationError):
 
     def __unicode__ (self):
         from pyxb.namespace.builtin import XMLSchema_instance as XSI
-        return u'%s with %s=true cannot have content' % (self.instance._diagnosticName(), XSI.nil)
+        return '%s with %s=true cannot have content' % (self.instance._diagnosticName(), XSI.nil)
     __str__ = PyXBException._str_from_unicode
 
 class NoNillableSupportError (ElementValidationError):
@@ -358,7 +358,7 @@ class ElementChangeError (ElementValidationError):
         super(ElementChangeError, self).__init__(element, value, location)
 
     def __unicode__ (self):
-        return u'Value %s for element %s incompatible with fixed content' % (self.value, self.element.name())
+        return 'Value %s for element %s incompatible with fixed content' % (self.value, self.element.name())
     __str__ = PyXBException._str_from_unicode
 
 class ComplexTypeValidationError (ValidationError):
@@ -397,7 +397,7 @@ class AbstractInstantiationError (ComplexTypeValidationError):
 
     def __unicode__ (self):
         # If the type is abstract, it has to have a name.
-        return u'Cannot instantiate abstract type %s directly' % (self.type._ExpandedName,)
+        return 'Cannot instantiate abstract type %s directly' % (self.type._ExpandedName,)
     __str__ = PyXBException._str_from_unicode
 
 class AttributeOnSimpleTypeError (ComplexTypeValidationError):
@@ -430,7 +430,7 @@ class AttributeOnSimpleTypeError (ComplexTypeValidationError):
         super(AttributeOnSimpleTypeError, self).__init__(instance, tag, value, location)
 
     def __unicode__ (self):
-        return u'Simple type %s cannot support attribute %s' % (self.instance._Name(), self.tag)
+        return 'Simple type %s cannot support attribute %s' % (self.instance._Name(), self.tag)
     __str__ = PyXBException._str_from_unicode
 
 class ContentValidationError (ComplexTypeValidationError):
@@ -451,7 +451,7 @@ class SimpleContentAbsentError (ContentValidationError):
         super(SimpleContentAbsentError, self).__init__(instance, location)
 
     def __unicode__ (self):
-        return u'Type %s requires content' % (self.instance._Name(),)
+        return 'Type %s requires content' % (self.instance._Name(),)
     __str__ = PyXBException._str_from_unicode
 
 class ExtraSimpleContentError (ContentValidationError):
@@ -473,7 +473,7 @@ class ExtraSimpleContentError (ContentValidationError):
         super(ExtraSimpleContentError, self).__init__(instance, value, location)
 
     def __unicode__ (self):
-        return u'Instance of %s already has simple content value assigned' % (self.instance._Name(),)
+        return 'Instance of %s already has simple content value assigned' % (self.instance._Name(),)
     __str__ = PyXBException._str_from_unicode
 
 class NonPluralAppendError (ContentValidationError):
@@ -498,7 +498,7 @@ class NonPluralAppendError (ContentValidationError):
         super(NonPluralAppendError, self).__init__(instance, element_declaration, value)
 
     def __unicode__ (self):
-        return u'Instance of %s cannot append to element %s' % (self.instance._Name(), self.element_declaration.name())
+        return 'Instance of %s cannot append to element %s' % (self.instance._Name(), self.element_declaration.name())
     __str__ = PyXBException._str_from_unicode
 
 class MixedContentError (ContentValidationError):
@@ -521,8 +521,8 @@ class MixedContentError (ContentValidationError):
 
     def __unicode__ (self):
         if self.location is not None:
-            return u'Invalid non-element content at %s' % (self.location,)
-        return u'Invalid non-element content'
+            return 'Invalid non-element content at %s' % (self.location,)
+        return 'Invalid non-element content'
     __str__ = PyXBException._str_from_unicode
 
 class UnprocessedKeywordContentError (ContentValidationError):
@@ -546,7 +546,7 @@ class UnprocessedKeywordContentError (ContentValidationError):
         super(UnprocessedKeywordContentError, self).__init__(instance, keywords, location)
 
     def __unicode__ (self):
-        return u'Unprocessed keywords instantiating %s: %s' % (self.instance._Name(), ' '.join(self.keywords.iterkeys()))
+        return 'Unprocessed keywords instantiating %s: %s' % (self.instance._Name(), ' '.join(iter(self.keywords.keys())))
     __str__ = PyXBException._str_from_unicode
 
 class IncrementalElementContentError (ContentValidationError):
@@ -583,7 +583,7 @@ class IncrementalElementContentError (ContentValidationError):
             return self.value._diagnosticName()
         if isinstance(self.value, xml.dom.Node):
             return self.value.nodeName
-        return unicode(self.value)
+        return str(self.value)
 
 class UnrecognizedContentError (IncrementalElementContentError):
     """Element or element-like content could not be validly associated with an sub-element in the content model.
@@ -601,7 +601,7 @@ class UnrecognizedContentError (IncrementalElementContentError):
             names = []
             for u in acceptable:
                 if isinstance(u, pyxb.binding.content.ElementUse):
-                    n = unicode(u.elementBinding().name())
+                    n = str(u.elementBinding().name())
                 else:
                     assert isinstance(u, pyxb.binding.content.WildcardUse)
                     n = 'xs:any'
@@ -612,7 +612,7 @@ class UnrecognizedContentError (IncrementalElementContentError):
         location = ''
         if self.location is not None:
             location = ' at %s' % (self.location,)
-        return u'Invalid content %s%s (expect %s)' % (value, location, expect)
+        return 'Invalid content %s%s (expect %s)' % (value, location, expect)
     __str__ = PyXBException._str_from_unicode
 
     def details (self):
@@ -622,7 +622,7 @@ class UnrecognizedContentError (IncrementalElementContentError):
         rv = [ ]
         if i._element() is not None:
             rv.append('The containing element %s is defined at %s.' % (i._element().name(), i._element().xsdLocation()))
-        rv.append('The containing element type %s is defined at %s' % (self.instance._Name(), unicode(self.instance._XSDLocation)))
+        rv.append('The containing element type %s is defined at %s' % (self.instance._Name(), str(self.instance._XSDLocation)))
         if self.location is not None:
             rv.append('The unrecognized content %s begins at %s' % (self._valueDescription(), self.location))
         else:
@@ -681,7 +681,7 @@ class BatchElementContentError (ContentValidationError):
         rv = [ ]
         if i._element() is not None:
             rv.append('The containing element %s is defined at %s.' % (i._element().name(), i._element().xsdLocation()))
-        rv.append('The containing element type %s is defined at %s' % (self.instance._Name(), unicode(self.instance._XSDLocation)))
+        rv.append('The containing element type %s is defined at %s' % (self.instance._Name(), str(self.instance._XSDLocation)))
         rv.append('The %s automaton %s in an accepting state.' % (self.instance._Name(), self.fac_configuration.isAccepting() and "is" or "is not"))
         if self.symbols is None:
             rv.append('Any accepted content has been stored in instance')
@@ -709,7 +709,7 @@ class BatchElementContentError (ContentValidationError):
         else:
             rv.append('The following content was not processed by the automaton:')
             rv2 = []
-            for (ed, syms) in self.symbol_set.iteritems():
+            for (ed, syms) in self.symbol_set.items():
                 if ed is None:
                     rv2.append('xs:any (%u instances)' % (len(syms),))
                 else:
@@ -777,7 +777,7 @@ class OrphanElementContentError (ContentValidationError):
         super(OrphanElementContentError, self).__init__(instance, preferred)
 
     def __unicode__ (self):
-        return u'Preferred content element not found in instance'
+        return 'Preferred content element not found in instance'
     __str__ = PyXBException._str_from_unicode
 
 class SimpleTypeValueError (ValidationError):
@@ -806,8 +806,8 @@ class SimpleTypeValueError (ValidationError):
     def __unicode__ (self):
         import pyxb.binding.basis
         if isinstance(self.value, pyxb.binding.basis._TypeBinding_mixin):
-            return u'Type %s cannot be created from %s: %s' % (self.type._Name(), self.value._Name(), self.value)
-        return u'Type %s cannot be created from: %s' % (self.type._Name(), self.value)
+            return 'Type %s cannot be created from %s: %s' % (self.type._Name(), self.value._Name(), self.value)
+        return 'Type %s cannot be created from: %s' % (self.type._Name(), self.value)
     __str__ = PyXBException._str_from_unicode
 
 class SimpleListValueError (SimpleTypeValueError):
@@ -818,7 +818,7 @@ class SimpleListValueError (SimpleTypeValueError):
     unacceptable."""
 
     def __unicode__ (self):
-        return u'Member type %s of list type %s cannot accept %s' % (self.type._ItemType._Name(), self.type._Name(), self.value)
+        return 'Member type %s of list type %s cannot accept %s' % (self.type._ItemType._Name(), self.type._Name(), self.value)
     __str__ = PyXBException._str_from_unicode
 
 class SimpleUnionValueError (SimpleTypeValueError):
@@ -832,7 +832,7 @@ class SimpleUnionValueError (SimpleTypeValueError):
     constructor for the union."""
 
     def __unicode__ (self):
-        return u'No memberType of %s can be constructed from %s' % (self.type._Name(), self.value)
+        return 'No memberType of %s can be constructed from %s' % (self.type._Name(), self.value)
     __str__ = PyXBException._str_from_unicode
 
 class SimpleFacetValueError (SimpleTypeValueError):
@@ -870,7 +870,7 @@ class SimpleFacetValueError (SimpleTypeValueError):
         super(SimpleTypeValueError, self).__init__(type, value, facet)
 
     def __unicode__ (self):
-        return u'Type %s %s constraint violated by value %s' % (self.type._Name(), self.facet._Name, self.value)
+        return 'Type %s %s constraint violated by value %s' % (self.type._Name(), self.facet._Name, self.value)
     __str__ = PyXBException._str_from_unicode
 
 class SimplePluralValueError (SimpleTypeValueError):
@@ -915,19 +915,19 @@ class UnrecognizedAttributeError (AttributeValidationError):
 class ProhibitedAttributeError (AttributeValidationError):
     """Raised when an attribute that is prohibited is set or referenced in an element."""
     def __unicode__ (self):
-        return u'Attempt to reference prohibited attribute %s in type %s' % (self.tag, self.type)
+        return 'Attempt to reference prohibited attribute %s in type %s' % (self.tag, self.type)
     __str__ = PyXBException._str_from_unicode
 
 class MissingAttributeError (AttributeValidationError):
     """Raised when an attribute that is required is missing in an element."""
     def __unicode__ (self):
-        return u'Instance of %s lacks required attribute %s' % (self.type, self.tag)
+        return 'Instance of %s lacks required attribute %s' % (self.type, self.tag)
     __str__ = PyXBException._str_from_unicode
 
 class AttributeChangeError (AttributeValidationError):
     """Attempt to change an attribute that has a fixed value constraint."""
     def __unicode__ (self):
-        return u'Cannot change fixed attribute %s in type %s' % (self.tag, self.type)
+        return 'Cannot change fixed attribute %s in type %s' % (self.tag, self.type)
     __str__ = PyXBException._str_from_unicode
 
 class BindingError (PyXBException):
@@ -952,7 +952,7 @@ class NotSimpleContentError (BindingError):
     pass
 
     def __unicode__ (self):
-        return u'type %s does not have simple content' % (self.instance._Name(),)
+        return 'type %s does not have simple content' % (self.instance._Name(),)
     __str__ = PyXBException._str_from_unicode
 
 class NotComplexContentError (BindingError):
@@ -969,7 +969,7 @@ class NotComplexContentError (BindingError):
         super(BindingError, self).__init__(instance)
 
     def __unicode__ (self):
-        return u'type %s has simple/empty content' % (self.instance._Name(),)
+        return 'type %s has simple/empty content' % (self.instance._Name(),)
     __str__ = PyXBException._str_from_unicode
 
 class ReservedNameError (BindingError):
@@ -989,7 +989,7 @@ class ReservedNameError (BindingError):
         super(ReservedNameError, self).__init__(instance, name)
 
     def __unicode__ (self):
-        return u'%s is a reserved name within %s' % (self.name, self.instance._Name())
+        return '%s is a reserved name within %s' % (self.name, self.instance._Name())
     __str__ = PyXBException._str_from_unicode
 
 class PyXBError (Exception):

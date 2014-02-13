@@ -1,11 +1,11 @@
-from __future__ import print_function
+
 import GeoCoder
 from pyxb import BIND
 import sys
 import pyxb.utils.domutils as domutils
 import pyxb.bundles.wssplat.soap11 as soapenv
 import pyxb.bundles.wssplat.soapenc as soapenc
-import urllib2
+import urllib.request, urllib.error, urllib.parse
 
 address = '1600 Pennsylvania Ave., Washington, DC'
 if 1 < len(sys.argv):
@@ -13,11 +13,11 @@ if 1 < len(sys.argv):
 
 env = soapenv.Envelope(Body=BIND(GeoCoder.geocode(address)))
 
-uri = urllib2.Request('http://rpc.geocoder.us/service/soap/',
+uri = urllib.request.Request('http://rpc.geocoder.us/service/soap/',
                       env.toxml("utf-8"),
                       { 'SOAPAction' : "http://rpc.geocoder.us/Geo/Coder/US#geocode", 'Content-Type': 'text/xml' } )
 
-rxml = urllib2.urlopen(uri).read()
+rxml = urllib.request.urlopen(uri).read()
 #open('response.xml', 'w').write(rxml)
 #rxml = open('response.xml').read()
 response = soapenv.CreateFromDocument(rxml)

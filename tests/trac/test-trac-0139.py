@@ -34,9 +34,9 @@ import unittest
 
 class TestTrac_0139 (unittest.TestCase):
     ascii_enc = sys.getdefaultencoding()
-    asciit = u'something'
+    asciit = 'something'
     nihongo_enc = 'iso-2022-jp'
-    nihongot = u'基盤地図情報ダウンロードデータ（GML版）'
+    nihongot = '基盤地図情報ダウンロードデータ（GML版）'
 
     def buildDocument (self, text, encoding):
         map = { 'text' : text }
@@ -44,7 +44,7 @@ class TestTrac_0139 (unittest.TestCase):
             map['encoding'] = ''
         else:
             map['encoding'] = ' encoding="%s"' % (encoding,)
-        return u'<?xml version="1.0"%(encoding)s?><text>%(text)s</text>' % map
+        return '<?xml version="1.0"%(encoding)s?><text>%(text)s</text>' % map
 
     # NOTE: Init-lower version does not exist before Python 2.7, so
     # make this non-standard and invoke it in init

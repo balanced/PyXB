@@ -17,7 +17,7 @@ class Test_hexBinary (unittest.TestCase):
             self.assertEqual(v, dd)
 
     def testStrings (self):
-        encoded_values = [ u'01', u'00', u'ab', u'Ab', u'AB12' ]
+        encoded_values = [ '01', '00', 'ab', 'Ab', 'AB12' ]
         for et in encoded_values:
             ed = et.encode('utf-8')
             v = xsd.hexBinary.Factory(ed)
@@ -27,10 +27,10 @@ class Test_hexBinary (unittest.TestCase):
             self.assertEqual(et.upper(), v.xsdLiteral())
 
     def testBadStrings (self):
-        self.assertRaises(SimpleTypeValueError, xsd.hexBinary.Factory, u'0', _from_xml=True)
-        self.assertRaises(SimpleTypeValueError, xsd.hexBinary.Factory, u'012', _from_xml=True)
-        self.assertRaises(SimpleTypeValueError, xsd.hexBinary.Factory, u'01s', _from_xml=True)
-        self.assertRaises(SimpleTypeValueError, xsd.hexBinary.Factory, u'sb', _from_xml=True)
+        self.assertRaises(SimpleTypeValueError, xsd.hexBinary.Factory, '0', _from_xml=True)
+        self.assertRaises(SimpleTypeValueError, xsd.hexBinary.Factory, '012', _from_xml=True)
+        self.assertRaises(SimpleTypeValueError, xsd.hexBinary.Factory, '01s', _from_xml=True)
+        self.assertRaises(SimpleTypeValueError, xsd.hexBinary.Factory, 'sb', _from_xml=True)
 
     def testLiteralization (self):
         self.assertEqual('', xsd.hexBinary(''.encode('utf-8')).xsdLiteral())

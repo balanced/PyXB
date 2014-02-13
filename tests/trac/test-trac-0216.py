@@ -42,15 +42,15 @@ import unittest
 class TestTrac0216 (unittest.TestCase):
 
     def testBasic (self):
-        xmlt = u'<elt>30313233</elt>'
+        xmlt = '<elt>30313233</elt>'
         xmld = xmlt.encode('utf-8')
         instance = CreateFromDocument(xmlt)
-        self.assertEqual(pyxb.utils.types_.DataType(u'0123'.encode('utf-8')), instance.value())
-        xmlt = u'<elt Color="33323130">30313233</elt>'
+        self.assertEqual(pyxb.utils.types_.DataType('0123'.encode('utf-8')), instance.value())
+        xmlt = '<elt Color="33323130">30313233</elt>'
         xmld = xmlt.encode('utf-8')
         instance = CreateFromDocument(xmlt)
-        self.assertEqual(pyxb.utils.types_.DataType(u'0123'.encode('utf-8')), instance.value())
-        self.assertEqual(pyxb.utils.types_.DataType(u'3210'.encode('utf-8')), instance.Color)
+        self.assertEqual(pyxb.utils.types_.DataType('0123'.encode('utf-8')), instance.value())
+        self.assertEqual(pyxb.utils.types_.DataType('3210'.encode('utf-8')), instance.Color)
 
 if __name__ == '__main__':
     unittest.main()

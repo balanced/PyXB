@@ -24,7 +24,7 @@ import unittest
 
 class TestSubstGroup (unittest.TestCase):
     def testISO8601 (self):
-        xmlt = u'<when><ISO8601>2009-06-15T17:50:00Z</ISO8601></when>'
+        xmlt = '<when><ISO8601>2009-06-15T17:50:00Z</ISO8601></when>'
         xmld = xmlt.encode('utf-8')
         dom = pyxb.utils.domutils.StringToDOM(xmlt)
         instance = CreateFromDOM(dom.documentElement)
@@ -39,7 +39,7 @@ class TestSubstGroup (unittest.TestCase):
         self.assertEqual(instance.toDOM().documentElement.toxml("utf-8"), xmld)
 
     def testPairTime (self):
-        xmlt = u'<when><pairTime><seconds>34.0</seconds><fractionalSeconds>0.21</fractionalSeconds></pairTime></when>'
+        xmlt = '<when><pairTime><seconds>34.0</seconds><fractionalSeconds>0.21</fractionalSeconds></pairTime></when>'
         xmld = xmlt.encode('utf-8')
         dom = pyxb.utils.domutils.StringToDOM(xmlt)
         instance = CreateFromDOM(dom.documentElement)
@@ -57,7 +57,7 @@ class TestSubstGroup (unittest.TestCase):
 
 
     def testSGTime (self):
-        xmlt = u'<when><sgTime>2009-06-15T17:50:00Z</sgTime></when>'
+        xmlt = '<when><sgTime>2009-06-15T17:50:00Z</sgTime></when>'
         xmld = xmlt.encode('utf-8')
         dom = pyxb.utils.domutils.StringToDOM(xmlt)
         self.assertRaises(pyxb.AbstractElementError, CreateFromDOM, dom.documentElement)
@@ -66,13 +66,13 @@ class TestSubstGroup (unittest.TestCase):
         handler = saxer.getContentHandler()
         self.assertRaises(pyxb.AbstractElementError, saxer.parse, io.StringIO(xmlt))
 
-        xmlt = u'<sgTime>2009-06-15T17:50:00Z</sgTime>'
+        xmlt = '<sgTime>2009-06-15T17:50:00Z</sgTime>'
         xmld = xmlt.encode('utf-8')
         dom = pyxb.utils.domutils.StringToDOM(xmlt)
         self.assertRaises(pyxb.AbstractElementError, CreateFromDOM, dom.documentElement)
         self.assertRaises(pyxb.AbstractElementError, saxer.parse, io.StringIO(xmlt))
 
-        xmlt = u'<ISO8601>2009-06-15T17:50:00Z</ISO8601>'
+        xmlt = '<ISO8601>2009-06-15T17:50:00Z</ISO8601>'
         xmld = xmlt.encode('utf-8')
         dom = pyxb.utils.domutils.StringToDOM(xmlt)
         instance = CreateFromDOM(dom.documentElement)
@@ -82,7 +82,7 @@ class TestSubstGroup (unittest.TestCase):
         self.assertEqual(instance._element(), ISO8601)
 
     def testGenAbstract (self):
-        xmlt = u'<when><pairTime><seconds>34.0</seconds><fractionalSeconds>0.21</fractionalSeconds></pairTime></when>'
+        xmlt = '<when><pairTime><seconds>34.0</seconds><fractionalSeconds>0.21</fractionalSeconds></pairTime></when>'
         xmld = xmlt.encode('utf-8')
         instance = when(pairTime(34.0, 0.21))
         self.assertEqual(instance.sgTime._element(), pairTime)

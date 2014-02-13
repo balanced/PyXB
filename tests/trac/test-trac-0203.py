@@ -8,7 +8,7 @@ import pyxb.utils.domutils
 from xml.dom import Node
 
 import os.path
-xst = u'''<?xml version="1.0" encoding="UTF-8"?>
+xst = '''<?xml version="1.0" encoding="UTF-8"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
  <xs:complexType name="XsdWithHyphens">
     <xs:sequence>
@@ -43,7 +43,7 @@ class TestTrac0203 (unittest.TestCase):
 
     def testOverride (self):
         unbound = XsdWithHyphens('name')
-        xmlt = u'<root><username>name</username></root>'
+        xmlt = '<root><username>name</username></root>'
         xmld = xmlt.encode('utf-8')
         self.assertEqual(xmld, unbound.toxml('utf-8', root_only=True, element_name='root'))
 

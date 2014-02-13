@@ -29,25 +29,25 @@ def setFull (instance, value):
 class TestXSIType (unittest.TestCase):
 
     def testFull (self):
-        xmlt = u'<full xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">content</full>'
+        xmlt = '<full xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">content</full>'
         doc = pyxb.utils.domutils.StringToDOM(xmlt)
         instance = CreateFromDOM(doc.documentElement)
         self.assertEqual(instance, 'content')
         self.assertFalse(instance._isNil())
         self.assertRaises(pyxb.NoNillableSupportError, instance._setIsNil)
 
-        xmlt = u'<full xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="false">content</full>'
+        xmlt = '<full xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="false">content</full>'
         instance = CreateFromDOM(doc.documentElement)
         self.assertEqual(instance, 'content')
         self.assertFalse(instance._isNil())
 
-        xmlt = u'<full xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true">content</full>'
+        xmlt = '<full xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true">content</full>'
         instance = CreateFromDOM(doc.documentElement)
         self.assertEqual(instance, 'content')
         self.assertFalse(instance._isNil())
 
     def testXFull (self):
-        xmlt = u'<xfull xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">content</xfull>'
+        xmlt = '<xfull xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">content</xfull>'
         doc = pyxb.utils.domutils.StringToDOM(xmlt)
         instance = CreateFromDOM(doc.documentElement)
         self.assertEqual(instance, 'content')
@@ -55,7 +55,7 @@ class TestXSIType (unittest.TestCase):
         self.assertRaises(pyxb.NoNillableSupportError, instance._setIsNil)
 
     def testOptional (self):
-        xmlt = u'<optional xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">content</optional>'
+        xmlt = '<optional xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">content</optional>'
         doc = pyxb.utils.domutils.StringToDOM(xmlt)
         instance = CreateFromDOM(doc.documentElement)
         self.assertEqual(instance, 'content')
@@ -71,7 +71,7 @@ class TestXSIType (unittest.TestCase):
         self.assertFalse(instance._isNil())
 
     def testOptionalNilFalse (self):
-        xmlt = u'<optional xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="false">content</optional>'
+        xmlt = '<optional xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="false">content</optional>'
         doc = pyxb.utils.domutils.StringToDOM(xmlt)
         instance = CreateFromDOM(doc.documentElement)
         self.assertEqual(instance, 'content')
@@ -80,7 +80,7 @@ class TestXSIType (unittest.TestCase):
         self.assertTrue(instance._isNil())
 
     def testOptionalNilEETag (self):
-        xmlt = u'<optional xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"/>'
+        xmlt = '<optional xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"/>'
         doc = pyxb.utils.domutils.StringToDOM(xmlt)
         instance = CreateFromDOM(doc.documentElement)
         self.assertEqual(instance, '')
@@ -94,7 +94,7 @@ class TestXSIType (unittest.TestCase):
         self.assertTrue(instance._isNil())
 
     def testOptionalNilSETag (self):
-        xmlt = u'<optional xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"></optional>'
+        xmlt = '<optional xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"></optional>'
         doc = pyxb.utils.domutils.StringToDOM(xmlt)
         instance = CreateFromDOM(doc.documentElement)
         self.assertEqual(instance, '')
@@ -108,7 +108,7 @@ class TestXSIType (unittest.TestCase):
         self.assertTrue(instance._isNil())
 
     def testOptionalNilSCETag (self):
-        xmlt = u'<optional xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"><!-- comment --></optional>'
+        xmlt = '<optional xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"><!-- comment --></optional>'
         doc = pyxb.utils.domutils.StringToDOM(xmlt)
         instance = CreateFromDOM(doc.documentElement)
         self.assertEqual(instance, '')
@@ -122,15 +122,15 @@ class TestXSIType (unittest.TestCase):
         self.assertTrue(instance._isNil())
 
     def testNilOptionalSpaceContent (self):
-        xmlt = u'<optional xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"> </optional>'
+        xmlt = '<optional xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"> </optional>'
         self.assertRaises(pyxb.ContentInNilInstanceError, CreateFromDocument, xmlt)
 
     def testNilComplexSpaceContent (self):
-        xmlt = u'<complex xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"> </complex>'
+        xmlt = '<complex xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"> </complex>'
         self.assertRaises(pyxb.ContentInNilInstanceError, CreateFromDocument, xmlt)
 
     def testComplexInternal (self):
-        xmlt = u'<complex><full>full content</full><optional>optional content</optional></complex>'
+        xmlt = '<complex><full>full content</full><optional>optional content</optional></complex>'
         xmld = xmlt.encode('utf-8')
         doc = pyxb.utils.domutils.StringToDOM(xmlt)
         instance = CreateFromDOM(doc.documentElement)
@@ -148,7 +148,7 @@ class TestXSIType (unittest.TestCase):
         self.assertEqual(instance.optional, 'optional content')
         self.assertFalse(instance.optional._isNil())
 
-        xmlt = u'<complex xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><full>full content</full><optional xsi:nil="true"></optional></complex>'
+        xmlt = '<complex xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><full>full content</full><optional xsi:nil="true"></optional></complex>'
         xmld = xmlt.encode('utf-8')
         doc = pyxb.utils.domutils.StringToDOM(xmlt)
         instance = CreateFromDOM(doc.documentElement)
@@ -166,18 +166,18 @@ class TestXSIType (unittest.TestCase):
         self.assertEqual(instance.optional, '')
         self.assertTrue(instance.optional._isNil())
 
-        xmlt = u'<complex xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"/>'
+        xmlt = '<complex xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"/>'
         xmld = xmlt.encode('utf-8')
         instance._setIsNil()
         self.assertEqual(instance.toDOM().documentElement.toxml("utf-8"), xmld)
         instance.validateBinding()
 
     def testComplex (self):
-        canonicalt = u'<complex xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"/>'
+        canonicalt = '<complex xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"/>'
         canonicald = canonicalt.encode('utf-8')
         for xmlt in ( canonicalt,
-                     u'<complex xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"></complex>',
-                     u'<complex xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"><!-- comment --></complex>') :
+                     '<complex xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"></complex>',
+                     '<complex xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"><!-- comment --></complex>') :
             doc = pyxb.utils.domutils.StringToDOM(xmlt)
             instance = CreateFromDOM(doc.documentElement)
             self.assertTrue(instance._isNil())

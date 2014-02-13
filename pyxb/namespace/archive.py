@@ -44,7 +44,7 @@ def GetArchivePath ():
     return os.environ.get(PathEnvironmentVariable)
 
 # Stuff required for pickling
-import cPickle as pickle
+import pickle as pickle
 import re
 
 class NamespaceArchive (object):
@@ -139,7 +139,7 @@ class NamespaceArchive (object):
             # this is the first time through.
             if cls.__NamespaceArchives is None:
                 cls.__NamespaceArchives = { }
-            existing_archives = set(cls.__NamespaceArchives.itervalues())
+            existing_archives = set(cls.__NamespaceArchives.values())
             archive_set = set()
 
             # Ensure we have an archive path.  If not, don't do anything.
@@ -308,7 +308,7 @@ class NamespaceArchive (object):
     __namespaces = None
 
     def __createPickler (self, output):
-        if isinstance(output, basestring):
+        if isinstance(output, str):
             output = open(output, 'wb')
         pickler = pickle.Pickler(output, -1)
 
@@ -387,10 +387,10 @@ class NamespaceArchive (object):
                     _log.info('Have required base data %s', xmr)
 
             for origin in mr.origins():
-                for (cat, names) in origin.categoryMembers().iteritems():
+                for (cat, names) in origin.categoryMembers().items():
                     if not (cat in ns.categories()):
                         continue
-                    cross_objects = names.intersection(ns.categoryMap(cat).iterkeys())
+                    cross_objects = names.intersection(iter(ns.categoryMap(cat).keys()))
                     if 0 < len(cross_objects):
                         raise pyxb.NamespaceArchiveError('Archive %s namespace %s module %s origin %s archive/active conflict on category %s: %s' % (self.__archivePath, ns, mr, origin, cat, " ".join(cross_objects)))
                     _log.info('%s no conflicts on %d names', cat, len(names))
@@ -542,7 +542,7 @@ class _NamespaceArchivable_mixin (pyxb.cscRoot):
 
     def isActive (self, empty_inactive=False):
         if self.__isActive and empty_inactive:
-            for (ct, cm) in self._categoryMap().iteritems():
+            for (ct, cm) in self._categoryMap().items():
                 if 0 < len(cm):
                     return True
             return False
@@ -602,7 +602,7 @@ class _NamespaceArchivable_mixin (pyxb.cscRoot):
         return rv
 
     def moduleRecords (self):
-        return self.__moduleRecordMap.values()
+        return list(self.__moduleRecordMap.values())
     __moduleRecordMap = None
 
     def addModuleRecord (self, module_record):
@@ -674,7 +674,7 @@ class ModuleRecord (pyxb.utils.utility.PrivateTransient_mixin):
     __generationUID = None
 
     def origins (self):
-        return self.__originMap.values()
+        return list(self.__originMap.values())
     def addOrigin (self, origin):
         assert isinstance(origin, _ObjectOrigin)
         assert not (origin.signature() in self.__originMap)
@@ -700,7 +700,7 @@ class ModuleRecord (pyxb.utils.utility.PrivateTransient_mixin):
     def modulePath (self):
         return self.__modulePath
     def setModulePath (self, module_path):
-        assert (module_path is None) or isinstance(module_path, basestring)
+        assert (module_path is None) or isinstance(module_path, str)
         self.__modulePath = module_path
         return self
     __modulePath = None
@@ -765,10 +765,10 @@ class ModuleRecord (pyxb.utils.utility.PrivateTransient_mixin):
         assert self.__categoryObjects is None
         assert not self.__constructedLocally
         ns = self.namespace()
-        ns.configureCategories(category_objects.iterkeys())
-        for (cat, obj_map) in category_objects.iteritems():
+        ns.configureCategories(iter(category_objects.keys()))
+        for (cat, obj_map) in category_objects.items():
             current_map = ns.categoryMap(cat)
-            for (local_name, component) in obj_map.iteritems():
+            for (local_name, component) in obj_map.items():
                 existing_component = current_map.get(local_name)
                 if existing_component is None:
                     current_map[local_name] = component
@@ -845,7 +845,7 @@ class _ObjectOrigin (pyxb.utils.utility.PrivateTransient_mixin, pyxb.cscRoot):
     def originatedObjects (self):
         if self.__originatedObjects is None:
             components = set()
-            [ components.update(_v.itervalues()) for _v in self.__categoryObjectMap.itervalues() ]
+            [ components.update(iter(_v.values())) for _v in self.__categoryObjectMap.values() ]
             self.__originatedObjects = frozenset(components)
         return self.__originatedObjects
 

@@ -148,14 +148,14 @@ class Facet (pyxb.cscRoot):
 
     def _valueString (self):
         if isinstance(self, _CollectionFacet_mixin):
-            return u','.join([ unicode(_i) for _i in self.iteritems() ])
+            return ','.join([ str(_i) for _i in self.items() ])
         if (self.valueDatatype() is not None) and (self.value() is not None):
             try:
                 return self.valueDatatype().XsdLiteral(self.value())
             except Exception:
                 _log.exception('Stringize facet %s produced exception', self.Name())
                 raise
-        return unicode(self.value())
+        return str(self.value())
 
     def __str__ (self):
         rv = []
@@ -381,9 +381,9 @@ class _PatternElement (utility.PrivateTransient_mixin):
         if pattern is None:
             assert value is not None
             pattern = value
-        assert isinstance(pattern, types.StringTypes)
+        assert isinstance(pattern, str)
         self.pattern = pattern
-        if isinstance(annotation, types.StringTypes):
+        if isinstance(annotation, str):
             self.annotation = annotation
         self.__pythonExpression = pyxb.utils.xmlre.XMLToPython(pattern)
         super(_PatternElement, self).__init__()
@@ -432,7 +432,7 @@ class CF_pattern (ConstrainingFacet, _CollectionFacet_mixin):
         # restrictions applied yet, return True.
         if 0 == len(self.__patternElements):
             return True
-        if not isinstance(value, basestring):
+        if not isinstance(value, str):
             return True
         for pe in self.__patternElements:
             if pe.matches(value):
@@ -499,7 +499,7 @@ class _EnumerationElement (object):
         self.__value = value_datatype.Factory(self.unicodeValue(), _validate_constraints=False, _from_xml=True)
 
         if (self.__description is None) and (self.__annotation is not None):
-            self.__description = unicode(self.__annotation)
+            self.__description = str(self.__annotation)
 
     def __str__ (self):
         return utility.QuotedEscaped(self.unicodeValue())
@@ -549,15 +549,15 @@ class CF_enumeration (ConstrainingFacet, _CollectionFacet_mixin, _LateDatatype_m
 
     def elements (self):
         """@deprecated: Use L{items} or L{iteritems} instead."""
-        return self.items()
+        return list(self.items())
 
     def values (self):
         """Return a list of enumeration values."""
-        return [ _ee.value() for _ee in self.iteritems() ]
+        return [ _ee.value() for _ee in self.items() ]
 
     def itervalues (self):
         """Generate the enumeration values."""
-        for ee in self.iteritems():
+        for ee in self.items():
             yield ee.value()
 
     def addEnumeration (self, **kw):
@@ -595,7 +595,7 @@ class CF_enumeration (ConstrainingFacet, _CollectionFacet_mixin, _LateDatatype_m
         # restrictions applied yet, return True.
         if 0 == len(self._items()):
             return True
-        for ee in self.iteritems():
+        for ee in self.items():
             if ee.value() == value:
                 return True
         return False
@@ -610,9 +610,9 @@ class _WhiteSpace_enum (datatypes.NMTOKEN, _Enumeration_mixin):
     """The enumeration used to constrain the whiteSpace facet"""
     pass
 _WhiteSpace_enum._CF_enumeration = CF_enumeration(value_datatype=_WhiteSpace_enum)
-_WhiteSpace_enum.preserve = _WhiteSpace_enum._CF_enumeration.addEnumeration(unicode_value=u'preserve', tag='preserve')
-_WhiteSpace_enum.replace = _WhiteSpace_enum._CF_enumeration.addEnumeration(unicode_value=u'replace', tag='replace')
-_WhiteSpace_enum.collapse = _WhiteSpace_enum._CF_enumeration.addEnumeration(unicode_value=u'collapse', tag='collapse')
+_WhiteSpace_enum.preserve = _WhiteSpace_enum._CF_enumeration.addEnumeration(unicode_value='preserve', tag='preserve')
+_WhiteSpace_enum.replace = _WhiteSpace_enum._CF_enumeration.addEnumeration(unicode_value='replace', tag='replace')
+_WhiteSpace_enum.collapse = _WhiteSpace_enum._CF_enumeration.addEnumeration(unicode_value='collapse', tag='collapse')
 # NOTE: For correctness we really need to initialize the facet map for
 # WhiteSpace_enum, even though at the moment it isn't necessary.  We
 # can't right now, because its parent datatypes.NMTOKEN hasn't been
@@ -712,7 +712,7 @@ class CF_totalDigits (ConstrainingFacet, _Fixed_mixin):
         match = False
         v = None
         while (n <= self.value()) and (not match):
-            v = long(value * scale)
+            v = int(value * scale)
             match = ((value * scale) == v)
             if self.value() == n:
                 break
@@ -740,7 +740,7 @@ class CF_fractionDigits (ConstrainingFacet, _Fixed_mixin):
         n = 0
         scale = 1
         while n <= self.value():
-            if ((value * scale) == long(value * scale)):
+            if ((value * scale) == int(value * scale)):
                 return True
             n += 1
             scale *= 10
@@ -846,7 +846,7 @@ Facet.Facets.extend(FundamentalFacet.Facets)
 datatypes.ENTITIES._CF_pattern = CF_pattern()
 datatypes.ENTITIES._CF_maxLength = CF_maxLength()
 datatypes.ENTITIES._CF_enumeration = CF_enumeration(value_datatype=datatypes.ENTITIES)
-datatypes.ENTITIES._CF_minLength = CF_minLength(value=datatypes.nonNegativeInteger(1L))
+datatypes.ENTITIES._CF_minLength = CF_minLength(value=datatypes.nonNegativeInteger(1))
 datatypes.ENTITIES._CF_whiteSpace = CF_whiteSpace()
 datatypes.ENTITIES._CF_length = CF_length()
 datatypes.ENTITIES._InitializeFacetMap(datatypes.ENTITIES._CF_pattern,
@@ -861,7 +861,7 @@ datatypes.IDREF._InitializeFacetMap()
 datatypes.IDREFS._CF_pattern = CF_pattern()
 datatypes.IDREFS._CF_maxLength = CF_maxLength()
 datatypes.IDREFS._CF_enumeration = CF_enumeration(value_datatype=datatypes.IDREFS)
-datatypes.IDREFS._CF_minLength = CF_minLength(value=datatypes.nonNegativeInteger(1L))
+datatypes.IDREFS._CF_minLength = CF_minLength(value=datatypes.nonNegativeInteger(1))
 datatypes.IDREFS._CF_whiteSpace = CF_whiteSpace()
 datatypes.IDREFS._CF_length = CF_length()
 datatypes.IDREFS._InitializeFacetMap(datatypes.IDREFS._CF_pattern,
@@ -871,15 +871,15 @@ datatypes.IDREFS._InitializeFacetMap(datatypes.IDREFS._CF_pattern,
    datatypes.IDREFS._CF_whiteSpace,
    datatypes.IDREFS._CF_length)
 datatypes.NCName._CF_pattern = CF_pattern()
-datatypes.NCName._CF_pattern.addPattern(pattern=u'[\\i-[:]][\\c-[:]]*')
+datatypes.NCName._CF_pattern.addPattern(pattern='[\\i-[:]][\\c-[:]]*')
 datatypes.NCName._InitializeFacetMap(datatypes.NCName._CF_pattern)
 datatypes.NMTOKEN._CF_pattern = CF_pattern()
-datatypes.NMTOKEN._CF_pattern.addPattern(pattern=u'\\c+')
+datatypes.NMTOKEN._CF_pattern.addPattern(pattern='\\c+')
 datatypes.NMTOKEN._InitializeFacetMap(datatypes.NMTOKEN._CF_pattern)
 datatypes.NMTOKENS._CF_pattern = CF_pattern()
 datatypes.NMTOKENS._CF_maxLength = CF_maxLength()
 datatypes.NMTOKENS._CF_enumeration = CF_enumeration(value_datatype=datatypes.NMTOKENS)
-datatypes.NMTOKENS._CF_minLength = CF_minLength(value=datatypes.nonNegativeInteger(1L))
+datatypes.NMTOKENS._CF_minLength = CF_minLength(value=datatypes.nonNegativeInteger(1))
 datatypes.NMTOKENS._CF_whiteSpace = CF_whiteSpace()
 datatypes.NMTOKENS._CF_length = CF_length()
 datatypes.NMTOKENS._InitializeFacetMap(datatypes.NMTOKENS._CF_pattern,
@@ -901,7 +901,7 @@ datatypes.NOTATION._InitializeFacetMap(datatypes.NOTATION._CF_minLength,
    datatypes.NOTATION._CF_whiteSpace,
    datatypes.NOTATION._CF_length)
 datatypes.Name._CF_pattern = CF_pattern()
-datatypes.Name._CF_pattern.addPattern(pattern=u'\\i\\c*')
+datatypes.Name._CF_pattern.addPattern(pattern='\\i\\c*')
 datatypes.Name._InitializeFacetMap(datatypes.Name._CF_pattern)
 datatypes.QName._CF_minLength = CF_minLength()
 datatypes.QName._CF_maxLength = CF_maxLength()
@@ -943,8 +943,8 @@ datatypes.boolean._CF_whiteSpace = CF_whiteSpace(value=_WhiteSpace_enum.collapse
 datatypes.boolean._CF_pattern = CF_pattern()
 datatypes.boolean._InitializeFacetMap(datatypes.boolean._CF_whiteSpace,
    datatypes.boolean._CF_pattern)
-datatypes.byte._CF_minInclusive = CF_minInclusive(value_datatype=datatypes.byte, value=datatypes.anySimpleType(u'-128'))
-datatypes.byte._CF_maxInclusive = CF_maxInclusive(value_datatype=datatypes.byte, value=datatypes.anySimpleType(u'127'))
+datatypes.byte._CF_minInclusive = CF_minInclusive(value_datatype=datatypes.byte, value=datatypes.anySimpleType('-128'))
+datatypes.byte._CF_maxInclusive = CF_maxInclusive(value_datatype=datatypes.byte, value=datatypes.anySimpleType('127'))
 datatypes.byte._InitializeFacetMap(datatypes.byte._CF_minInclusive,
    datatypes.byte._CF_maxInclusive)
 datatypes.date._CF_pattern = CF_pattern()
@@ -1117,34 +1117,34 @@ datatypes.hexBinary._InitializeFacetMap(datatypes.hexBinary._CF_minLength,
    datatypes.hexBinary._CF_pattern,
    datatypes.hexBinary._CF_whiteSpace,
    datatypes.hexBinary._CF_length)
-datatypes.int._CF_minInclusive = CF_minInclusive(value_datatype=datatypes.int, value=datatypes.anySimpleType(u'-2147483648'))
-datatypes.int._CF_maxInclusive = CF_maxInclusive(value_datatype=datatypes.int, value=datatypes.anySimpleType(u'2147483647'))
+datatypes.int._CF_minInclusive = CF_minInclusive(value_datatype=datatypes.int, value=datatypes.anySimpleType('-2147483648'))
+datatypes.int._CF_maxInclusive = CF_maxInclusive(value_datatype=datatypes.int, value=datatypes.anySimpleType('2147483647'))
 datatypes.int._InitializeFacetMap(datatypes.int._CF_minInclusive,
    datatypes.int._CF_maxInclusive)
 datatypes.integer._CF_pattern = CF_pattern()
-datatypes.integer._CF_pattern.addPattern(pattern=u'[\\-+]?[0-9]+')
-datatypes.integer._CF_fractionDigits = CF_fractionDigits(value=datatypes.nonNegativeInteger(0L))
+datatypes.integer._CF_pattern.addPattern(pattern='[\\-+]?[0-9]+')
+datatypes.integer._CF_fractionDigits = CF_fractionDigits(value=datatypes.nonNegativeInteger(0))
 datatypes.integer._InitializeFacetMap(datatypes.integer._CF_pattern,
    datatypes.integer._CF_fractionDigits)
 datatypes.language._CF_pattern = CF_pattern()
-datatypes.language._CF_pattern.addPattern(pattern=u'[a-zA-Z]{1,8}(-[a-zA-Z0-9]{1,8})*')
+datatypes.language._CF_pattern.addPattern(pattern='[a-zA-Z]{1,8}(-[a-zA-Z0-9]{1,8})*')
 datatypes.language._InitializeFacetMap(datatypes.language._CF_pattern)
-datatypes.long._CF_minInclusive = CF_minInclusive(value_datatype=datatypes.long, value=datatypes.anySimpleType(u'-9223372036854775808'))
-datatypes.long._CF_maxInclusive = CF_maxInclusive(value_datatype=datatypes.long, value=datatypes.anySimpleType(u'9223372036854775807'))
+datatypes.long._CF_minInclusive = CF_minInclusive(value_datatype=datatypes.long, value=datatypes.anySimpleType('-9223372036854775808'))
+datatypes.long._CF_maxInclusive = CF_maxInclusive(value_datatype=datatypes.long, value=datatypes.anySimpleType('9223372036854775807'))
 datatypes.long._InitializeFacetMap(datatypes.long._CF_minInclusive,
    datatypes.long._CF_maxInclusive)
-datatypes.negativeInteger._CF_maxInclusive = CF_maxInclusive(value_datatype=datatypes.negativeInteger, value=datatypes.anySimpleType(u'-1'))
+datatypes.negativeInteger._CF_maxInclusive = CF_maxInclusive(value_datatype=datatypes.negativeInteger, value=datatypes.anySimpleType('-1'))
 datatypes.negativeInteger._InitializeFacetMap(datatypes.negativeInteger._CF_maxInclusive)
-datatypes.nonNegativeInteger._CF_minInclusive = CF_minInclusive(value_datatype=datatypes.nonNegativeInteger, value=datatypes.anySimpleType(u'0'))
+datatypes.nonNegativeInteger._CF_minInclusive = CF_minInclusive(value_datatype=datatypes.nonNegativeInteger, value=datatypes.anySimpleType('0'))
 datatypes.nonNegativeInteger._InitializeFacetMap(datatypes.nonNegativeInteger._CF_minInclusive)
-datatypes.nonPositiveInteger._CF_maxInclusive = CF_maxInclusive(value_datatype=datatypes.nonPositiveInteger, value=datatypes.anySimpleType(u'0'))
+datatypes.nonPositiveInteger._CF_maxInclusive = CF_maxInclusive(value_datatype=datatypes.nonPositiveInteger, value=datatypes.anySimpleType('0'))
 datatypes.nonPositiveInteger._InitializeFacetMap(datatypes.nonPositiveInteger._CF_maxInclusive)
 datatypes.normalizedString._CF_whiteSpace = CF_whiteSpace(value=_WhiteSpace_enum.replace)
 datatypes.normalizedString._InitializeFacetMap(datatypes.normalizedString._CF_whiteSpace)
-datatypes.positiveInteger._CF_minInclusive = CF_minInclusive(value_datatype=datatypes.positiveInteger, value=datatypes.anySimpleType(u'1'))
+datatypes.positiveInteger._CF_minInclusive = CF_minInclusive(value_datatype=datatypes.positiveInteger, value=datatypes.anySimpleType('1'))
 datatypes.positiveInteger._InitializeFacetMap(datatypes.positiveInteger._CF_minInclusive)
-datatypes.short._CF_minInclusive = CF_minInclusive(value_datatype=datatypes.short, value=datatypes.anySimpleType(u'-32768'))
-datatypes.short._CF_maxInclusive = CF_maxInclusive(value_datatype=datatypes.short, value=datatypes.anySimpleType(u'32767'))
+datatypes.short._CF_minInclusive = CF_minInclusive(value_datatype=datatypes.short, value=datatypes.anySimpleType('-32768'))
+datatypes.short._CF_maxInclusive = CF_maxInclusive(value_datatype=datatypes.short, value=datatypes.anySimpleType('32767'))
 datatypes.short._InitializeFacetMap(datatypes.short._CF_minInclusive,
    datatypes.short._CF_maxInclusive)
 datatypes.string._CF_minLength = CF_minLength()
@@ -1175,11 +1175,11 @@ datatypes.time._InitializeFacetMap(datatypes.time._CF_pattern,
    datatypes.time._CF_maxInclusive)
 datatypes.token._CF_whiteSpace = CF_whiteSpace(value=_WhiteSpace_enum.collapse)
 datatypes.token._InitializeFacetMap(datatypes.token._CF_whiteSpace)
-datatypes.unsignedByte._CF_maxInclusive = CF_maxInclusive(value_datatype=datatypes.unsignedByte, value=datatypes.anySimpleType(u'255'))
+datatypes.unsignedByte._CF_maxInclusive = CF_maxInclusive(value_datatype=datatypes.unsignedByte, value=datatypes.anySimpleType('255'))
 datatypes.unsignedByte._InitializeFacetMap(datatypes.unsignedByte._CF_maxInclusive)
-datatypes.unsignedInt._CF_maxInclusive = CF_maxInclusive(value_datatype=datatypes.unsignedInt, value=datatypes.anySimpleType(u'4294967295'))
+datatypes.unsignedInt._CF_maxInclusive = CF_maxInclusive(value_datatype=datatypes.unsignedInt, value=datatypes.anySimpleType('4294967295'))
 datatypes.unsignedInt._InitializeFacetMap(datatypes.unsignedInt._CF_maxInclusive)
-datatypes.unsignedLong._CF_maxInclusive = CF_maxInclusive(value_datatype=datatypes.unsignedLong, value=datatypes.anySimpleType(u'18446744073709551615'))
+datatypes.unsignedLong._CF_maxInclusive = CF_maxInclusive(value_datatype=datatypes.unsignedLong, value=datatypes.anySimpleType('18446744073709551615'))
 datatypes.unsignedLong._InitializeFacetMap(datatypes.unsignedLong._CF_maxInclusive)
-datatypes.unsignedShort._CF_maxInclusive = CF_maxInclusive(value_datatype=datatypes.unsignedShort, value=datatypes.anySimpleType(u'65535'))
+datatypes.unsignedShort._CF_maxInclusive = CF_maxInclusive(value_datatype=datatypes.unsignedShort, value=datatypes.anySimpleType('65535'))
 datatypes.unsignedShort._InitializeFacetMap(datatypes.unsignedShort._CF_maxInclusive)

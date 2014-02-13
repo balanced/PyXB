@@ -283,9 +283,9 @@ class AttributeUse (pyxb.cscRoot):
 
     def _description (self, name_only=False, user_documentation=True):
         if name_only:
-            return unicode(self.__name)
+            return str(self.__name)
         assert issubclass(self.__dataType, basis._TypeBinding_mixin)
-        desc = [ unicode(self.__id), ': ', unicode(self.__name), ' (', self.__dataType._description(name_only=True, user_documentation=False), '), ' ]
+        desc = [ str(self.__id), ': ', str(self.__name), ' (', self.__dataType._description(name_only=True, user_documentation=False), '), ' ]
         if self.__required:
             desc.append('required')
         elif self.__prohibited:
@@ -418,7 +418,7 @@ class AutomatonConfiguration (object):
         assert self.__cfg is None
         multi = self.__multi
         if prefer_accepting:
-            multi = filter(lambda _ts: _ts[0].isAccepting(), self.__multi)
+            multi = [_ts for _ts in self.__multi if _ts[0].isAccepting()]
             if 0 == len(multi):
                 multi = self.__multi
         # step() will not create an empty multi list, so cannot get here with
@@ -848,7 +848,7 @@ class _PluralBinding (collections.MutableSequence):
         self.__list.append(self.__convert(x))
 
     def extend (self, x):
-        self.__list.extend(map(self.__convert, x))
+        self.__list.extend(list(map(self.__convert, x)))
 
     def count (self, x):
         return self.__list.count(x)
@@ -1096,7 +1096,7 @@ class ElementDeclaration (object):
                     val_type_qname = '%s:%s' % (tns_prefix, val_type_qname)
                 dom_support.addAttribute(element, pyxb.namespace.XMLSchema_instance.createExpandedName('type'), val_type_qname)
             value._toDOM_csc(dom_support, element)
-        elif isinstance(value, (str, unicode)):
+        elif isinstance(value, str):
             element = dom_support.createChildElement(self.name(), parent)
             element.appendChild(dom_support.document().createTextNode(value))
         else:
@@ -1104,12 +1104,12 @@ class ElementDeclaration (object):
 
     def _description (self, name_only=False, user_documentation=True):
         if name_only:
-            return unicode(self.__name)
-        desc = [ unicode(self.__id), ': ']
+            return str(self.__name)
+        desc = [ str(self.__id), ': ']
         if self.isPlural():
             desc.append('MULTIPLE ')
         desc.append(self.elementBinding()._description(user_documentation=user_documentation))
-        return u''.join(desc)
+        return ''.join(desc)
 
     def _matches (self, value, element_decl):
         accept = False
@@ -1180,7 +1180,7 @@ class Wildcard (object):
     def __normalizeNamespace (self, nsv):
         if nsv is None:
             return None
-        if isinstance(nsv, basestring):
+        if isinstance(nsv, str):
             nsv = pyxb.namespace.NamespaceForURI(nsv, create_if_missing=True)
         assert isinstance(nsv, pyxb.namespace.Namespace), 'unexpected non-namespace %s' % (nsv,)
         return nsv
