@@ -13,9 +13,9 @@ export PYXB_ARCHIVE_PATH='&pyxb/bundles/opengis//:&pyxb/bundles/common//:+'
 # Attempt to get romkan.py if not already available
 [ -f romkan.py ] || wget http://mhagiwara.googlecode.com/svn/trunk/nltk/jpbook/romkan.py
 
-python -c 'import drv_libxml2' || fail python-libxml2 not installed
+python3 -c 'import drv_libxml2' || fail python3-libxml2 not installed
 
-if python -c 'import pyxb.bundles.opengis.gml_3_2' ; then
+if python3 -c 'import pyxb.bundles.opengis.gml_3_2' ; then
   echo 1>&2 "OpenGIS bundle present and will be used"
 else
   cat 1>&2 <<EOText
@@ -37,4 +37,4 @@ rm fgd_gml.*
    --schema-location=data/shift_jis/FGD_GMLSchema.xsd --module=fgd_gml
 
 # Make sure it worked
-python check.py
+python3 check.py

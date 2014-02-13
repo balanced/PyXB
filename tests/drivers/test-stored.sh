@@ -12,6 +12,6 @@ pyxbgen \
   --schema-location=../schemas/test-external.xsd --module=te \
   --module-prefix=bindings \
   --archive-to-file=bindings/te.wxs \
- && python tst-stored.py \
+ && python3 tst-stored.py \
  && echo "test-stored TESTS PASSED" \
 || ( echo "test-stored FAILED" ; exit 1 )

@@ -54,8 +54,7 @@ class TestTrac0131 (unittest.TestCase):
         pyxb._SetXMLStyle(self.__xmlStyle)
 
     def testRepresentation (self):
-        self.assertEqual(self.strd, 'Sign of Leser-Tr\xc3\xa9lat') #!python3!
-#python3:        self.assertEqual(self.strd, b'Sign of Leser-Tr\xc3\xa9lat')
+        self.assertEqual(self.strd, b'Sign of Leser-Tr\xc3\xa9lat')
 
     def testBasicParse (self):
         xmlt = self.base_xmlt

@@ -5,8 +5,8 @@ fi
 ( find . -name '*.pyc' ;
   find . -name '*.pyo' ) \
 | xargs rm -f
-python --version
-python setup.py test && \
+python3 --version
+python3 setup.py test && \
   find . -name test.sh \
     | while read TEST_PATH ; do
       dir=`dirname ${TEST_PATH}`

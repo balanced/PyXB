@@ -4,7 +4,7 @@ if __name__ == '__main__':
     logging.basicConfig()
 _log = logging.getLogger(__name__)
 import pyxb.utils.xmlre as xmlre
-import pyxb.utils.str as str
+import pyxb.utils.unicode as str
 import re
 
 import unittest

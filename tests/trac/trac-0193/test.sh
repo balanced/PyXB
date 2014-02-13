@@ -8,5 +8,5 @@ fail () {
 pyxbgen \
   -m trac193 -u schema.xsd \
 || fail schema generation
-python check.py || fail subclass relationship
+python3 check.py || fail subclass relationship
 echo ${test_name} passed

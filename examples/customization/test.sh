@@ -12,5 +12,5 @@ pyxbgen \
     -m custom \
     -u custom.xsd \
     --write-for-customization
-python tst-normal.py || fail Normal customization failed
-python tst-introspect.py || fail Introspection customization failed
+python3 tst-normal.py || fail Normal customization failed
+python3 tst-introspect.py || fail Introspection customization failed

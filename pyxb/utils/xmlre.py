@@ -34,7 +34,7 @@ U{http://www.xmlschemareference.com/examples/Ch14/regexpDemo.xsd},
 with a sample document at U{
 http://www.xmlschemareference.com/examples/Ch14/regexpDemo.xml}"""
 
-import pyxb.utils.str
+import pyxb.utils.unicode
 import re
 import logging
 
@@ -48,16 +48,16 @@ def _InitializeAllEsc ():
     """Set the values in _AllEsc without introducing C{k} and C{v} into
     the module."""
 
-    _AllEsc.update({ '.': pyxb.utils.str.WildcardEsc })
-    for k, v in pyxb.utils.str.SingleCharEsc.items():
+    _AllEsc.update({ '.': pyxb.utils.unicode.WildcardEsc })
+    for k, v in pyxb.utils.unicode.SingleCharEsc.items():
         _AllEsc['\\' + str(k)] = v
-    for k, v in pyxb.utils.str.MultiCharEsc.items():
+    for k, v in pyxb.utils.unicode.MultiCharEsc.items():
         _AllEsc['\\' + str(k)] = v
-    for k, v in pyxb.utils.str.catEsc.items():
+    for k, v in pyxb.utils.unicode.catEsc.items():
         _AllEsc['\\' + str(k)] = v
-    for k, v in pyxb.utils.str.complEsc.items():
+    for k, v in pyxb.utils.unicode.complEsc.items():
         _AllEsc['\\' + str(k)] = v
-    for k, v in pyxb.utils.str.IsBlockEsc.items():
+    for k, v in pyxb.utils.unicode.IsBlockEsc.items():
         _AllEsc['\\' + str(k)] = v
 _InitializeAllEsc()
 
@@ -176,7 +176,7 @@ def _MatchPosCharGroup(text, position):
         tokens[0] = '-'
     if tokens[-1] is DASH:
         tokens[-1] = '-'
-    result_cps = pyxb.utils.str.CodePointSet()
+    result_cps = pyxb.utils.unicode.CodePointSet()
     cur_token = 0
     while cur_token < len(tokens):
         start = tokens[cur_token]
@@ -267,7 +267,7 @@ def MaybeMatchCharacterClass (text, position):
     c = text[position]
     np = position + 1
     if '.' == c:
-        return (pyxb.utils.str.WildcardEsc, np)
+        return (pyxb.utils.unicode.WildcardEsc, np)
     if '[' == c:
         return _MatchCharClassExpr(text, position)
     if '\\' == c:

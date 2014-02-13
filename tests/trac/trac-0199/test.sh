@@ -7,5 +7,5 @@ fail () {
 
 rm -f *.wxs X.py
 pyxbgen -m X -u X.xsd || fail unable to generate bindings
-python check.py || fail check failed
+python3 check.py || fail check failed
 echo ${test_name} passed
