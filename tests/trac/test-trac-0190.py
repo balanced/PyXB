@@ -37,22 +37,28 @@ class TestTrac_0190 (unittest.TestCase):
     def testBasic (self):
         i = UC('A')
         self.assertEqual(i, 'A')
-        with self.assertRaises(pyxb.SimpleFacetValueError) as cm:
-            i = UC('a')
-        e = cm.exception
-        self.assertEqual(e.type, tUC)
-        self.assertEqual(e.value, 'a')
-        self.assertTrue(isinstance(e.facet, pyxb.binding.facets.CF_pattern))
-        self.assertEqual(e.details(), 'Type tUC pattern constraint violated by value a')
+        if sys.version_info[:2] < (2, 7):
+            self.assertRaises(pyxb.SimpleFacetValueError, UC, 'a')
+        else:
+            with self.assertRaises(pyxb.SimpleFacetValueError) as cm:
+                i = UC('a')
+            e = cm.exception
+            self.assertEqual(e.type, tUC)
+            self.assertEqual(e.value, 'a')
+            self.assertTrue(isinstance(e.facet, pyxb.binding.facets.CF_pattern))
+            self.assertEqual(e.details(), 'Type tUC pattern constraint violated by value a')
 
     def testUnicode (self):
-        with self.assertRaises(pyxb.SimpleFacetValueError) as cm:
-            i = UC('\xf6')
-        e = cm.exception
-        self.assertEqual(e.type, tUC)
-        self.assertEqual(e.value, '\xf6')
-        self.assertTrue(isinstance(e.facet, pyxb.binding.facets.CF_pattern))
-        self.assertEqual(e.details(), 'Type tUC pattern constraint violated by value \xf6')
+        if sys.version_info[:2] < (2, 7):
+            self.assertRaises(pyxb.SimpleFacetValueError, UC, '\xf6')
+        else:
+            with self.assertRaises(pyxb.SimpleFacetValueError) as cm:
+                i = UC('\xf6')
+            e = cm.exception
+            self.assertEqual(e.type, tUC)
+            self.assertEqual(e.value, '\xf6')
+            self.assertTrue(isinstance(e.facet, pyxb.binding.facets.CF_pattern))
+            self.assertEqual(e.details(), 'Type tUC pattern constraint violated by value \xf6')
 
 if __name__ == '__main__':
     unittest.main()

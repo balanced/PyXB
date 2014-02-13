@@ -520,7 +520,7 @@ class _TypeBinding_mixin (utility.Locatable_mixin):
         bds.finalize()
         return bds.document()
 
-    def toxml (self, encoding=None, bds=None, root_only=False):
+    def toxml (self, encoding=None, bds=None, root_only=False, element_name=None):
         """Shorthand to get the object as an XML document.
 
         If you want to set the default namespace, pass in a pre-configured
@@ -535,8 +535,16 @@ class _TypeBinding_mixin (utility.Locatable_mixin):
         @param bds: Optional L{pyxb.utils.domutils.BindingDOMSupport} instance
         to use for creation. If not provided (default), a new generic one is
         created.
+
+        @param root_only: Set to C{True} to automatically deference the
+        C{documentElement} of the resulting DOM node.  This eliminates the XML
+        declaration that would otherwise be generated.
+
+        @param element_name: This value is passed through to L{toDOM}, and is
+        useful when the value has no bound element but you want to convert it
+        to XML anyway.
         """
-        dom = self.toDOM(bds)
+        dom = self.toDOM(bds, element_name=element_name)
         if root_only:
             dom = dom.documentElement
         return dom.toxml(encoding)
@@ -1827,6 +1835,20 @@ class enumeration_mixin (pyxb.cscRoot):
         """Generate the associated L{pyxb.binding.facet._EnumerationElement} instances."""
         return iter(cls._CF_enumeration.items())
 
+    @classmethod
+    def _elementForValue (cls, value):
+        """Return the L{_EnumerationElement} instance that has the given value.
+
+        @raise KeyError: the value is not valid for the enumeration."""
+        return cls._CF_enumeration.elementForValue(value)
+
+    @classmethod
+    def _valueForUnicode (cls, ustr):
+        """Return the enumeration value corresponding to the given unicode string.
+
+        If ustr is not a valid option for this enumeration, return None."""
+        return cls._CF_enumeration.valueForUnicode(ustr)
+
 class _Content (object):
     """Base for any wrapper added to L{complexTypeDefinition.orderedContent}."""
 
@@ -2505,8 +2527,17 @@ class complexTypeDefinition (_TypeBinding_mixin, utility._DeconflictSymbols_mixi
         return self
 
     def _appendWildcardElement (self, value):
-        self._addContent(ElementContent(value, None))
-        self.__wildcardElements.append(value)
+        if (isinstance(value, xml.dom.Node)
+            or (isinstance(value, _TypeBinding_mixin) and (value._element is not None))):
+            # Something that we can interpret as an element
+            self._addContent(ElementContent(value, None))
+            self.__wildcardElements.append(value)
+        elif self._IsMixed():
+            # Not an element, but allowed as mixed content
+            self._addContent(NonElementContent(value))
+        else:
+            # Not an element and no mixed content allowed: error
+            raise pyxb.MixedContentError(self, value)
 
     def extend (self, value_list, _fallback_namespace=None, _from_xml=False, _location=None):
         """Invoke L{append} for each value in the list, in turn."""

@@ -52,6 +52,7 @@ import re
 import binascii
 import base64
 import logging
+import decimal as python_decimal
 
 _log = logging.getLogger(__name__)
 
@@ -123,19 +124,64 @@ class boolean (basis.simpleTypeDefinition, pyxb.utils.types_.IntType):
 
 _PrimitiveDatatypes.append(boolean)
 
-class decimal (basis.simpleTypeDefinition, pyxb.utils.types_.FloatType):
+class decimal (basis.simpleTypeDefinition, python_decimal.Decimal):
     """XMLSchema datatype U{decimal<http://www.w3.org/TR/xmlschema-2/#decimal>}.
 
-    @todo: The Python base type for this is wrong. Consider
-    U{http://code.google.com/p/mpmath/}.
-
+    This class uses Python's L{decimal.Decimal} class to support (by
+    default) 28 significant digits.  Only normal and zero values are
+    valid; this means C{NaN} and C{Infinity} may be created during
+    calculations, but cannot be expressed in XML documents.
     """
     _XsdBaseType = anySimpleType
     _ExpandedName = pyxb.namespace.XMLSchema.createExpandedName('decimal')
 
+    def __new__ (cls, *args, **kw):
+        args = cls._ConvertArguments(args, kw)
+        # Pre Python 2.7 can't construct from float values
+        if (1 <= len(args)) and isinstance(args[0], pyxb.utils.types_.FloatType):
+            args = (str(args[0]),) + args[1:]
+        try:
+            rv = super(decimal, cls).__new__(cls, *args, **kw)
+        except python_decimal.DecimalException:
+            raise SimpleTypeValueError(cls, *args)
+        cls._CheckValidValue(rv)
+        return rv
+
+    def __repr__ (self):
+        return 'pyxb.binding.datatypes.decimal(%s)' % (repr(str(self)),)
+
+    @classmethod
+    def _CheckValidValue (cls, value):
+        if not (value.is_normal() or value.is_zero()):
+            raise SimpleTypeValueError(cls, value)
+        return super(decimal, cls)._CheckValidValue(value)
+
     @classmethod
     def XsdLiteral (cls, value):
-        return '%s' % (value,)
+        (sign, digits, exponent) = value.normalize().as_tuple()
+        if (0 < len(digits)) and (0 == digits[0]):
+            digits = ()
+        rchars = []
+        if sign:
+            rchars.append('-')
+        digits_before = len(digits) + exponent
+        if 0 < digits_before:
+            rchars.extend(list(map(str, digits[:digits_before])))
+            digits = digits[digits_before:]
+            if (0 == len(digits)) and (0 < exponent):
+                rchars.extend(['0'] * exponent)
+                exponent = 0
+        else:
+            rchars.append('0')
+        rchars.append('.')
+        digits_after = -exponent
+        assert(0 <= digits_after)
+        if 0 < digits_after:
+            rchars.extend(['0'] * (digits_after - len(digits)))
+            rchars.extend(list(map(str, digits)))
+        else:
+            rchars.append('0')
+        return ''.join(rchars)
 
 _PrimitiveDatatypes.append(decimal)
 
