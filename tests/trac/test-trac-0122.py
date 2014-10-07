@@ -19,7 +19,7 @@ xsd='''<?xml version="1.0" encoding="UTF-8"?>
   </element>
 </schema>'''
 
-code = pyxb.binding.generate.GeneratePython(schema_text=xsd)
+code = pyxb_123.binding.generate.GeneratePython(schema_text=xsd)
 #open('code.py', 'w').write(code)
 
 rv = compile(code, 'test', 'exec')
@@ -53,22 +53,22 @@ class TestTrac0122 (unittest.TestCase):
         instance = Element()
         self.assertEqual(None, instance.Required)
         self.assertEqual(None, instance.Optional)
-        self.assertRaises(pyxb.ProhibitedAttributeError, self.getProhibited, instance)
+        self.assertRaises(pyxb_123.ProhibitedAttributeError, self.getProhibited, instance)
 
         self.setRequired(instance, 'one')
         self.setOptional(instance, 'two')
-        self.assertRaises(pyxb.ProhibitedAttributeError, self.setProhibitedNaive, instance, 'three')
-        self.assertRaises(pyxb.ProhibitedAttributeError, self.setProhibited, instance, 'three')
+        self.assertRaises(pyxb_123.ProhibitedAttributeError, self.setProhibitedNaive, instance, 'three')
+        self.assertRaises(pyxb_123.ProhibitedAttributeError, self.setProhibited, instance, 'three')
         self.assertEqual('one', instance.Required)
         self.assertEqual('two', instance.Optional)
-        self.assertRaises(pyxb.ProhibitedAttributeError, self.getProhibited, instance)
+        self.assertRaises(pyxb_123.ProhibitedAttributeError, self.getProhibited, instance)
 
         instance.Optional = None
-        self.assertRaises(pyxb.MissingAttributeError, self.setRequired, instance, None)
-        self.assertRaises(pyxb.ProhibitedAttributeError, self.setProhibited, instance, None)
+        self.assertRaises(pyxb_123.MissingAttributeError, self.setRequired, instance, None)
+        self.assertRaises(pyxb_123.ProhibitedAttributeError, self.setProhibited, instance, None)
         self.assertEqual('one', instance.Required)
         self.assertEqual(None, instance.Optional)
-        self.assertRaises(pyxb.ProhibitedAttributeError, self.getProhibited, instance)
+        self.assertRaises(pyxb_123.ProhibitedAttributeError, self.getProhibited, instance)
 
 
 if __name__ == '__main__':

@@ -63,7 +63,7 @@ xsd='''<?xml version="1.0" encoding="UTF-8"?>
 '''
 
 #open('schema.xsd', 'w').write(xsd)
-code = pyxb.binding.generate.GeneratePython(schema_text=xsd)
+code = pyxb_123.binding.generate.GeneratePython(schema_text=xsd)
 #open('code.py', 'w').write(code)
 
 rv = compile(code, 'test', 'exec')
@@ -88,7 +88,7 @@ class TestTrac0039 (unittest.TestCase):
         self.assertEqual(w.optional.value(), 5)
         self.assertTrue(w.optional.deep is None)
         self.assertTrue(isinstance(w.optional.value(), xs.int))
-        self.assertRaises(pyxb.SimpleTypeValueError, SET_optional, w, BIND('string'))
+        self.assertRaises(pyxb_123.SimpleTypeValueError, SET_optional, w, BIND('string'))
         w.optional = BIND(6, deep=1)
         self.assertEqual(w.optional.value(), 6)
         self.assertEqual(w.optional.deep, 1)
@@ -100,7 +100,7 @@ class TestTrac0039 (unittest.TestCase):
         w = shallow(6)
         self.assertTrue(isinstance(w.optional.value(), xs.int))
         self.assertEqual(w.optional.value(), 6)
-        self.assertRaises(pyxb.UnrecognizedContentError, shallow, BIND('string'))
+        self.assertRaises(pyxb_123.UnrecognizedContentError, shallow, BIND('string'))
 
     def testDeep (self):
         w = wrapper(BIND(BIND(4, deep=4), BIND('hi')))

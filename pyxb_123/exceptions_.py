@@ -51,7 +51,7 @@ class PyXBException (Exception):
 
     #!python3>!
     def _str_from_unicode (self):
-        return unicode(self).encode(pyxb._OutputEncoding)
+        return unicode(self).encode(pyxb_123._OutputEncoding)
     #!python3<!
 
 class PyXBVersionError (PyXBException):
@@ -67,7 +67,7 @@ class UnboundElementError (DOMGenerationError):
 
     instance = None
     """The binding instance.  This is missing an element binding (via
-    L{pyxb.binding.basis._TypeBinding_mixin._element}) and no
+    L{pyxb_123.binding.basis._TypeBinding_mixin._element}) and no
     C{element_name} was passed."""
 
     def __init__ (self, instance):
@@ -130,12 +130,12 @@ class StructuralBadDocumentError (BadDocumentError):
     """Raised when processing document and the content model is not satisfied."""
     @property
     def element_use (self):
-        """The L{pyxb.binding.content.ElementDeclaration} instance to which the content should conform, if available."""
+        """The L{pyxb_123.binding.content.ElementDeclaration} instance to which the content should conform, if available."""
         return self.__elementUse
 
     @property
     def container (self):
-        """The L{pyxb.binding.basis.complexTypeDefinition} instance to which the content would belong, if available."""
+        """The L{pyxb_123.binding.basis.complexTypeDefinition} instance to which the content would belong, if available."""
         return self.__container
 
     @property
@@ -171,9 +171,9 @@ class UnrecognizedDOMRootNodeError (StructuralBadDocumentError):
     """The L{xml.dom.Element} instance that could not be recognized"""
 
     def __get_node_name (self):
-        """The QName of the L{node} as a L{pyxb.namespace.ExpandedName}"""
+        """The QName of the L{node} as a L{pyxb_123.namespace.ExpandedName}"""
         import pyxb_123.namespace
-        return  pyxb.namespace.ExpandedName(self.node.namespaceURI, self.node.localName)
+        return  pyxb_123.namespace.ExpandedName(self.node.namespaceURI, self.node.localName)
     node_name = property(__get_node_name)
 
     def __init__ (self, node):
@@ -194,7 +194,7 @@ class ValidationError (PyXBException):
     location = None
     """Where the error occurred in the document being parsed, if
     available.  This will be C{None}, or an instance of
-    L{pyxb.utils.utility.Location}."""
+    L{pyxb_123.utils.utility.Location}."""
 
     def details (self):
         """Provide information describing why validation failed.
@@ -222,7 +222,7 @@ class NonElementValidationError (ValidationError):
         @param location: the value for the L{location} attribute.
         """
         self.element = element
-        if (location is None) and isinstance(element, pyxb.utils.utility.Locatable_mixin):
+        if (location is None) and isinstance(element, pyxb_123.utils.utility.Locatable_mixin):
             location = element._location()
         self.location = location
         super(NonElementValidationError, self).__init__(element, location)
@@ -233,12 +233,12 @@ class NonElementValidationError (ValidationError):
         value = ''
         boundto = ''
         location = ''
-        if isinstance(self.element, pyxb.binding.basis._TypeBinding_mixin):
+        if isinstance(self.element, pyxb_123.binding.basis._TypeBinding_mixin):
             eb = self.element._element()
             boundto = ''
             if eb is not None:
                 boundto = ' bound to %s' % (eb.name(),)
-            if isinstance(self.element, pyxb.binding.basis.simpleTypeDefinition):
+            if isinstance(self.element, pyxb_123.binding.basis.simpleTypeDefinition):
                 value = self.element.xsdLiteral()
             elif self.element._IsSimpleTypeContent():
                 value = unicode(self.element.value())
@@ -271,14 +271,14 @@ class AbstractElementError (ElementValidationError):
     abstract element."""
 
     element = None
-    """The abstract L{pyxb.binding.basis.element} in question"""
+    """The abstract L{pyxb_123.binding.basis.element} in question"""
 
     value = None
     """The value proposed for the L{element}.  This is usually going
     to be a C{xml.dom.Node} used in the attempt to create the element,
     C{None} if the abstract element was invoked without a node, or
     another type if
-    L{pyxb.binding.content.ElementDeclaration.toDOM} is
+    L{pyxb_123.binding.content.ElementDeclaration.toDOM} is
     mis-used."""
 
     def __init__ (self, element, location, value=None):
@@ -321,7 +321,7 @@ class ContentInNilInstanceError (ElementValidationError):
     __str__ = PyXBException._str_from_unicode
 
 class NoNillableSupportError (ElementValidationError):
-    """Raised when invoking L{_setIsNil<pyxb.binding.basis._TypeBinding_mixin._setIsNil>} on a type that does not support nillable."""
+    """Raised when invoking L{_setIsNil<pyxb_123.binding.basis._TypeBinding_mixin._setIsNil>} on a type that does not support nillable."""
 
     instance = None
     """The binding instance on which an inappropriate operation was invoked."""
@@ -339,7 +339,7 @@ class ElementChangeError (ElementValidationError):
     """Attempt to change an element that has a fixed value constraint."""
 
     element = None
-    """The L{pyxb.binding.basis.element} that has a fixed value."""
+    """The L{pyxb_123.binding.basis.element} that has a fixed value."""
 
     value = None
     """The value that was to be assigned to the element."""
@@ -352,7 +352,7 @@ class ElementChangeError (ElementValidationError):
         import pyxb_123.utils.utility
         self.element = element
         self.value = value
-        if (location is None) and isinstance(value, pyxb.utils.utility.Locatable_mixin):
+        if (location is None) and isinstance(value, pyxb_123.utils.utility.Locatable_mixin):
             location = value._location()
         self.location = location
         super(ElementChangeError, self).__init__(element, value, location)
@@ -381,7 +381,7 @@ class AbstractInstantiationError (ComplexTypeValidationError):
     """
 
     type = None
-    """The abstract L{pyxb.binding.basis.complexTypeDefinition} subclass used."""
+    """The abstract L{pyxb_123.binding.basis.complexTypeDefinition} subclass used."""
 
     node = None
     """The L{xml.dom.Element} from which instantiation was attempted, if available."""
@@ -483,7 +483,7 @@ class NonPluralAppendError (ContentValidationError):
     """The binding instance containing the element"""
 
     element_declaration = None
-    """The L{pyxb.binding.content.ElementDeclaration} contained in C{instance} that does not accept multiple instances"""
+    """The L{pyxb_123.binding.content.ElementDeclaration} contained in C{instance} that does not accept multiple instances"""
 
     value = None
     """The proposed addition to the element in the instance"""
@@ -561,7 +561,7 @@ class IncrementalElementContentError (ContentValidationError):
     """The binding for which the L{value} could not be associated with an element."""
 
     automaton_configuration = None
-    """The L{pyxb.binding.content.AutomatonConfiguration} representing the current state of the L{instance} content."""
+    """The L{pyxb_123.binding.content.AutomatonConfiguration} representing the current state of the L{instance} content."""
 
     value = None
     """The value that could not be associated with allowable content."""
@@ -596,10 +596,10 @@ class UnrecognizedContentError (IncrementalElementContentError):
             seen = set()
             names = []
             for u in acceptable:
-                if isinstance(u, pyxb.binding.content.ElementUse):
+                if isinstance(u, pyxb_123.binding.content.ElementUse):
                     n = unicode(u.elementBinding().name())
                 else:
-                    assert isinstance(u, pyxb.binding.content.WildcardUse)
+                    assert isinstance(u, pyxb_123.binding.content.WildcardUse)
                     n = 'xs:any'
                 if not (n in seen):
                     names.append(n)
@@ -624,7 +624,7 @@ class UnrecognizedContentError (IncrementalElementContentError):
         else:
             rv.append('The unrecognized content is %s' % (self.value._diagnosticName(),))
         rv.append('The %s automaton %s in an accepting state.' % (self.instance._Name(), self.automaton_configuration.isAccepting() and "is" or "is not"))
-        if isinstance(self.instance, pyxb.binding.basis.complexTypeDefinition) and self.instance._IsMixed():
+        if isinstance(self.instance, pyxb_123.binding.basis.complexTypeDefinition) and self.instance._IsMixed():
             rv.append('Character information content would be permitted.')
         acceptable = self.automaton_configuration.acceptableContent()
         if 0 == len(acceptable):
@@ -633,10 +633,10 @@ class UnrecognizedContentError (IncrementalElementContentError):
             rv.append('The following element and wildcard content would be accepted:')
             rv2 = []
             for u in acceptable:
-                if isinstance(u, pyxb.binding.content.ElementUse):
+                if isinstance(u, pyxb_123.binding.content.ElementUse):
                     rv2.append('An element %s per %s' % (u.elementBinding().name(), u.xsdLocation()))
                 else:
-                    assert isinstance(u, pyxb.binding.content.WildcardUse)
+                    assert isinstance(u, pyxb_123.binding.content.WildcardUse)
                     rv2.append('A wildcard per %s' % (u.xsdLocation(),))
             rv.append('\t' + '\n\t'.join(rv2))
         return '\n'.join(rv)
@@ -651,13 +651,13 @@ class BatchElementContentError (ContentValidationError):
     """The binding instance being constructed."""
 
     fac_configuration = None
-    """The L{pyxb.utils.fac.Configuration} representing the current state of the L{instance} automaton."""
+    """The L{pyxb_123.utils.fac.Configuration} representing the current state of the L{instance} automaton."""
 
     symbols = None
     """The sequence of symbols that were accepted as content prior to the error."""
 
     symbol_set = None
-    """The leftovers from L{pyxb.binding.basis.complexTypeDefinition._symbolSet} that could not be reconciled with the content model."""
+    """The leftovers from L{pyxb_123.binding.basis.complexTypeDefinition._symbolSet} that could not be reconciled with the content model."""
 
     def __init__ (self, instance, fac_configuration, symbols, symbol_set):
         """@param instance: the value for the L{instance} attribute.
@@ -685,7 +685,7 @@ class BatchElementContentError (ContentValidationError):
             rv.append('No content has been accepted')
         else:
             rv.append('The last accepted content was %s' % (self.symbols[-1].value._diagnosticName(),))
-        if isinstance(self.instance, pyxb.binding.basis.complexTypeDefinition) and self.instance._IsMixed():
+        if isinstance(self.instance, pyxb_123.binding.basis.complexTypeDefinition) and self.instance._IsMixed():
             rv.append('Character information content would be permitted.')
         acceptable = self.fac_configuration.acceptableSymbols()
         if 0 == len(acceptable):
@@ -694,10 +694,10 @@ class BatchElementContentError (ContentValidationError):
             rv.append('The following element and wildcard content would be accepted:')
             rv2 = []
             for u in acceptable:
-                if isinstance(u, pyxb.binding.content.ElementUse):
+                if isinstance(u, pyxb_123.binding.content.ElementUse):
                     rv2.append('An element %s per %s' % (u.elementBinding().name(), u.xsdLocation()))
                 else:
-                    assert isinstance(u, pyxb.binding.content.WildcardUse)
+                    assert isinstance(u, pyxb_123.binding.content.WildcardUse)
                     rv2.append('A wildcard per %s' % (u.xsdLocation(),))
             rv.append('\t' + '\n\t'.join(rv2))
         if (self.symbol_set is None) or (0 == len(self.symbol_set)):
@@ -751,9 +751,9 @@ class OrphanElementContentError (ContentValidationError):
     """An element expected to be used in content is not present in the instance.
 
     This exception occurs in batch-mode validation when
-    L{pyxb.ValidationConfig.contentInfluencesGeneration} applies,
-    L{pyxb.ValidationConfig.orphanElementInContent} is set to
-    L{pyxb.ValidationConfig.RAISE_EXCEPTION}, and the content list
+    L{pyxb_123.ValidationConfig.contentInfluencesGeneration} applies,
+    L{pyxb_123.ValidationConfig.orphanElementInContent} is set to
+    L{pyxb_123.ValidationConfig.RAISE_EXCEPTION}, and the content list
     includes an element that is not in the binding instance
     content.
     """
@@ -762,7 +762,7 @@ class OrphanElementContentError (ContentValidationError):
     """The binding instance."""
 
     preferred = None
-    """An element value from the L{instance} L{content<pyxb.binding.basis.complexTypeDefinition.content>} list which was not found in the L{instance}."""
+    """An element value from the L{instance} L{content<pyxb_123.binding.basis.complexTypeDefinition.content>} list which was not found in the L{instance}."""
 
     def __init__ (self, instance, preferred):
         """@param instance: the value for the L{instance} attribute.
@@ -779,7 +779,7 @@ class OrphanElementContentError (ContentValidationError):
 class SimpleTypeValueError (ValidationError):
     """Raised when a simple type value does not satisfy its constraints."""
     type = None
-    """The L{pyxb.binding.basis.simpleTypeDefinition} that constrains values."""
+    """The L{pyxb_123.binding.basis.simpleTypeDefinition} that constrains values."""
 
     value = None
     """The value that violates the constraints of L{type}.  In some
@@ -794,14 +794,14 @@ class SimpleTypeValueError (ValidationError):
         import pyxb_123.utils.utility
         self.type = type
         self.value = value
-        if (location is None) and isinstance(value, pyxb.utils.utility.Locatable_mixin):
+        if (location is None) and isinstance(value, pyxb_123.utils.utility.Locatable_mixin):
             location = value._location()
         self.location = location
         super(SimpleTypeValueError, self).__init__(type, value, location)
 
     def __unicode__ (self):
         import pyxb_123.binding.basis
-        if isinstance(self.value, pyxb.binding.basis._TypeBinding_mixin):
+        if isinstance(self.value, pyxb_123.binding.basis._TypeBinding_mixin):
             return u'Type %s cannot be created from %s: %s' % (self.type._Name(), self.value._Name(), self.value)
         return u'Type %s cannot be created from: %s' % (self.type._Name(), self.value)
     __str__ = PyXBException._str_from_unicode
@@ -838,7 +838,7 @@ class SimpleFacetValueError (SimpleTypeValueError):
     can be used to determine why the value is unacceptable."""
 
     type = None
-    """The L{pyxb.binding.basis.simpleTypeDefinition} that constrains values."""
+    """The L{pyxb_123.binding.basis.simpleTypeDefinition} that constrains values."""
 
     value = None
     """The value that violates the constraints of L{type}.  In some
@@ -859,7 +859,7 @@ class SimpleFacetValueError (SimpleTypeValueError):
         self.type = type
         self.value = value
         self.facet = facet
-        if (location is None) and isinstance(value, pyxb.utils.utility.Locatable_mixin):
+        if (location is None) and isinstance(value, pyxb_123.utils.utility.Locatable_mixin):
             location = value._location()
         self.location = location
         # Bypass immediate parent
@@ -881,7 +881,7 @@ class AttributeValidationError (ValidationError):
     """Raised when an attribute requirement is not satisfied."""
 
     type = None
-    """The L{pyxb.binding.basis.complexTypeDefinition} subclass of the instance."""
+    """The L{pyxb_123.binding.basis.complexTypeDefinition} subclass of the instance."""
 
     tag = None
     """The name of the attribute."""

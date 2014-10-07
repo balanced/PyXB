@@ -20,7 +20,7 @@ references have been removed in favor of explicit use of the natural
 Python type.  We need these in contexts where the binding of the type
 identifier (e.g., C{int}) has changed to the class representing the
 XML Schema datatype of the same name (viz., C{xsd:int} or
-L{pyxb.binding.datatypes.int}), so provide a way to get back to the
+L{pyxb_123.binding.datatypes.int}), so provide a way to get back to the
 underlying Python type.
 """
 

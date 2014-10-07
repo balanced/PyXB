@@ -21,7 +21,7 @@ import logging
 _log = logging.getLogger(__name__)
 
 # A unique identifier for components that are built-in to the PyXB system
-BuiltInObjectUID = pyxb.utils.utility.UniqueIdentifier('PyXB-' + pyxb.__version__ + '-Builtin')
+BuiltInObjectUID = pyxb_123.utils.utility.UniqueIdentifier('PyXB-' + pyxb_123.__version__ + '-Builtin')
 
 from pyxb_123.namespace import Namespace
 
@@ -84,7 +84,7 @@ class _XMLSchema_instance (Namespace):
         if value in (self.PT_strict, self.PT_lax, self.PT_skip):
             self.__processType = value
         elif value is not None:
-            raise pyxb.ValueError(value)
+            raise pyxb_123.ValueError(value)
         return self.__processType
 
     def _InterpretTypeAttribute (self, type_name, ns_ctx, fallback_namespace, type_class):
@@ -109,7 +109,7 @@ class _XMLSchema_instance (Namespace):
         same as C{type_class}, and C{ret_type_class} is the class that
         should be used.
 
-        @raises pyxb.BadDocumentError: if the processing type
+        @raises pyxb_123.BadDocumentError: if the processing type
         configuration is L{PT_strict} and C{type_name} fails to
         resolve to a type definition that is consistent with any
         provided C{type_class}.
@@ -127,9 +127,9 @@ class _XMLSchema_instance (Namespace):
             alternative_type_class = None
         if self.PT_strict == pt:
             if alternative_type_class is None:
-                raise pyxb.BadDocumentError('No type binding for %s' % (type_name,))
+                raise pyxb_123.BadDocumentError('No type binding for %s' % (type_name,))
             if (type_class is not None) and (not (type_class._IsUrType() or issubclass(alternative_type_class, type_class))):
-                raise pyxb.BadDocumentError('%s value %s is not subclass of element type %s' % (type_name, type_en, type_class._ExpandedName))
+                raise pyxb_123.BadDocumentError('%s value %s is not subclass of element type %s' % (type_name, type_en, type_class._ExpandedName))
         if (self.PT_strict == pt) or ((self.PT_lax == pt) and (alternative_type_class is not None)):
             type_class = alternative_type_class
             did_replace = True
@@ -203,7 +203,7 @@ class _XMLSchema (Namespace):
     """Extension of L{Namespace} that pre-defines components available in the
     XMLSchema namespace.
 
-    The types are defined when L{pyxb.xmlschema.structures} is imported.
+    The types are defined when L{pyxb_123.xmlschema.structures} is imported.
     """
 
     def _defineBuiltins_ox (self, structures_module):
@@ -240,7 +240,7 @@ XMLNamespaces = Namespace('http://www.w3.org/2000/xmlns/',
 XMLSchema = _XMLSchema('http://www.w3.org/2001/XMLSchema',
                        description='XML Schema',
                        builtin_namespace='XMLSchema',
-                       builtin_module_path='pyxb.binding.datatypes',
+                       builtin_module_path='pyxb_123.binding.datatypes',
                        in_scope_namespaces = { 'xs' : None })
 """Namespace and URI for the XMLSchema namespace (often C{xs}, or C{xsd})"""
 
@@ -256,7 +256,7 @@ namespace in the XML schema, so define it."""
 XML = _XML('http://www.w3.org/XML/1998/namespace',
            description='XML namespace',
            builtin_namespace='XML',
-           builtin_module_path='pyxb.binding.xml_',
+           builtin_module_path='pyxb_123.binding.xml_',
            is_undeclared_namespace=True,
            bound_prefix='xml',
            default_namespace=XHTML,
@@ -285,10 +285,10 @@ BuiltInNamespaces = [
 __InitializedBuiltinNamespaces = False
 
 def _InitializeBuiltinNamespaces (structures_module):
-    """Invoked at the end of the L{pyxb.xmlschema.structures} module to
+    """Invoked at the end of the L{pyxb_123.xmlschema.structures} module to
     initialize the component models of the built-in namespaces.
 
-    @param structures_module: The L{pyxb.xmlschema.structures} module may not
+    @param structures_module: The L{pyxb_123.xmlschema.structures} module may not
     be importable by that name at the time this is invoked (because it is
     still being processed), so it gets passed in as a parameter."""
     global __InitializedBuiltinNamespaces

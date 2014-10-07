@@ -23,7 +23,7 @@ xsd=u'''<?xml version="1.0" encoding="utf-8"?>
 '''
 
 #open('schema.xsd', 'w').write(xsd)
-code = pyxb.binding.generate.GeneratePython(schema_text=xsd)
+code = pyxb_123.binding.generate.GeneratePython(schema_text=xsd)
 #open('code.py', 'w').write(code)
 #print code
 
@@ -36,7 +36,7 @@ import unittest
 
 import pyxb_123.utils.domutils
 import pyxb_123.namespace
-pyxb.utils.domutils.BindingDOMSupport.DeclareNamespace(pyxb.namespace.XMLSchema, 'xs')
+pyxb_123.utils.domutils.BindingDOMSupport.DeclareNamespace(pyxb_123.namespace.XMLSchema, 'xs')
 
 class TestTrac_0094 (unittest.TestCase):
     body = 'something'

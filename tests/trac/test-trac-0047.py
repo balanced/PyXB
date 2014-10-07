@@ -60,7 +60,7 @@ xsd='''<?xml version="1.0" encoding="UTF-8"?>
 </schema>'''
 
 #open('schema.xsd', 'w').write(xsd)
-code = pyxb.binding.generate.GeneratePython(schema_text=xsd)
+code = pyxb_123.binding.generate.GeneratePython(schema_text=xsd)
 #open('code.py', 'w').write(code)
 #print code
 
@@ -74,7 +74,7 @@ import unittest
 class TestTrac_0047 (unittest.TestCase):
     def testEnum (self):
         self.assertEqual('missing', NilReasonEnumeration.Factory('missing'))
-        self.assertRaises(pyxb.SimpleTypeValueError, NilReasonEnumeration.Factory, 'notValid')
+        self.assertRaises(pyxb_123.SimpleTypeValueError, NilReasonEnumeration.Factory, 'notValid')
         self.assertEqual('other:myReason', NilReasonEnumeration.Factory('other:myReason'))
 
     def testDblNil (self):

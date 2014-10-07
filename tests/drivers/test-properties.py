@@ -11,7 +11,7 @@ import pyxb_123.binding.basis
 
 import os.path
 schema_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '../schemas/alt-po1.xsd'))
-code = pyxb.binding.generate.GeneratePython(schema_location=schema_path)
+code = pyxb_123.binding.generate.GeneratePython(schema_location=schema_path)
 #open('code.py', 'w').write(code)
 
 rv = compile(code, 'test', 'exec')
@@ -32,7 +32,7 @@ class TestProperties (unittest.TestCase):
 Anytown, AS  12345-6789'''
     street_xmlt = u'<street>%s</street>' % (street_content,)
     street_xmld = street_xmlt.encode('utf-8')
-    street_dom = pyxb.utils.domutils.StringToDOM(street_xmlt).documentElement
+    street_dom = pyxb_123.utils.domutils.StringToDOM(street_xmlt).documentElement
 
     address1_xmlt = u'<name>Customer</name><street>95 Main St</street>'
     address2_xmlt = u'<name>Sugar Mama</name><street>24 E. Dearling Ave.</street>'
@@ -57,7 +57,7 @@ Anytown, AS  12345-6789'''
     def testDOM_CTD_element (self):
         # NB: USAddress is a CTD, not an element.
         xmlt = u'<shipTo>%s</shipTo>' % (self.address1_xmlt,)
-        dom = pyxb.utils.domutils.StringToDOM(xmlt)
+        dom = pyxb_123.utils.domutils.StringToDOM(xmlt)
         addr2 = USAddress.Factory(_dom_node=dom.documentElement)
 
     def testPurchaseOrder (self):
@@ -69,13 +69,13 @@ Anytown, AS  12345-6789'''
         xml1d = xml1t.encode('utf-8')
         self.assertEqual(xmld, xml1d)
 
-        dom = pyxb.utils.domutils.StringToDOM(xml1t)
+        dom = pyxb_123.utils.domutils.StringToDOM(xml1t)
         po2 = purchaseOrder.createFromDOM(dom.documentElement)
         self.assertEqual(ToDOM(po2).toxml("utf-8"), xml1d)
 
         xml2t = '<purchaseOrder xmlns="http://www.example.com/altPO1"><shipTo><name>Customer</name><street>95 Main St</street></shipTo><billTo><name>Sugar Mama</name><street>24 E. Dearling Ave</street></billTo><comment>Thanks!</comment></purchaseOrder>'
         xml2d = xml2t.encode('utf-8')
-        bds = pyxb.utils.domutils.BindingDOMSupport()
+        bds = pyxb_123.utils.domutils.BindingDOMSupport()
         bds.setDefaultNamespace(Namespace)
         self.assertEqual(ToDOM(po2, dom_support=bds).toxml("utf-8"), xml2d)
 

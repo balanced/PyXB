@@ -19,7 +19,7 @@ In particular, it provides a L{base content handler class<BaseSAXHandler>}
 that maintains namespace context and element state in a stack; and a L{base
 element state class <SAXElementState>} which records the location of the
 element in the stream.  These classes are extended for specific parsing needs
-(e.g., L{pyxb.binding.saxer}).
+(e.g., L{pyxb_123.binding.saxer}).
 """
 
 from __future__ import print_function
@@ -112,7 +112,7 @@ class SAXInformationItem (object):
 
     element_decl = None
     """A reference to the
-    L{ElementDeclaration<pyxb.binding.content.ElementDeclaration>} used for
+    L{ElementDeclaration<pyxb_123.binding.content.ElementDeclaration>} used for
     the L{item}.  This will be C{None} for element content that does not have
     an enclosing CTD scope."""
 
@@ -138,19 +138,19 @@ class SAXElementState (object):
     __parentState = None
 
     def namespaceContext (self):
-        """The L{pyxb.namespace.resolution.NamespaceContext} used for this
+        """The L{pyxb_123.namespace.resolution.NamespaceContext} used for this
         binding."""
         return self.__namespaceContext
     __namespaceContext = None
 
     def expandedName (self):
-        """The L{expanded name<pyxb.namespace.ExpandedName>} of the
+        """The L{expanded name<pyxb_123.namespace.ExpandedName>} of the
         element."""
         return self.__expandedName
     __expandedName = None
 
     def location (self):
-        """The L{location<pyxb.utils.utility.Location>} corresponding to the
+        """The L{location<pyxb_123.utils.utility.Location>} corresponding to the
         element event."""
         return self.__location
     __location = None
@@ -162,7 +162,7 @@ class SAXElementState (object):
         This is a list, with each member being C{(content, element_use,
         maybe_element)}.  C{content} is text or a binding instance;
         C{element_use} is C{None} or the
-        L{ElementDeclaration<pyxb.binding.content.ElementDeclaration>} instance used to create
+        L{ElementDeclaration<pyxb_123.binding.content.ElementDeclaration>} instance used to create
         the content; and C{maybe_element} is C{True} iff the content is
         non-content text."""
         return self.__content
@@ -188,10 +188,10 @@ class SAXElementState (object):
         """Add the given binding instance as element content corresponding to
         the given use.
 
-        @param element: Any L{binding instance<pyxb.binding.basis._TypeBinding_mixin>}.
+        @param element: Any L{binding instance<pyxb_123.binding.basis._TypeBinding_mixin>}.
 
         @param element_decl: The L{element
-        use<pyxb.binding.content.ElementDeclaration>} in the containing complex type.
+        use<pyxb_123.binding.content.ElementDeclaration>} in the containing complex type.
         """
         self.__content.append(SAXInformationItem(location, element, True, element_decl))
 
@@ -199,11 +199,11 @@ class BaseSAXHandler (xml.sax.handler.ContentHandler, object):
     """A SAX handler class that maintains a stack of enclosing elements and
     manages namespace declarations.
 
-    This is the base for L{pyxb.utils.saxdom._DOMSAXHandler} and
-    L{pyxb.binding.saxer.PyXBSAXHandler}.
+    This is the base for L{pyxb_123.utils.saxdom._DOMSAXHandler} and
+    L{pyxb_123.binding.saxer.PyXBSAXHandler}.
     """
 
-    # An instance of L{pyxb.utils.utility.Location} that will be used to
+    # An instance of L{pyxb_123.utils.utility.Location} that will be used to
     # construct the locations of events as they are received.
     __locationTemplate = None
 
@@ -240,7 +240,7 @@ class BaseSAXHandler (xml.sax.handler.ContentHandler, object):
         """Return the namespace context used for QName resolution within the
         current element.
 
-        @return: An instance of L{pyxb.namespace.resolution.NamespaceContext}"""
+        @return: An instance of L{pyxb_123.namespace.resolution.NamespaceContext}"""
         return self.__namespaceContext
     __namespaceContext = None
 
@@ -277,7 +277,7 @@ class BaseSAXHandler (xml.sax.handler.ContentHandler, object):
 
         @return: C{self}
         """
-        self.__namespaceContext = pyxb.namespace.resolution.NamespaceContext(default_namespace=self.__fallbackNamespace,
+        self.__namespaceContext = pyxb_123.namespace.resolution.NamespaceContext(default_namespace=self.__fallbackNamespace,
                                                                              target_namespace=self.__targetNamespace,
                                                                              including_context=self.__includingContext,
                                                                              finalize_target_namespace=False)
@@ -307,14 +307,14 @@ class BaseSAXHandler (xml.sax.handler.ContentHandler, object):
         XML documents.
 
         @keyword location_base: An object to be recorded as the base of all
-        L{pyxb.utils.utility.Location} instances associated with events and
+        L{pyxb_123.utils.utility.Location} instances associated with events and
         objects handled by the parser.
         """
         self.__includingContext = kw.pop('including_context', None)
         self.__fallbackNamespace = kw.pop('fallback_namespace', None)
         self.__elementStateConstructor = kw.pop('element_state_constructor', SAXElementState)
         self.__targetNamespace = kw.pop('target_namespace', None)
-        self.__locationTemplate = pyxb.utils.utility.Location(kw.pop('location_base', None))
+        self.__locationTemplate = pyxb_123.utils.utility.Location(kw.pop('location_base', None))
 
     def setDocumentLocator (self, locator):
         """Save the locator object."""
@@ -332,7 +332,7 @@ class BaseSAXHandler (xml.sax.handler.ContentHandler, object):
         ns_ctx = self.__nextNamespaceContext
         if ns_ctx is None:
             assert self.__namespaceContext is not None
-            ns_ctx = pyxb.namespace.resolution.NamespaceContext(parent_context=self.__namespaceContext)
+            ns_ctx = pyxb_123.namespace.resolution.NamespaceContext(parent_context=self.__namespaceContext)
             self.__nextNamespaceContext = ns_ctx
         return ns_ctx
 
@@ -353,11 +353,11 @@ class BaseSAXHandler (xml.sax.handler.ContentHandler, object):
         self.__flushPendingText()
 
         # Get the element name, which is already a tuple with the namespace assigned.
-        expanded_name = pyxb.namespace.ExpandedName(name, fallback_namespace=self.__fallbackNamespace)
+        expanded_name = pyxb_123.namespace.ExpandedName(name, fallback_namespace=self.__fallbackNamespace)
 
         # See if this element supports a targetNamespace attribute.  xs:schema
         # and wsdl:definitions both do.
-        tns_attr = pyxb.namespace.resolution.NamespaceContext._TargetNamespaceAttribute(expanded_name)
+        tns_attr = pyxb_123.namespace.resolution.NamespaceContext._TargetNamespaceAttribute(expanded_name)
 
         # If we need to assign a target namespace, we need a new context.
         # Otherwise we use the context created from pending namespace
@@ -487,9 +487,9 @@ def make_parser (**kw):
 
     @keyword fallback_namespace: The namespace to use for lookups of
     unqualified names in absent namespaces; see
-    L{pyxb.namespace.ExpandedName}.  This keyword is not used by this
+    L{pyxb_123.namespace.ExpandedName}.  This keyword is not used by this
     function, but is passed to the C{content_handler_constructor}.
-    @type fallback_namespace: L{pyxb.namespace.Namespace}
+    @type fallback_namespace: L{pyxb_123.namespace.Namespace}
     """
     content_handler_constructor = kw.pop('content_handler_constructor', BaseSAXHandler)
     content_handler = kw.pop('content_handler', None)

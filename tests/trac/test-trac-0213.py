@@ -21,7 +21,7 @@ xst = '''<?xml version="1.0" encoding="UTF-8"?>
 </xs:schema>
 '''
 
-code = pyxb.binding.generate.GeneratePython(schema_text=xst)
+code = pyxb_123.binding.generate.GeneratePython(schema_text=xst)
 #print code
 
 rv = compile(code, 'test', 'exec')

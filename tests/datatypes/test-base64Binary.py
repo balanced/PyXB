@@ -33,13 +33,13 @@ class Test_base64Binary (unittest.TestCase):
             self.assertEqual(xsd.base64Binary(ciphertext, _from_xml=True), plaintexd)
 
     def testInvalid (self):
-        self.assertRaises(pyxb.SimpleTypeValueError, xsd.base64Binary, u'Z', _from_xml=True)
-        self.assertRaises(pyxb.SimpleTypeValueError, xsd.base64Binary, u'Zg', _from_xml=True)
-        self.assertRaises(pyxb.SimpleTypeValueError, xsd.base64Binary, u'Zg=', _from_xml=True)
+        self.assertRaises(pyxb_123.SimpleTypeValueError, xsd.base64Binary, u'Z', _from_xml=True)
+        self.assertRaises(pyxb_123.SimpleTypeValueError, xsd.base64Binary, u'Zg', _from_xml=True)
+        self.assertRaises(pyxb_123.SimpleTypeValueError, xsd.base64Binary, u'Zg=', _from_xml=True)
         self.assertEqual(u'f'.encode('utf-8'), xsd.base64Binary(u'Zg==', _from_xml=True))
-        self.assertRaises(pyxb.SimpleTypeValueError, xsd.base64Binary, u'ZZZ=', _from_xml=True)
-        self.assertRaises(pyxb.SimpleTypeValueError, xsd.base64Binary, u'ZZ==', _from_xml=True)
-        self.assertRaises(pyxb.SimpleTypeValueError, xsd.base64Binary, u'ZE==', _from_xml=True)
+        self.assertRaises(pyxb_123.SimpleTypeValueError, xsd.base64Binary, u'ZZZ=', _from_xml=True)
+        self.assertRaises(pyxb_123.SimpleTypeValueError, xsd.base64Binary, u'ZZ==', _from_xml=True)
+        self.assertRaises(pyxb_123.SimpleTypeValueError, xsd.base64Binary, u'ZE==', _from_xml=True)
 
 if __name__ == '__main__':
     unittest.main()

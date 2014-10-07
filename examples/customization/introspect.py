@@ -13,7 +13,7 @@ import inspect
 
 # Utility function to identify classes of interest
 def _isSupersedable (cls):
-    return inspect.isclass(cls) and issubclass(cls, pyxb.binding.basis._DynamicCreate_mixin)
+    return inspect.isclass(cls) and issubclass(cls, pyxb_123.binding.basis._DynamicCreate_mixin)
 
 def _injectClasses ():
     import sys

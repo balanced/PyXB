@@ -19,7 +19,7 @@ xst = '''<?xml version="1.0" encoding="UTF-8"?>
 </xs:schema>
 '''
 
-code = pyxb.binding.generate.GeneratePython(schema_text=xst)
+code = pyxb_123.binding.generate.GeneratePython(schema_text=xst)
 #print code
 
 rv = compile(code, 'test', 'exec')
@@ -45,11 +45,11 @@ class TestTrac0212 (unittest.TestCase):
         self.assertEqual(u'pre', oc[0].value)
         self.assertEqual(instance.mString, oc[1].value)
         self.assertEqual(u'post', oc[2].value)
-        nec = list(pyxb.NonElementContent(instance))
+        nec = list(pyxb_123.NonElementContent(instance))
         self.assertEqual(2, len(nec))
         self.assertEqual(nec[0], u'pre')
         self.assertEqual(nec[1], u'post')
-        self.assertEqual(u'prepost', ''.join(pyxb.NonElementContent(instance)))
+        self.assertEqual(u'prepost', ''.join(pyxb_123.NonElementContent(instance)))
 
 if __name__ == '__main__':
     unittest.main()

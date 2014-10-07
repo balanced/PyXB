@@ -7,11 +7,11 @@ import cablelabs.title as title
 import cablelabs.vod30 as vod30
 import custom
 
-pyxb.utils.domutils.BindingDOMSupport.DeclareNamespace(core.Namespace, 'core')
-pyxb.utils.domutils.BindingDOMSupport.DeclareNamespace(offer.Namespace, 'offer')
-pyxb.utils.domutils.BindingDOMSupport.DeclareNamespace(title.Namespace, 'title')
-pyxb.utils.domutils.BindingDOMSupport.DeclareNamespace(vod30.Namespace, 'vod30')
-pyxb.utils.domutils.BindingDOMSupport.DeclareNamespace(custom.Namespace, 'custom')
+pyxb_123.utils.domutils.BindingDOMSupport.DeclareNamespace(core.Namespace, 'core')
+pyxb_123.utils.domutils.BindingDOMSupport.DeclareNamespace(offer.Namespace, 'offer')
+pyxb_123.utils.domutils.BindingDOMSupport.DeclareNamespace(title.Namespace, 'title')
+pyxb_123.utils.domutils.BindingDOMSupport.DeclareNamespace(vod30.Namespace, 'vod30')
+pyxb_123.utils.domutils.BindingDOMSupport.DeclareNamespace(custom.Namespace, 'custom')
 
 adi3 = vod30.ADI3()
 
@@ -35,7 +35,7 @@ ext = core.ExtType(venue)
 # The assignment of a value to the Ext member is validated.
 try:
     cgt.Ext = ext
-except pyxb.ValidationError as e:
+except pyxb_123.ValidationError as e:
     print(e.details())
     raise
 
@@ -52,7 +52,7 @@ cgt.PosterRef.append(core.AssetRefType(uriId='urn:aPoster'))
 adi3.ContentGroup.append(cgt)
 try:
     xmls = adi3.toDOM().toprettyxml()
-except pyxb.ValidationError as e:
+except pyxb_123.ValidationError as e:
     print(e.details())
     raise
 
@@ -63,7 +63,7 @@ print(xmls)
 # the schema too complicated to replicate here.
 try:
     instance = core.CreateFromDocument(xmls)
-except pyxb.ValidationError as e:
+except pyxb_123.ValidationError as e:
     print(e.details())
     raise
 

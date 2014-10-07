@@ -18,5 +18,5 @@ running::
 This will download the latest set of schema from OpenGIS, translate many of
 the standards, and install the whole system including the new bindings.  The
 namespaces that are currently supported by PyXB are listed at
-http://pyxb.sourceforge.net/bundles.html#opengis.  Additional namespaces can
+http://pyxb_123.sourceforge.net/bundles.html#opengis.  Additional namespaces can
 be added by modifying genbind to include them, and re-running the script.

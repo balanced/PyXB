@@ -563,7 +563,7 @@ class TestUniqueIdentifier (unittest.TestCase):
     def testRepr (self):
         u1 = UniqueIdentifier()
         rep = repr(u1)
-        self.assertEqual('pyxb.utils.utility.UniqueIdentifier(%s)' % (repr(u1.uid()),), repr(u1))
+        self.assertEqual('pyxb_123.utils.utility.UniqueIdentifier(%s)' % (repr(u1.uid()),), repr(u1))
         import pyxb_123.utils.utility
         u1b = eval(repr(u1))
         self.assertEqual(id(u1), id(u1b))

@@ -20,7 +20,7 @@ range = gml.rangeSet(DataBlock=gml.DataBlockType(gml.rangeParameters(cv), data))
 rgc = gml.RectifiedGridCoverage(domain, range)
 rgc.id = '_%x' % (id(rgc),)
 
-bds = pyxb.utils.domutils.BindingDOMSupport(namespace_prefix_map={ gml.Namespace : 'gml' , gmlapp.Namespace : 'app' })
+bds = pyxb_123.utils.domutils.BindingDOMSupport(namespace_prefix_map={ gml.Namespace : 'gml' , gmlapp.Namespace : 'app' })
 
 xml = rgc.toxml("utf-8", bds=bds)
 instance = gml.CreateFromDocument(xml)

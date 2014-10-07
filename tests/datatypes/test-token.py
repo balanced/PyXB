@@ -29,7 +29,7 @@ class Test_token (unittest.TestCase):
     def testInvalid (self):
         for (lexical, value) in self.Cases:
             if value is not None:
-                self.assertRaises(pyxb.SimpleTypeValueError, xsd.token, lexical)
+                self.assertRaises(pyxb_123.SimpleTypeValueError, xsd.token, lexical)
 
 if __name__ == '__main__':
     unittest.main()

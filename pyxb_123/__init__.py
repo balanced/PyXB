@@ -6,21 +6,21 @@ Schema<http://www.w3.org/XML/Schema>} Bindings, and is pronounced
 Python objects following rules specified by an XML Schema document.
 
 This is the top-level entrypoint to the PyXB system.  Importing this
-gets you all the L{exceptions<pyxb.exceptions_.PyXBException>}, and
-L{pyxb.namespace}.  For more functionality, delve into these
+gets you all the L{exceptions<pyxb_123.exceptions_.PyXBException>}, and
+L{pyxb_123.namespace}.  For more functionality, delve into these
 submodules:
 
- - L{pyxb.xmlschema} Module holding the
-   L{structures<pyxb.xmlschema.structures>} that convert XMLSchema
+ - L{pyxb_123.xmlschema} Module holding the
+   L{structures<pyxb_123.xmlschema.structures>} that convert XMLSchema
    from a DOM model to a Python class model based on the XMLSchema
    components.  Use this when you need to operate on the component
    model.
 
- - L{pyxb.binding} Module used to generate the bindings and at runtime
+ - L{pyxb_123.binding} Module used to generate the bindings and at runtime
    to support the generated bindings.  Use this if you need to use the
    binding model or content model.
 
- - L{pyxb.utils} Common utilities used in parsing, generating, and
+ - L{pyxb_123.utils} Common utilities used in parsing, generating, and
    executing.  The submodules must be imported separately.
 
 """
@@ -63,7 +63,7 @@ class cscRoot (object):
 __version__ = '1.2.3'
 """The version of PyXB"""
 
-__url__ = 'http://pyxb.sourceforge.net'
+__url__ = 'http://pyxb_123.sourceforge.net'
 """The URL for PyXB's homepage"""
 
 __license__ = 'Apache License 2.0'
@@ -110,15 +110,15 @@ XMLStyle_minidom = 0
 provide location information.  It produces DOM instances."""
 
 XMLStyle_saxdom = 1
-"""Use pyxb.utils.saxdom for XML processing.  This is the slowest, but both
+"""Use pyxb_123.utils.saxdom for XML processing.  This is the slowest, but both
 provides location information and generates a DOM instance."""
 
 XMLStyle_saxer = 2
-"""Use pyxb.binding.saxer when converting documents to binding instances.
+"""Use pyxb_123.binding.saxer when converting documents to binding instances.
 This style supports location information in the bindings.  It produces binding
 instances directly, without going through a DOM stage, so is faster than
-XMLStyle_saxdom.  However, since the pyxb.xmlschema.structures classes require
-a DOM model, XMLStyle_saxdom will be used for pyxb.utils.domutils.StringToDOM
+XMLStyle_saxdom.  However, since the pyxb_123.xmlschema.structures classes require
+a DOM model, XMLStyle_saxdom will be used for pyxb_123.utils.domutils.StringToDOM
 if this style is selected."""
 
 _XMLStyle = XMLStyle_saxer
@@ -176,15 +176,15 @@ Applies only at compilation time; dynamic changes are ignored.
 class ValidationConfig (object):
     """Class holding configuration related to validation.
 
-    L{pyxb.GlobalValidationConfig} is available to influence validation in all
+    L{pyxb_123.GlobalValidationConfig} is available to influence validation in all
     contexts.  Each binding class has a reference to an instance of this
     class, which can be inspected using
-    L{pyxb.binding.basis._TypeBinding_mixin._GetValidationConfig} and changed
-    using L{pyxb.binding.basis._TypeBinding_mixin._SetValidationConfig}.  Each
+    L{pyxb_123.binding.basis._TypeBinding_mixin._GetValidationConfig} and changed
+    using L{pyxb_123.binding.basis._TypeBinding_mixin._SetValidationConfig}.  Each
     binding instance has a reference inherited from its class which can be
-    inspected using L{pyxb.binding.basis._TypeBinding_mixin._validationConfig}
+    inspected using L{pyxb_123.binding.basis._TypeBinding_mixin._validationConfig}
     and changed using
-    L{pyxb.binding.basis._TypeBinding_mixin._setValidationConfig}.
+    L{pyxb_123.binding.basis._TypeBinding_mixin._setValidationConfig}.
 
     This allows fine control on a per class and per-instance basis.
 
@@ -194,7 +194,7 @@ class ValidationConfig (object):
 
     L{contentInfluencesGeneration}, L{orphanElementInContent}, and
     L{invalidElementInContent} control how
-    L{pyxb.binding.basis.complexTypeDefinition.orderedContent} affects
+    L{pyxb_123.binding.basis.complexTypeDefinition.orderedContent} affects
     generated documents.
     """
 
@@ -222,8 +222,8 @@ class ValidationConfig (object):
         from a binding instance.
 
         This applies at invocation of
-        L{toDOM()<pyxb.binding.basis._TypeBinding_mixin.toDOM>}.
-        L{toxml()<pyxb.binding.basis._TypeBinding_mixin.toDOM>} invokes C{toDOM()}."""
+        L{toDOM()<pyxb_123.binding.basis._TypeBinding_mixin.toDOM>}.
+        L{toxml()<pyxb_123.binding.basis._TypeBinding_mixin.toDOM>} invokes C{toDOM()}."""
         return self.__forDocument
     def _setForDocument (self, value):
         """Configure whether validation should be performed when generating
@@ -398,14 +398,14 @@ def NonElementContent (instance):
     The catenated text of the non-element content of an instance can
     be obtained with::
 
-       text = u''.join(pyxb.NonElementContent(instance))
+       text = u''.join(pyxb_123.NonElementContent(instance))
 
-    @param instance: An instance of L{pyxb.binding.basis.complexTypeDefinition}.
+    @param instance: An instance of L{pyxb_123.binding.basis.complexTypeDefinition}.
 
     @return: an iterator producing text values
     """
     import pyxb_123.binding.basis
-    return pyxb.binding.basis.NonElementContent.ContentIterator(instance.orderedContent())
+    return pyxb_123.binding.basis.NonElementContent.ContentIterator(instance.orderedContent())
 
 ## Local Variables:
 ## fill-column:78

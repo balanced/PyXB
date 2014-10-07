@@ -18,7 +18,7 @@ xsd='''<?xml version="1.0" encoding="UTF-8"?>
   <xs:element name="instance" type="structure"/>
 </xs:schema>'''
 
-code = pyxb.binding.generate.GeneratePython(schema_text=xsd)
+code = pyxb_123.binding.generate.GeneratePython(schema_text=xsd)
 #open('code.py', 'w').write(code)
 
 rv = compile(code, 'test', 'exec')
@@ -31,10 +31,10 @@ import unittest
 class TestTrac0023 (unittest.TestCase):
     def testBasic (self):
         self.assertEqual(4, len(structure._AttributeMap))
-        self.assertEqual(pyxb.binding.xml_.STD_ANON_lang, structure._AttributeMap[pyxb.namespace.XML.createExpandedName('lang')].dataType())
-        self.assertEqual(pyxb.binding.xml_.STD_ANON_space, structure._AttributeMap[pyxb.namespace.XML.createExpandedName('space')].dataType())
-        self.assertEqual(pyxb.binding.datatypes.anyURI, structure._AttributeMap[pyxb.namespace.XML.createExpandedName('base')].dataType())
-        self.assertEqual(pyxb.binding.datatypes.ID, structure._AttributeMap[pyxb.namespace.XML.createExpandedName('id')].dataType())
+        self.assertEqual(pyxb_123.binding.xml_.STD_ANON_lang, structure._AttributeMap[pyxb_123.namespace.XML.createExpandedName('lang')].dataType())
+        self.assertEqual(pyxb_123.binding.xml_.STD_ANON_space, structure._AttributeMap[pyxb_123.namespace.XML.createExpandedName('space')].dataType())
+        self.assertEqual(pyxb_123.binding.datatypes.anyURI, structure._AttributeMap[pyxb_123.namespace.XML.createExpandedName('base')].dataType())
+        self.assertEqual(pyxb_123.binding.datatypes.ID, structure._AttributeMap[pyxb_123.namespace.XML.createExpandedName('id')].dataType())
 
 if __name__ == '__main__':
     unittest.main()

@@ -41,11 +41,11 @@ def _DumpDOM (n, depth=0):
 
     pfx = ' ' * depth
     if (xml.dom.Node.ELEMENT_NODE == n.nodeType):
-        print('%sElement[%d] %s %s with %d children' % (pfx, n._indexInParent(), n, pyxb.namespace.ExpandedName(n.name), len(n.childNodes)))
-        ins = pyxb.namespace.resolution.NamespaceContext.GetNodeContext(n).inScopeNamespaces()
+        print('%sElement[%d] %s %s with %d children' % (pfx, n._indexInParent(), n, pyxb_123.namespace.ExpandedName(n.name), len(n.childNodes)))
+        ins = pyxb_123.namespace.resolution.NamespaceContext.GetNodeContext(n).inScopeNamespaces()
         print('%s%s' % (pfx, ' ; '.join([ '%s=%s' % (_k, _v.uri()) for (_k, _v) in ins.items()])))
         for (k, v) in n.attributes.iteritems():
-            print('%s %s=%s' % (pfx, pyxb.namespace.ExpandedName(k), v))
+            print('%s %s=%s' % (pfx, pyxb_123.namespace.ExpandedName(k), v))
         for cn in n.childNodes:
             _DumpDOM(cn, depth+1)
     elif (xml.dom.Node.TEXT_NODE == n.nodeType):
@@ -57,7 +57,7 @@ def _DumpDOM (n, depth=0):
     else:
         print('UNRECOGNIZED %s' % (n.nodeType,))
 
-class _DOMSAXHandler (pyxb.utils.saxutils.BaseSAXHandler):
+class _DOMSAXHandler (pyxb_123.utils.saxutils.BaseSAXHandler):
     """SAX handler class that transforms events into a DOM tree."""
 
     def document (self):
@@ -80,7 +80,7 @@ class _DOMSAXHandler (pyxb.utils.saxutils.BaseSAXHandler):
         (this_state, parent_state, ns_ctx, name_en) = super(_DOMSAXHandler, self).startElementNS(name, qname, attrs)
         this_state.__attributes = NamedNodeMap()
         for name in attrs.getNames():
-            attr_en = pyxb.namespace.ExpandedName(name)
+            attr_en = pyxb_123.namespace.ExpandedName(name)
             value = attrs.getValue(name)
             this_state.__attributes._addItem(Attr(expanded_name=attr_en, namespace_context=ns_ctx, value=value, location=this_state.location()))
 
@@ -100,7 +100,7 @@ def parse (stream, **kw):
     """Parse a stream containing an XML document and return the DOM tree
     representing its contents.
 
-    Keywords not described here are passed to L{pyxb.utils.saxutils.make_parser}.
+    Keywords not described here are passed to L{pyxb_123.utils.saxutils.make_parser}.
 
     @param stream: An object presenting the standard file C{read} interface
     from which the document can be read.  The content should be data, not text.
@@ -112,7 +112,7 @@ def parse (stream, **kw):
     """
 
     kw['content_handler_constructor'] = _DOMSAXHandler
-    saxer = pyxb.utils.saxutils.make_parser(**kw)
+    saxer = pyxb_123.utils.saxutils.make_parser(**kw)
     handler = saxer.getContentHandler()
     saxer.parse(stream)
     return handler.document()
@@ -124,16 +124,16 @@ def parseString (xml_text, **kw):
     @param xml_text: the XML content to be parsed, in a text representation."""
     # SAX parser operates on data, not text.
     xmld = xml_text
-    if isinstance(xmld, pyxb.utils.types_.TextType):
-        xmld = xmld.encode(pyxb._InputEncoding)
+    if isinstance(xmld, pyxb_123.utils.types_.TextType):
+        xmld = xmld.encode(pyxb_123._InputEncoding)
     return parse(io.BytesIO(xmld), **kw)
 
-class Node (xml.dom.Node, pyxb.utils.utility.Locatable_mixin):
+class Node (xml.dom.Node, pyxb_123.utils.utility.Locatable_mixin):
     """Base for the minimal DOM interface required by PyXB."""
     def __init__ (self, node_type, **kw):
         location = kw.pop('location', None)
         if location is not None:
-            pyxb.utils.utility.Locatable_mixin.__init__(self, location=location)
+            pyxb_123.utils.utility.Locatable_mixin.__init__(self, location=location)
         self.__nodeType = node_type
         self.__parentNode = None
         self.__indexInParent = None
@@ -204,7 +204,7 @@ class Node (xml.dom.Node, pyxb.utils.utility.Locatable_mixin):
         return self.getAttributeNodeNS(ns_uri, local_name) is not None
 
     def getAttributeNodeNS (self, ns_uri, local_name):
-        return self.__attributes._getAttr(pyxb.namespace.ExpandedName(ns_uri, local_name))
+        return self.__attributes._getAttr(pyxb_123.namespace.ExpandedName(ns_uri, local_name))
 
     def getAttributeNS (self, ns_uri, local_name):
         rv = self.getAttributeNodeNS(ns_uri, local_name)
@@ -243,7 +243,7 @@ class NamedNodeMap (object):
         return self.__members[index]
 
     def _addItem (self, attr):
-        assert pyxb.namespace.resolution.NamespaceContext.GetNodeContext(attr) is not None
+        assert pyxb_123.namespace.resolution.NamespaceContext.GetNodeContext(attr) is not None
         self.__members.append(attr)
         en = attr._expandedName
         if en is not None:

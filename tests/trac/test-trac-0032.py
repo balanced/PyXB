@@ -29,7 +29,7 @@ xsd='''<?xml version="1.0" encoding="UTF-8"?>
   <xs:element name="multi" type="tMultiAggregate"/>
 </xs:schema>'''
 
-code = pyxb.binding.generate.GeneratePython(schema_text=xsd)
+code = pyxb_123.binding.generate.GeneratePython(schema_text=xsd)
 #open('code.py', 'w').write(code)
 
 rv = compile(code, 'test', 'exec')
@@ -51,8 +51,8 @@ class TestTrac0032 (unittest.TestCase):
         self.assertEqual(1, len(instance.orderedContent()))
         self.assertTrue(instance.validateBinding())
 
-        self.assertRaises(pyxb.SimpleTypeValueError, SET_li, instance, 1)
-        self.assertRaises(pyxb.SimpleTypeValueError, SET_li, instance, [[1,2,3], [2,3,4]])
+        self.assertRaises(pyxb_123.SimpleTypeValueError, SET_li, instance, 1)
+        self.assertRaises(pyxb_123.SimpleTypeValueError, SET_li, instance, [[1,2,3], [2,3,4]])
 
         instance = aggregate([1,2,3])
         self.assertEqual(3, len(instance.li))
@@ -77,8 +77,8 @@ class TestTrac0032 (unittest.TestCase):
 
     def testMulti (self):
         instance = multi()
-        self.assertRaises(pyxb.SimpleTypeValueError, SET_li, instance, 1)
-        self.assertRaises(pyxb.SimpleTypeValueError, SET_li, instance, [1, 2, 3])
+        self.assertRaises(pyxb_123.SimpleTypeValueError, SET_li, instance, 1)
+        self.assertRaises(pyxb_123.SimpleTypeValueError, SET_li, instance, [1, 2, 3])
         instance.li = [[1,2,3], [2,3,4]]
         self.assertEqual(2, len(instance.li))
         self.assertTrue(instance.validateBinding())
@@ -90,9 +90,9 @@ class TestTrac0032 (unittest.TestCase):
         self.assertEqual(2, len(instance.orderedContent()))
 
         # The individual lists here aren't recognized as li elements, so this becomes something unknown
-        self.assertRaises(pyxb.MixedContentError, multi, [[1,2,3], [2,3,4]])
+        self.assertRaises(pyxb_123.MixedContentError, multi, [[1,2,3], [2,3,4]])
 
-        self.assertRaises(pyxb.SimpleTypeValueError, multi, li=[1,2,3])
+        self.assertRaises(pyxb_123.SimpleTypeValueError, multi, li=[1,2,3])
 
         instance = multi(li=[[1,2,3],[2,3,4]])
         self.assertEqual(2, len(instance.li))
@@ -101,7 +101,7 @@ class TestTrac0032 (unittest.TestCase):
 
         instance = multi(li=[])
         instance.li.append(xs.int(1))
-        self.assertRaises(pyxb.SimpleTypeValueError, instance.validateBinding)
+        self.assertRaises(pyxb_123.SimpleTypeValueError, instance.validateBinding)
 
         instance = CreateFromDocument('<multi><li>1</li></multi>')
         self.assertEqual(1, len(instance.li))

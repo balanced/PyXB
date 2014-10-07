@@ -9,7 +9,7 @@ from xml.dom import Node
 
 import os.path
 schema_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '../schemas/test-mg-choice.xsd'))
-code = pyxb.binding.generate.GeneratePython(schema_location=schema_path)
+code = pyxb_123.binding.generate.GeneratePython(schema_location=schema_path)
 rv = compile(code, 'test', 'exec')
 eval(rv)
 
@@ -40,43 +40,43 @@ class TestMGChoice (unittest.TestCase):
     def testSingleChoice (self):
         xmlt = u'<ns1:choice xmlns:ns1="URN:test-mg-choice"><first/></ns1:choice>'
         xmld = xmlt.encode('utf-8')
-        dom = pyxb.utils.domutils.StringToDOM(xmlt)
+        dom = pyxb_123.utils.domutils.StringToDOM(xmlt)
         instance = choice.createFromDOM(dom.documentElement)
         self.onlyFirst(instance)
         self.assertEqual(ToDOM(instance).toxml("utf-8"), xmld)
 
         xmlt = u'<ns1:choice xmlns:ns1="URN:test-mg-choice"><second/></ns1:choice>'
         xmld = xmlt.encode('utf-8')
-        dom = pyxb.utils.domutils.StringToDOM(xmlt)
+        dom = pyxb_123.utils.domutils.StringToDOM(xmlt)
         instance = choice.createFromDOM(dom.documentElement)
         self.onlySecond(instance)
         self.assertEqual(ToDOM(instance).toxml("utf-8"), xmld)
 
         xmlt = u'<ns1:choice xmlns:ns1="URN:test-mg-choice"><third/></ns1:choice>'
         xmld = xmlt.encode('utf-8')
-        dom = pyxb.utils.domutils.StringToDOM(xmlt)
+        dom = pyxb_123.utils.domutils.StringToDOM(xmlt)
         instance = choice.createFromDOM(dom.documentElement)
         self.onlyThird(instance)
         self.assertEqual(ToDOM(instance).toxml("utf-8"), xmld)
 
     def testMissingSingle (self):
         xmlt = u'<ns1:choice xmlns:ns1="URN:test-mg-choice"/>'
-        dom = pyxb.utils.domutils.StringToDOM(xmlt)
+        dom = pyxb_123.utils.domutils.StringToDOM(xmlt)
         self.assertRaises(IncompleteElementContentError, choice.createFromDOM, dom.documentElement)
 
     def testTooManySingle (self):
         xmlt = u'<ns1:choice xmlns:ns1="URN:test-mg-choice"><first/><second/></ns1:choice>'
-        dom = pyxb.utils.domutils.StringToDOM(xmlt)
+        dom = pyxb_123.utils.domutils.StringToDOM(xmlt)
         self.assertRaises(UnrecognizedContentError, choice.createFromDOM, dom.documentElement)
 
         xmlt = u'<ns1:choice xmlns:ns1="URN:test-mg-choice"><second/><third/></ns1:choice>'
-        dom = pyxb.utils.domutils.StringToDOM(xmlt)
+        dom = pyxb_123.utils.domutils.StringToDOM(xmlt)
         self.assertRaises(UnrecognizedContentError, choice.createFromDOM, dom.documentElement)
 
     def testMultichoice (self):
         xmlt = u'<ns1:multiplechoice xmlns:ns1="URN:test-mg-choice"/>'
         xmld = xmlt.encode('utf-8')
-        dom = pyxb.utils.domutils.StringToDOM(xmlt)
+        dom = pyxb_123.utils.domutils.StringToDOM(xmlt)
         instance = multiplechoice.createFromDOM(dom.documentElement)
         self.assertEqual(0, len(instance.first))
         self.assertEqual(0, len(instance.second))
@@ -85,7 +85,7 @@ class TestMGChoice (unittest.TestCase):
 
         xmlt = u'<ns1:multiplechoice xmlns:ns1="URN:test-mg-choice"><first/></ns1:multiplechoice>'
         xmld = xmlt.encode('utf-8')
-        dom = pyxb.utils.domutils.StringToDOM(xmlt)
+        dom = pyxb_123.utils.domutils.StringToDOM(xmlt)
         instance = multiplechoice.createFromDOM(dom.documentElement)
         self.assertEqual(1, len(instance.first))
         self.assertEqual(0, len(instance.second))
@@ -94,7 +94,7 @@ class TestMGChoice (unittest.TestCase):
 
         xmlt = u'<ns1:multiplechoice xmlns:ns1="URN:test-mg-choice"><first/><first/><first/><third/></ns1:multiplechoice>'
         xmld = xmlt.encode('utf-8')
-        dom = pyxb.utils.domutils.StringToDOM(xmlt)
+        dom = pyxb_123.utils.domutils.StringToDOM(xmlt)
         instance = multiplechoice.createFromDOM(dom.documentElement)
         self.assertEqual(3, len(instance.first))
         self.assertEqual(0, len(instance.second))
@@ -104,7 +104,7 @@ class TestMGChoice (unittest.TestCase):
     def testMultichoiceOrderImportant (self):
         xmlt = u'<ns1:multiplechoice xmlns:ns1="URN:test-mg-choice"><first/><third/><first/></ns1:multiplechoice>'
         xmld = xmlt.encode('utf-8')
-        dom = pyxb.utils.domutils.StringToDOM(xmlt)
+        dom = pyxb_123.utils.domutils.StringToDOM(xmlt)
         instance = multiplechoice.createFromDOM(dom.documentElement)
         self.assertEqual(2, len(instance.first))
         self.assertEqual(0, len(instance.second))
@@ -116,7 +116,7 @@ class TestMGChoice (unittest.TestCase):
     def testAltMultichoice (self):
         xmlt = u'<ns1:altmultiplechoice xmlns:ns1="URN:test-mg-choice"/>'
         xmld = xmlt.encode('utf-8')
-        dom = pyxb.utils.domutils.StringToDOM(xmlt)
+        dom = pyxb_123.utils.domutils.StringToDOM(xmlt)
         instance = altmultiplechoice.createFromDOM(dom.documentElement)
         self.assertEqual(0, len(instance.first))
         self.assertEqual(0, len(instance.second))
@@ -125,7 +125,7 @@ class TestMGChoice (unittest.TestCase):
 
         xmlt = u'<ns1:altmultiplechoice xmlns:ns1="URN:test-mg-choice"><first/></ns1:altmultiplechoice>'
         xmld = xmlt.encode('utf-8')
-        dom = pyxb.utils.domutils.StringToDOM(xmlt)
+        dom = pyxb_123.utils.domutils.StringToDOM(xmlt)
         instance = altmultiplechoice.createFromDOM(dom.documentElement)
         self.assertEqual(1, len(instance.first))
         self.assertEqual(0, len(instance.second))
@@ -134,7 +134,7 @@ class TestMGChoice (unittest.TestCase):
 
         xmlt = u'<ns1:altmultiplechoice xmlns:ns1="URN:test-mg-choice"><first/><first/><third/></ns1:altmultiplechoice>'
         xmld = xmlt.encode('utf-8')
-        dom = pyxb.utils.domutils.StringToDOM(xmlt)
+        dom = pyxb_123.utils.domutils.StringToDOM(xmlt)
         instance = altmultiplechoice.createFromDOM(dom.documentElement)
         self.assertEqual(2, len(instance.first))
         self.assertEqual(0, len(instance.second))
@@ -143,18 +143,18 @@ class TestMGChoice (unittest.TestCase):
 
     def testTooManyChoices (self):
         xmlt = u'<ns1:altmultiplechoice xmlns:ns1="URN:test-mg-choice"><first/><first/><first/><third/></ns1:altmultiplechoice>'
-        dom = pyxb.utils.domutils.StringToDOM(xmlt)
+        dom = pyxb_123.utils.domutils.StringToDOM(xmlt)
         self.assertRaises(UnrecognizedContentError, altmultiplechoice.createFromDOM, dom.documentElement)
 
     def testFixedMultichoice (self):
         xmlt = u'<fixedMultichoice xmlns="URN:test-mg-choice"></fixedMultichoice>'
-        dom = pyxb.utils.domutils.StringToDOM(xmlt)
+        dom = pyxb_123.utils.domutils.StringToDOM(xmlt)
         instance = fixedMultichoice.createFromDOM(dom.documentElement)
         xmlt = u'<ns1:fixedMultichoice xmlns:ns1="URN:test-mg-choice"><A/><A/></ns1:fixedMultichoice>'
-        dom = pyxb.utils.domutils.StringToDOM(xmlt)
+        dom = pyxb_123.utils.domutils.StringToDOM(xmlt)
         instance = fixedMultichoice.createFromDOM(dom.documentElement)
         xmlt = u'<ns1:fixedMultichoice xmlns:ns1="URN:test-mg-choice"><A/><B/></ns1:fixedMultichoice>'
-        dom = pyxb.utils.domutils.StringToDOM(xmlt)
+        dom = pyxb_123.utils.domutils.StringToDOM(xmlt)
         self.assertRaises(UnrecognizedContentError, fixedMultichoice.createFromDOM, dom.documentElement)
 
 if __name__ == '__main__':

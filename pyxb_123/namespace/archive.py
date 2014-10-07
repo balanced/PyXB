@@ -148,7 +148,7 @@ class NamespaceArchive (object):
             if archive_path is not None:
 
                 # Get archive instances for everything in the archive path
-                candidate_files = pyxb.utils.utility.GetMatchingFiles(archive_path, cls.__ArchivePattern_re,
+                candidate_files = pyxb_123.utils.utility.GetMatchingFiles(archive_path, cls.__ArchivePattern_re,
                                                                       default_path_wildcard='+', default_path=GetArchivePath(),
                                                                       prefix_pattern='&', prefix_substituend=DefaultArchivePrefix)
                 for afn in candidate_files:
@@ -157,7 +157,7 @@ class NamespaceArchive (object):
                         archive_set.add(nsa)
                     except pickle.UnpicklingError:
                         _log.exception('Cannot unpickle archive %s', afn)
-                    except pyxb.NamespaceArchiveError:
+                    except pyxb_123.NamespaceArchiveError:
                         _log.exception('Cannot process archive %s', afn)
 
                 # Do this for two reasons: first, to get an iterable that won't
@@ -171,7 +171,7 @@ class NamespaceArchive (object):
                 archive_map = { }
                 for a in archive_set:
                     archive_map[a.generationUID()] = a
-                archive_graph = pyxb.utils.utility.Graph()
+                archive_graph = pyxb_123.utils.utility.Graph()
                 for a in ordered_archives:
                     prereqs = a._unsatisfiedModulePrerequisites()
                     if 0 < len(prereqs):
@@ -191,7 +191,7 @@ class NamespaceArchive (object):
                 archive_scc = archive_graph.sccOrder()
                 for scc in archive_scc:
                     if 1 < len(scc):
-                        raise pyxb.LogicError("Cycle in archive dependencies.  How'd you do that?\n  " + "\n  ".join([ _a.archivePath() for _a in scc ]))
+                        raise pyxb_123.LogicError("Cycle in archive dependencies.  How'd you do that?\n  " + "\n  ".join([ _a.archivePath() for _a in scc ]))
                     archive = scc[0]
                     if not (archive in archive_set):
                         archive.discard()
@@ -225,7 +225,7 @@ class NamespaceArchive (object):
     def __locateModuleRecords (self):
         self.__moduleRecords = set()
         namespaces = set()
-        for ns in pyxb.namespace.utility.AvailableNamespaces():
+        for ns in pyxb_123.namespace.utility.AvailableNamespaces():
             # @todo allow these; right now it's usually the XML
             # namespace and we're not prepared to reconcile
             # redefinitions of those components.
@@ -276,12 +276,12 @@ class NamespaceArchive (object):
         self.__namespaces = set()
         if generation_uid is not None:
             if archive_path:
-                raise pyxb.LogicError('NamespaceArchive: cannot define both namespaces and archive_path')
+                raise pyxb_123.LogicError('NamespaceArchive: cannot define both namespaces and archive_path')
             self.__generationUID = generation_uid
             self.__locateModuleRecords()
         elif archive_path is not None:
             if generation_uid is not None:
-                raise pyxb.LogicError('NamespaceArchive: cannot provide generation_uid with archive_path')
+                raise pyxb_123.LogicError('NamespaceArchive: cannot provide generation_uid with archive_path')
             self.__archivePath = archive_path
             self.__stage = self._STAGE_UNOPENED
             self.__isLoadable = loadable
@@ -295,7 +295,7 @@ class NamespaceArchive (object):
     def add (self, namespace):
         """Add the given namespace to the set that is to be stored in this archive."""
         if namespace.isAbsentNamespace():
-            raise pyxb.NamespaceArchiveError('Cannot archive absent namespace')
+            raise pyxb_123.NamespaceArchiveError('Cannot archive absent namespace')
         self.__namespaces.add(namespace)
 
     def update (self, namespace_set):
@@ -326,7 +326,7 @@ class NamespaceArchive (object):
 
         fmt = unpickler.load()
         if self.__PickleFormat != fmt:
-            raise pyxb.NamespaceArchiveError('Archive format is %s, require %s' % (fmt, self.__PickleFormat))
+            raise pyxb_123.NamespaceArchiveError('Archive format is %s, require %s' % (fmt, self.__PickleFormat))
 
         self.__generationUID = unpickler.load()
 
@@ -354,7 +354,7 @@ class NamespaceArchive (object):
             for mr in mrs:
                 mr2 = mr.namespace().lookupModuleRecordByUID(mr.generationUID())
                 if not (mr2 in self.__moduleRecords):
-                    raise pyxb.NamespaceArchiveError('Lost module record %s %s from %s' % (mr.namespace(), mr.generationUID(), self.archivePath()))
+                    raise pyxb_123.NamespaceArchiveError('Lost module record %s %s from %s' % (mr.namespace(), mr.generationUID(), self.archivePath()))
 
     def _unsatisfiedModulePrerequisites (self):
         prereq_uids = set()
@@ -370,7 +370,7 @@ class NamespaceArchive (object):
                 continue
             depends_on = self.__NamespaceArchives.get(uid)
             if depends_on is None:
-                raise pyxb.NamespaceArchiveError('%s: archive depends on unavailable archive %s' % (self.archivePath(), uid))
+                raise pyxb_123.NamespaceArchiveError('%s: archive depends on unavailable archive %s' % (self.archivePath(), uid))
             depends_on._readToStage(stage)
 
     def __validateModules (self):
@@ -380,7 +380,7 @@ class NamespaceArchive (object):
             for base_uid in mr.dependsOnExternal():
                 xmr = ns.lookupModuleRecordByUID(base_uid)
                 if xmr is None:
-                    raise pyxb.NamespaceArchiveError('Module %s depends on external module %s, not available in archive path' % (mr.generationUID(), base_uid))
+                    raise pyxb_123.NamespaceArchiveError('Module %s depends on external module %s, not available in archive path' % (mr.generationUID(), base_uid))
                 if not xmr.isIncorporated():
                     _log.info('Need to incorporate data from %s', xmr)
                 else:
@@ -392,7 +392,7 @@ class NamespaceArchive (object):
                         continue
                     cross_objects = names.intersection(ns.categoryMap(cat).iterkeys())
                     if 0 < len(cross_objects):
-                        raise pyxb.NamespaceArchiveError('Archive %s namespace %s module %s origin %s archive/active conflict on category %s: %s' % (self.__archivePath, ns, mr, origin, cat, " ".join(cross_objects)))
+                        raise pyxb_123.NamespaceArchiveError('Archive %s namespace %s module %s origin %s archive/active conflict on category %s: %s' % (self.__archivePath, ns, mr, origin, cat, " ".join(cross_objects)))
                     _log.info('%s no conflicts on %d names', cat, len(names))
 
     def __readComponentSet (self, unpickler):
@@ -408,7 +408,7 @@ class NamespaceArchive (object):
     __unpickler = None
     def _readToStage (self, stage):
         if self.__stage is None:
-            raise pyxb.NamespaceArchiveError('Attempt to read from invalid archive %s' % (self,))
+            raise pyxb_123.NamespaceArchiveError('Attempt to read from invalid archive %s' % (self,))
         try:
             while self.__stage < stage:
                 if self.__stage < self._STAGE_uid:
@@ -430,7 +430,7 @@ class NamespaceArchive (object):
                     self.__readComponentSet(self.__unpickler)
                     self.__unpickler = None
                     continue
-                raise pyxb.LogicError('Too many stages (at %s, want %s)' % (self.__stage, stage))
+                raise pyxb_123.LogicError('Too many stages (at %s, want %s)' % (self.__stage, stage))
         except:
             self.__stage = None
             self.__unpickler = None
@@ -482,7 +482,7 @@ class NamespaceArchive (object):
             archive_path = '??'
         return 'NSArchive@%s' % (archive_path,)
 
-class _ArchivableObject_mixin (pyxb.cscRoot):
+class _ArchivableObject_mixin (pyxb_123.cscRoot):
     """Mix-in to any object that can be stored in a namespace within an archive."""
 
     # Need to set this per category item
@@ -492,7 +492,7 @@ class _ArchivableObject_mixin (pyxb.cscRoot):
     def _setObjectOrigin (self, object_origin, override=False):
         if (self.__objectOrigin is not None) and (not override):
             if  self.__objectOrigin != object_origin:
-                raise pyxb.LogicError('Inconsistent origins for object %s: %s %s' % (self, self.__objectOrigin, object_origin))
+                raise pyxb_123.LogicError('Inconsistent origins for object %s: %s %s' % (self, self.__objectOrigin, object_origin))
         else:
             self.__objectOrigin = object_origin
 
@@ -500,7 +500,7 @@ class _ArchivableObject_mixin (pyxb.cscRoot):
         #assert self.__objectOrigin is not None
         if self._objectOrigin() is not None:
             return getattr(super(_ArchivableObject_mixin, self), '_prepareForArchive_csc', lambda *_args,**_kw: self)(self._objectOrigin().moduleRecord())
-        assert not isinstance(self, pyxb.xmlschema.structures._NamedComponent_mixin)
+        assert not isinstance(self, pyxb_123.xmlschema.structures._NamedComponent_mixin)
 
     def _updateFromOther_csc (self, other):
         return getattr(super(_ArchivableObject_mixin, self), '_updateFromOther_csc', lambda *_args,**_kw: self)(other)
@@ -519,10 +519,10 @@ class _ArchivableObject_mixin (pyxb.cscRoot):
         assert self._objectOrigin()
         return builtin.BuiltInObjectUID == self._objectOrigin().generationUID()
 
-class _NamespaceArchivable_mixin (pyxb.cscRoot):
+class _NamespaceArchivable_mixin (pyxb_123.cscRoot):
     """Encapsulate the operations and data relevant to archiving namespaces.
 
-    This class mixes-in to L{pyxb.namespace.Namespace}"""
+    This class mixes-in to L{pyxb_123.namespace.Namespace}"""
 
     def _reset (self):
         """CSC extension to reset fields of a Namespace.
@@ -626,11 +626,11 @@ class _NamespaceArchivable_mixin (pyxb.cscRoot):
         This marks all archives in which the namespace appears, whether
         publically or privately, as not loadable."""
         if self._loadedFromArchive():
-            raise pyxb.NamespaceError(self, 'cannot mark not loadable when already loaded')
+            raise pyxb_123.NamespaceError(self, 'cannot mark not loadable when already loaded')
         for mr in self.moduleRecords():
             mr._setIsLoadable(False)
 
-class ModuleRecord (pyxb.utils.utility.PrivateTransient_mixin):
+class ModuleRecord (pyxb_123.utils.utility.PrivateTransient_mixin):
     __PrivateTransient = set()
 
     def namespace (self):
@@ -727,7 +727,7 @@ class ModuleRecord (pyxb.utils.utility.PrivateTransient_mixin):
         self.__isPublic = kw.get('is_public', False)
         self.__isIncorporated = kw.get('is_incorporated', False)
         self.__isLoadable = kw.get('is_loadable', True)
-        assert isinstance(generation_uid, pyxb.utils.utility.UniqueIdentifier)
+        assert isinstance(generation_uid, pyxb_123.utils.utility.UniqueIdentifier)
         self.__generationUID = generation_uid
         self.__modulePath = kw.get('module_path')
         self.__originMap = {}
@@ -738,7 +738,7 @@ class ModuleRecord (pyxb.utils.utility.PrivateTransient_mixin):
 
     def _setFromOther (self, other, archive):
         if (not self.__constructedLocally) or other.__constructedLocally:
-            raise pyxb.ImplementationError('Module record update requires local to be updated from archive')
+            raise pyxb_123.ImplementationError('Module record update requires local to be updated from archive')
         assert self.__generationUID == other.__generationUID
         assert self.__archive is None
         self.__isPublic = other.__isPublic
@@ -775,7 +775,7 @@ class ModuleRecord (pyxb.utils.utility.PrivateTransient_mixin):
                 elif existing_component._allowUpdateFromOther(component):
                     existing_component._updateFromOther(component)
                 else:
-                    raise pyxb.NamespaceError(self, 'Load attempted to override %s %s in %s' % (cat, local_name, self.namespace()))
+                    raise pyxb_123.NamespaceError(self, 'Load attempted to override %s %s in %s' % (cat, local_name, self.namespace()))
         self.markIncorporated()
     __categoryObjects = None
     __PrivateTransient.add('categoryObjects')
@@ -805,7 +805,7 @@ class ModuleRecord (pyxb.utils.utility.PrivateTransient_mixin):
     def __str__ (self):
         return 'MR[%s]@%s' % (self.generationUID(), self.namespace())
 
-class _ObjectOrigin (pyxb.utils.utility.PrivateTransient_mixin, pyxb.cscRoot):
+class _ObjectOrigin (pyxb_123.utils.utility.PrivateTransient_mixin, pyxb_123.cscRoot):
     """Marker class for objects that can serve as an origin for an object in a
     namespace."""
     __PrivateTransient = set()
@@ -888,7 +888,7 @@ class _SchemaOrigin (_ObjectOrigin):
     def match (self, **kw):
         """Determine whether this record matches the parameters.
 
-        @keyword schema: a L{pyxb.xmlschema.structures.Schema} instance from
+        @keyword schema: a L{pyxb_123.xmlschema.structures.Schema} instance from
         which the other parameters are obtained.
         @keyword location: a schema location (URI)
         @keyword signature: a schema signature
@@ -937,7 +937,7 @@ class NamespaceDependencies (object):
 
     def namespaceGraph (self, reset=False):
         if reset or (self.__namespaceGraph is None):
-            self.__namespaceGraph = pyxb.utils.utility.Graph()
+            self.__namespaceGraph = pyxb_123.utils.utility.Graph()
             for ns in self.rootNamespaces():
                 self.__namespaceGraph.addRoot(ns)
 
@@ -989,7 +989,7 @@ class NamespaceDependencies (object):
 
     def componentGraph (self, reset=False):
         if reset or (self.__componentGraph is None):
-            self.__componentGraph = pyxb.utils.utility.Graph()
+            self.__componentGraph = pyxb_123.utils.utility.Graph()
             all_components = set()
             for ns in self.siblingNamespaces():
                 [ all_components.add(_c) for _c in ns.components() if _c.hasBinding() ]
@@ -1013,7 +1013,7 @@ class NamespaceDependencies (object):
         if namespace is not None:
             namespace_set.add(namespace)
         if 0 == len(namespace_set):
-            raise pyxb.LogicError('NamespaceDependencies requires at least one root namespace')
+            raise pyxb_123.LogicError('NamespaceDependencies requires at least one root namespace')
         self.__rootNamespaces = namespace_set
 
 

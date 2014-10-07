@@ -53,19 +53,19 @@ def SetDOMImplementation (dom_implementation):
 def StringToDOM (xml_text, **kw):
     """Convert string to a DOM instance.
 
-    @see: L{pyxb._SetXMLStyle}."""
+    @see: L{pyxb_123._SetXMLStyle}."""
 
     xmlt = xml_text
-    if pyxb.XMLStyle_minidom == pyxb._XMLStyle:
-        parser = pyxb.utils.saxutils.make_parser()
+    if pyxb_123.XMLStyle_minidom == pyxb_123._XMLStyle:
+        parser = pyxb_123.utils.saxutils.make_parser()
         # minidom.parseString operates on text.  In Python 2, this means don't
         # feed it unicode.  In Python 3 this means don't feed it bytes.
         if isinstance(xmlt, unicode):                #!python3!
-            xmlt = xmlt.encode(pyxb._InputEncoding)  #!python3!
-#python3:        if isinstance(xmlt, pyxb.utils.types_.DataType):
-#python3:            xmlt = xmlt.decode(pyxb._InputEncoding)
+            xmlt = xmlt.encode(pyxb_123._InputEncoding)  #!python3!
+#python3:        if isinstance(xmlt, pyxb_123.utils.types_.DataType):
+#python3:            xmlt = xmlt.decode(pyxb_123._InputEncoding)
         return xml.dom.minidom.parseString(xmlt, parser)
-    return pyxb.utils.saxdom.parseString(xml_text, **kw)
+    return pyxb_123.utils.saxdom.parseString(xml_text, **kw)
 
 def NodeAttribute (node, attribute_ncname, attribute_ns=None):
     """Namespace-aware search for an optional attribute in a node.
@@ -75,15 +75,15 @@ def NodeAttribute (node, attribute_ncname, attribute_ns=None):
 
     @keyword attribute_ns: The namespace of the attribute.  Defaults to None
     since most attributes are not in a namespace.  Can be provided as either a
-    L{pyxb.namespace.Namespace} instance, or a string URI.
-    @type attribute_ns: C{None} or C{str} or C{unicode} or L{pyxb.namespace.Namespace}
+    L{pyxb_123.namespace.Namespace} instance, or a string URI.
+    @type attribute_ns: C{None} or C{str} or C{unicode} or L{pyxb_123.namespace.Namespace}
 
     @return: The value of the attribute, or C{None} if the attribute is not
     present.  (Unless C{None}, the value will always be a (unicode) string.)
     """
 
     ns_uri = attribute_ns
-    if isinstance(attribute_ns, pyxb.namespace.Namespace):
+    if isinstance(attribute_ns, pyxb_123.namespace.Namespace):
         ns_uri = attribute_ns.uri()
     attr = node.getAttributeNodeNS(ns_uri, attribute_ncname)
     if attr is None:
@@ -99,15 +99,15 @@ def NodeAttributeQName (node, attribute_ncname, attribute_ns=None):
 
     @return: The expanded name to which the value of the attribute resolves
     given current namespaces, or C{None} if the attribute is not present
-    @rtype: L{pyxb.namespace.ExpandedName}
+    @rtype: L{pyxb_123.namespace.ExpandedName}
     """
     attr = NodeAttribute(node, attribute_ncname, attribute_ns)
     if attr is None:
         return None
-    nsc = pyxb.namespace.resolution.NamespaceContext.GetNodeContext(node)
+    nsc = pyxb_123.namespace.resolution.NamespaceContext.GetNodeContext(node)
     return nsc.interpretQName(attr)
 
-def LocateUniqueChild (node, tag, absent_ok=True, namespace=pyxb.namespace.XMLSchema):
+def LocateUniqueChild (node, tag, absent_ok=True, namespace=pyxb_123.namespace.XMLSchema):
     """Locate a unique child of the DOM node.
 
     This function returns the sole child of node which is an ELEMENT_NODE
@@ -124,20 +124,20 @@ def LocateUniqueChild (node, tag, absent_ok=True, namespace=pyxb.namespace.XMLSc
     Default is the XMLSchema namespace.
     @rtype: C{xml.dom.Node}
 
-    @raise pyxb.SchemaValidationError: multiple elements are identified
-    @raise pyxb.SchemaValidationError: C{absent_ok} is C{False} and no element is identified.
+    @raise pyxb_123.SchemaValidationError: multiple elements are identified
+    @raise pyxb_123.SchemaValidationError: C{absent_ok} is C{False} and no element is identified.
     """
     candidate = None
     for cn in node.childNodes:
         if (xml.dom.Node.ELEMENT_NODE == cn.nodeType) and namespace.nodeIsNamed(cn, tag):
             if candidate:
-                raise pyxb.SchemaValidationError('Multiple %s elements nested in %s' % (tag, node.nodeName))
+                raise pyxb_123.SchemaValidationError('Multiple %s elements nested in %s' % (tag, node.nodeName))
             candidate = cn
     if (candidate is None) and not absent_ok:
-        raise pyxb.SchemaValidationError('Expected %s elements nested in %s' % (tag, node.nodeName))
+        raise pyxb_123.SchemaValidationError('Expected %s elements nested in %s' % (tag, node.nodeName))
     return candidate
 
-def LocateMatchingChildren (node, tag, namespace=pyxb.namespace.XMLSchema):
+def LocateMatchingChildren (node, tag, namespace=pyxb_123.namespace.XMLSchema):
     """Locate all children of the DOM node that have a particular tag.
 
     This function returns a list of children of node which are ELEMENT_NODE
@@ -182,16 +182,16 @@ def LocateFirstChildElement (node, absent_ok=True, require_unique=False, ignore_
     candidate = None
     for cn in node.childNodes:
         if xml.dom.Node.ELEMENT_NODE == cn.nodeType:
-            if ignore_annotations and pyxb.namespace.XMLSchema.nodeIsNamed(cn, 'annotation'):
+            if ignore_annotations and pyxb_123.namespace.XMLSchema.nodeIsNamed(cn, 'annotation'):
                 continue
             if require_unique:
                 if candidate:
-                    raise pyxb.SchemaValidationError('Multiple elements nested in %s' % (node.nodeName,))
+                    raise pyxb_123.SchemaValidationError('Multiple elements nested in %s' % (node.nodeName,))
                 candidate = cn
             else:
                 return cn
     if (candidate is None) and not absent_ok:
-        raise pyxb.SchemaValidationError('No elements nested in %s' % (node.nodeName,))
+        raise pyxb_123.SchemaValidationError('No elements nested in %s' % (node.nodeName,))
     return candidate
 
 def HasNonAnnotationChild (node):
@@ -201,7 +201,7 @@ def HasNonAnnotationChild (node):
     @rtype: C{bool}
     """
     for cn in node.childNodes:
-        if (xml.dom.Node.ELEMENT_NODE == cn.nodeType) and (not pyxb.namespace.XMLSchema.nodeIsNamed(cn, 'annotation')):
+        if (xml.dom.Node.ELEMENT_NODE == cn.nodeType) and (not pyxb_123.namespace.XMLSchema.nodeIsNamed(cn, 'annotation')):
             return True
     return False
 
@@ -225,7 +225,7 @@ def ExtractTextContent (node):
         elif xml.dom.Node.COMMENT_NODE == cn.nodeType:
             pass
         else:
-            raise pyxb.NonElementValidationError(cn)
+            raise pyxb_123.NonElementValidationError(cn)
     if 0 == len(text):
         return None
     return ''.join(text)
@@ -242,7 +242,7 @@ class _BDSNamespaceSupport (object):
     def defaultNamespace (self):
         """The registered default namespace.
 
-        @rtype: L{pyxb.namespace.Namespace}
+        @rtype: L{pyxb_123.namespace.Namespace}
         """
         return self.__defaultNamespace
     __defaultNamespace = None
@@ -257,14 +257,14 @@ class _BDSNamespaceSupport (object):
         @param default_namespace: The namespace to be defined as the default
         namespace in the top-level element of the document.  May be provided
         as a real namespace, or just its URI.
-        @type default_namespace: L{pyxb.namespace.Namespace} or C{str} or
+        @type default_namespace: L{pyxb_123.namespace.Namespace} or C{str} or
         C{unicode}.
         """
 
         if isinstance(default_namespace, basestring):
-            default_namespace = pyxb.namespace.NamespaceForURI(default_namespace, create_if_missing=True)
+            default_namespace = pyxb_123.namespace.NamespaceForURI(default_namespace, create_if_missing=True)
         if (default_namespace is not None) and default_namespace.isAbsentNamespace():
-            raise pyxb.UsageError('Default namespace must not be an absent namespace')
+            raise pyxb_123.UsageError('Default namespace must not be an absent namespace')
         self.__defaultNamespace = default_namespace
 
     def namespacePrefixMap (self):
@@ -277,7 +277,7 @@ class _BDSNamespaceSupport (object):
         """Add the given namespace as one to be used in this document.
 
         @param namespace: The namespace to be associated with the document.
-        @type namespace: L{pyxb.namespace.Namespace}
+        @type namespace: L{pyxb_123.namespace.Namespace}
 
         @keyword prefix: Optional prefix to be used with this namespace.  If
         not provided, a unique prefix is generated or a standard prefix is
@@ -289,13 +289,13 @@ class _BDSNamespaceSupport (object):
         not desired for specific prefix/namespace pairs).
 
         @todo: ensure multiple namespaces do not share the same prefix
-        @todo: provide default prefix in L{pyxb.namespace.Namespace}
+        @todo: provide default prefix in L{pyxb_123.namespace.Namespace}
         @todo: support multiple prefixes for each namespace
         """
-        if not isinstance(namespace, pyxb.namespace.Namespace):
-            raise pyxb.UsageError('declareNamespace: must be given a namespace instance')
+        if not isinstance(namespace, pyxb_123.namespace.Namespace):
+            raise pyxb_123.UsageError('declareNamespace: must be given a namespace instance')
         if namespace.isAbsentNamespace():
-            raise pyxb.UsageError('declareNamespace: namespace must not be an absent namespace')
+            raise pyxb_123.UsageError('declareNamespace: namespace must not be an absent namespace')
         if prefix is None:
             prefix = self.__namespaces.get(namespace)
         if prefix is None:
@@ -308,7 +308,7 @@ class _BDSNamespaceSupport (object):
         if prefix == self.__namespaces.get(namespace):
             return prefix
         if prefix in self.__prefixes:
-            raise pyxb.LogicError('Prefix %s is already in use' % (prefix,))
+            raise pyxb_123.LogicError('Prefix %s is already in use' % (prefix,))
         self.__namespaces[namespace] = prefix
         self.__prefixes.add(prefix)
         if add_to_map:
@@ -333,7 +333,7 @@ class _BDSNamespaceSupport (object):
         if (namespace is None) or namespace.isAbsentNamespace():
             return None
         if isinstance(namespace, basestring):
-            namespace = pyxb.namespace.NamespaceForURI(namespace, create_if_missing=True)
+            namespace = pyxb_123.namespace.NamespaceForURI(namespace, create_if_missing=True)
         if (self.__defaultNamespace == namespace) and enable_default_namespace:
             return None
         ns = self.__namespaces.get(namespace)
@@ -348,7 +348,7 @@ class _BDSNamespaceSupport (object):
     # Restore the namespace map to its default, which is the undeclared
     # namespace for XML schema instances (C{xsi}
     def __resetNamespacePrefixMap (self):
-        self.__namespacePrefixMap = { pyxb.namespace.XMLSchema_instance : 'xsi' }
+        self.__namespacePrefixMap = { pyxb_123.namespace.XMLSchema_instance : 'xsi' }
 
     def reset (self, prefix_map=False):
         """Reset this instance to the state it was when created.
@@ -364,12 +364,12 @@ class _BDSNamespaceSupport (object):
     def __init__ (self, default_namespace=None, namespace_prefix_map=None, inherit_from=None):
         """Create a new namespace declaration configuration.
 
-        @keyword default_namespace: Optional L{pyxb.namespace.Namespace}
+        @keyword default_namespace: Optional L{pyxb_123.namespace.Namespace}
         instance that serves as the default namespace (applies to unqualified
         names).
 
         @keyword namespace_prefix_map: Optional map from
-        L{pyxb.namespace.Namespace} instances to C{str} values that are to be
+        L{pyxb_123.namespace.Namespace} instances to C{str} values that are to be
         used as the corresponding namespace prefix when constructing
         U{qualified names<http://www.w3.org/TR/1999/REC-xml-names-19990114/#dt-qname>}.
 
@@ -396,9 +396,9 @@ class _BDSNamespaceSupport (object):
         if namespace_prefix_map is not None:
             prefixes = set()
             for (ns, pfx) in namespace_prefix_map.iteritems():
-                ns = pyxb.namespace.NamespaceInstance(ns)
+                ns = pyxb_123.namespace.NamespaceInstance(ns)
                 if pfx in prefixes:
-                    raise pyxb.LogicError('Cannot assign same prefix to multiple namespacess: %s' % (pfx,))
+                    raise pyxb_123.LogicError('Cannot assign same prefix to multiple namespacess: %s' % (pfx,))
                 prefixes.add(pfx)
                 self.__namespacePrefixMap[ns] = pfx
 
@@ -409,7 +409,7 @@ class BindingDOMSupport (object):
     def implementation (self):
         """The DOMImplementation object to be used.
 
-        Defaults to L{pyxb.utils.domutils.GetDOMImplementation()}, but can be
+        Defaults to L{pyxb_123.utils.domutils.GetDOMImplementation()}, but can be
         overridden in the constructor call using the C{implementation}
         keyword."""
         return self.__implementation
@@ -452,7 +452,7 @@ class BindingDOMSupport (object):
 
         @keyword default_namespace: The namespace to configure as the default
         for the document.  If not provided, there is no default namespace.
-        @type default_namespace: L{pyxb.namespace.Namespace}
+        @type default_namespace: L{pyxb_123.namespace.Namespace}
 
         @keyword require_xsi_type: If C{True}, an U{xsi:type
         <http://www.w3.org/TR/xmlschema-1/#xsi_type>} attribute should be
@@ -463,9 +463,9 @@ class BindingDOMSupport (object):
         instances to the preferred prefix to use for the namespace in xmlns
         declarations.  The default one assigns 'xsi' for the XMLSchema
         instance namespace.
-        @type namespace_prefix_map: C{map} from L{pyxb.namespace.Namespace} to C{str}
+        @type namespace_prefix_map: C{map} from L{pyxb_123.namespace.Namespace} to C{str}
 
-        @raise pyxb.LogicError: the same prefix is associated with multiple
+        @raise pyxb_123.LogicError: the same prefix is associated with multiple
         namespaces in the C{namespace_prefix_map}.
 
         """
@@ -521,13 +521,13 @@ class BindingDOMSupport (object):
         @type element: C{xml.dom.Element}
         @param expanded_name: The name of the attribute.  This may be a local
         name if the attribute is not in a namespace.
-        @type expanded_name: L{pyxb.namespace.Namespace} or C{str} or C{unicode}
+        @type expanded_name: L{pyxb_123.namespace.Namespace} or C{str} or C{unicode}
         @param value: The value of the attribute
         @type value: C{str} or C{unicode}
         """
         name = expanded_name
         namespace = None
-        if isinstance(name, pyxb.namespace.ExpandedName):
+        if isinstance(name, pyxb_123.namespace.ExpandedName):
             name = expanded_name.localName()
             namespace = expanded_name.namespace()
             # Attribute names do not use default namespace
@@ -545,10 +545,10 @@ class BindingDOMSupport (object):
         @rtype: C{xml.dom.Document}"""
         ns = self.__namespaceSupport.defaultNamespace()
         if ns is not None:
-            self.document().documentElement.setAttributeNS(pyxb.namespace.XMLNamespaces.uri(), 'xmlns', ns.uri())
+            self.document().documentElement.setAttributeNS(pyxb_123.namespace.XMLNamespaces.uri(), 'xmlns', ns.uri())
         for ( ns, pfx ) in self.__namespaceSupport.namespaces().iteritems():
             assert pfx is not None
-            self.document().documentElement.setAttributeNS(pyxb.namespace.XMLNamespaces.uri(), 'xmlns:%s' % (pfx,), ns.uri())
+            self.document().documentElement.setAttributeNS(pyxb_123.namespace.XMLNamespaces.uri(), 'xmlns:%s' % (pfx,), ns.uri())
         return self.document()
 
     def createChildElement (self, expanded_name, parent=None):
@@ -556,7 +556,7 @@ class BindingDOMSupport (object):
 
         @param expanded_name: The name of the element.  A plain string
         indicates a name in no namespace.
-        @type expanded_name: L{pyxb.namespace.ExpandedName} or C{str} or C{unicode}
+        @type expanded_name: L{pyxb_123.namespace.ExpandedName} or C{str} or C{unicode}
 
         @keyword parent: The node in the tree that will serve as the child's
         parent.  If C{None}, the document element is used.  (If there is no
@@ -571,9 +571,9 @@ class BindingDOMSupport (object):
         if parent is None:
             parent = self.__document
         if isinstance(expanded_name, (str, unicode)):
-            expanded_name = pyxb.namespace.ExpandedName(None, expanded_name)
-        if not isinstance(expanded_name, pyxb.namespace.ExpandedName):
-            raise pyxb.LogicError('Invalid type %s for expanded name' % (type(expanded_name),))
+            expanded_name = pyxb_123.namespace.ExpandedName(None, expanded_name)
+        if not isinstance(expanded_name, pyxb_123.namespace.ExpandedName):
+            raise pyxb_123.LogicError('Invalid type %s for expanded name' % (type(expanded_name),))
         ns = expanded_name.namespace()
         name = expanded_name.localName()
         ns_uri = xml.dom.EMPTY_NAMESPACE
@@ -597,7 +597,7 @@ class BindingDOMSupport (object):
         @rtype: C{( str, str )}"""
         ns = None
         if node.namespaceURI is not None:
-            ns = pyxb.namespace.NamespaceForURI(node.namespaceURI, create_if_missing=True)
+            ns = pyxb_123.namespace.NamespaceForURI(node.namespaceURI, create_if_missing=True)
         if node.ELEMENT_NODE == node.nodeType:
             name = node.tagName
         elif node.ATTRIBUTE_NODE == node.nodeType:
@@ -607,13 +607,13 @@ class BindingDOMSupport (object):
             if isinstance(name, tuple):
                 name = name[1]
         else:
-            raise pyxb.UsageError('Unable to determine name from DOM node %s' % (node,))
+            raise pyxb_123.UsageError('Unable to determine name from DOM node %s' % (node,))
         pfx = None
         local_name = name
         if 0 < name.find(':'):
             (pfx, local_name) = name.split(':', 1)
             if ns is None:
-                raise pyxb.LogicError('QName with prefix but no available namespace')
+                raise pyxb_123.LogicError('QName with prefix but no available namespace')
         ns_uri = None
         node_name = local_name
         if ns is not None:
@@ -650,7 +650,7 @@ class BindingDOMSupport (object):
         """Create a deep copy of the node in the target implementation.
 
         Used when converting a DOM instance from one implementation (e.g.,
-        L{pyxb.utils.saxdom}) into another (e.g., L{xml.dom.minidom})."""
+        L{pyxb_123.utils.saxdom}) into another (e.g., L{xml.dom.minidom})."""
         new_doc = self.implementation().createDocument(None, None, None)
         return self._deepClone(node, new_doc)
 
@@ -669,7 +669,7 @@ class BindingDOMSupport (object):
 
         # @todo This check is incomplete; is there a standard way to find the
         # implementation of an xml.dom.Node instance?
-        if isinstance(child, pyxb.utils.saxdom.Node):
+        if isinstance(child, pyxb_123.utils.saxdom.Node):
             child = self.cloneIntoImplementation(child)
         return parent.appendChild(child)
 

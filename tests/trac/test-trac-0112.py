@@ -41,7 +41,7 @@ xmlt = u'''<?xml version="1.0" encoding="utf-8"?><Element xmlns="urn:trac0112"><
 xmld = xmlt.encode('utf-8')
 
 
-code = pyxb.binding.generate.GeneratePython(schema_text=xsd)
+code = pyxb_123.binding.generate.GeneratePython(schema_text=xsd)
 #print code
 
 rv = compile(code, 'test', 'exec')
@@ -53,10 +53,10 @@ import unittest
 
 class TestTrac0112 (unittest.TestCase):
     def setUp (self):
-        pyxb.utils.domutils.BindingDOMSupport.SetDefaultNamespace(Namespace.uri())
+        pyxb_123.utils.domutils.BindingDOMSupport.SetDefaultNamespace(Namespace.uri())
 
     def tearDown (self):
-        pyxb.utils.domutils.BindingDOMSupport.SetDefaultNamespace(None)
+        pyxb_123.utils.domutils.BindingDOMSupport.SetDefaultNamespace(None)
 
     def testExample (self):
         instance = CreateFromDocument(xmlt)

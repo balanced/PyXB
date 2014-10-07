@@ -14,7 +14,7 @@ xsd='''<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
 </xsd:schema>'''
 
 #open('schema.xsd', 'w').write(xsd)
-code = pyxb.binding.generate.GeneratePython(schema_text=xsd)
+code = pyxb_123.binding.generate.GeneratePython(schema_text=xsd)
 #open('code.py', 'w').write(code)
 
 rv = compile(code, 'test', 'exec')
@@ -26,7 +26,7 @@ import unittest
 
 class TestTrac_0136 (unittest.TestCase):
     def tearDown (self):
-        pyxb.PreserveInputTimeZone(False)
+        pyxb_123.PreserveInputTimeZone(False)
 
     TS_p10 = '2012-05-14T16:36:02.157+10:00'
     TS_Z = '2012-05-14T06:36:02.157Z'
@@ -38,7 +38,7 @@ class TestTrac_0136 (unittest.TestCase):
         return self.Template % (ts,)
 
     def testNormalize (self):
-        pyxb.PreserveInputTimeZone(False)
+        pyxb_123.PreserveInputTimeZone(False)
         i_p10 = CreateFromDocument(self.genXML(self.TS_p10))
         i_Z = CreateFromDocument(self.genXML(self.TS_Z))
         self.assertEqual(i_p10, i_Z)
@@ -48,7 +48,7 @@ class TestTrac_0136 (unittest.TestCase):
         self.assertTrue(i_naive.tzinfo is None)
 
     def testUnnormalized (self):
-        pyxb.PreserveInputTimeZone(True)
+        pyxb_123.PreserveInputTimeZone(True)
         i_p10 = CreateFromDocument(self.genXML(self.TS_p10))
         i_Z = CreateFromDocument(self.genXML(self.TS_Z))
         self.assertEqual(i_p10, i_Z)

@@ -16,14 +16,14 @@ class TestState (SAXElementState):
         self.StateSequence.append(self)
         super(TestState, self).__init__(*args, **kw)
 
-BogusNamespace = pyxb.namespace.NamespaceInstance('urn:test-saxutils-bogus')
-books_ns = pyxb.namespace.NamespaceInstance('urn:loc.gov:books')
-isbn_ns = pyxb.namespace.NamespaceInstance('urn:ISBN:0-395-36341-6')
-xhtml_ns = pyxb.namespace.NamespaceInstance('http://www.w3.org/1999/xhtml')
+BogusNamespace = pyxb_123.namespace.NamespaceInstance('urn:test-saxutils-bogus')
+books_ns = pyxb_123.namespace.NamespaceInstance('urn:loc.gov:books')
+isbn_ns = pyxb_123.namespace.NamespaceInstance('urn:ISBN:0-395-36341-6')
+xhtml_ns = pyxb_123.namespace.NamespaceInstance('http://www.w3.org/1999/xhtml')
 
 class TestInScopeNames (unittest.TestCase):
     def show (self, node):
-        xmlns_map = pyxb.namespace.resolution.NamespaceContext.GetNodeContext(node).inScopeNamespaces()
+        xmlns_map = pyxb_123.namespace.resolution.NamespaceContext.GetNodeContext(node).inScopeNamespaces()
         #print '%s: %s' % (node.nodeName, ' ; '.join([ '%s=%s' % (_k, _v.uri()) for (_k, _v) in xmlns_map.items()]))
         return xmlns_map
 
@@ -32,8 +32,8 @@ class TestInScopeNames (unittest.TestCase):
 
     def stripUndeclaredNamespaces (self, xmlns_map):
         xmlns_map = xmlns_map.copy()
-        self.assertEqual(pyxb.namespace.XML.uri(), xmlns_map.pop('xml').uri())
-        self.assertEqual(pyxb.namespace.XMLNamespaces.uri(), xmlns_map.pop('xmlns').uri())
+        self.assertEqual(pyxb_123.namespace.XML.uri(), xmlns_map.pop('xml').uri())
+        self.assertEqual(pyxb_123.namespace.XMLNamespaces.uri(), xmlns_map.pop('xmlns').uri())
         return xmlns_map
 
     def test_6_2_2 (self):

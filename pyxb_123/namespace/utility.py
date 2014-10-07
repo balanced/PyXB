@@ -27,11 +27,11 @@ def NamespaceInstance (namespace):
     This is used when it is unclear whether the namespace is specified by URI
     or by instance or by any other mechanism we might dream up in the
     future."""
-    if isinstance(namespace, pyxb.namespace.Namespace):
+    if isinstance(namespace, pyxb_123.namespace.Namespace):
         return namespace
     if isinstance(namespace, basestring):
         return NamespaceForURI(namespace, True)
-    raise pyxb.LogicError('Cannot identify namespace from value of type %s' % (type(namespace),))
+    raise pyxb_123.LogicError('Cannot identify namespace from value of type %s' % (type(namespace),))
 
 def NamespaceForURI (uri, create_if_missing=False):
     """Given a URI, provide the L{Namespace} instance corresponding to it.
@@ -46,15 +46,15 @@ def NamespaceForURI (uri, create_if_missing=False):
     @type create_if_missing: C{bool}
     @return: The Namespace corresponding to C{uri}, if available
     @rtype: L{Namespace} or C{None}
-    @raise pyxb.LogicError: The uri is not a non-empty string
+    @raise pyxb_123.LogicError: The uri is not a non-empty string
     """
     if not isinstance(uri, (str, unicode)):
-        raise pyxb.LogicError('Cannot lookup absent namespaces')
+        raise pyxb_123.LogicError('Cannot lookup absent namespaces')
     if 0 == len(uri):
-        raise pyxb.LogicError('Namespace URIs must not be empty strings')
-    rv = pyxb.namespace.Namespace._NamespaceForURI(uri)
+        raise pyxb_123.LogicError('Namespace URIs must not be empty strings')
+    rv = pyxb_123.namespace.Namespace._NamespaceForURI(uri)
     if (rv is None) and create_if_missing:
-        rv = pyxb.namespace.Namespace(uri)
+        rv = pyxb_123.namespace.Namespace(uri)
     return rv
 
 def CreateAbsentNamespace ():
@@ -64,8 +64,8 @@ def CreateAbsentNamespace ():
     target namespace.  Absent namespaces are not stored in the infrastructure;
     it is your responsibility to hold on to the reference you get from this,
     because you won't be able to look it up."""
-    return pyxb.namespace.Namespace.CreateAbsentNamespace()
+    return pyxb_123.namespace.Namespace.CreateAbsentNamespace()
 
 def AvailableNamespaces ():
     """Return the complete set of Namespace instances known to the system."""
-    return pyxb.namespace.Namespace.AvailableNamespaces()
+    return pyxb_123.namespace.Namespace.AvailableNamespaces()

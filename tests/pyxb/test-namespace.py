@@ -75,9 +75,9 @@ class TestExpandedName (unittest.TestCase):
         self.assertEqual(en.localName(), ln)
         en2 = ExpandedName(en)
         self.assertEqual(en2, en)
-        dom = pyxb.utils.domutils.StringToDOM('<ns1:%s xmlns:ns1="%s" attr="52">content</ns1:%s>' % (ln, ns_uri, ln))
+        dom = pyxb_123.utils.domutils.StringToDOM('<ns1:%s xmlns:ns1="%s" attr="52">content</ns1:%s>' % (ln, ns_uri, ln))
         en = ExpandedName(dom.documentElement)
-        ns = pyxb.namespace.NamespaceForURI(ns_uri)
+        ns = pyxb_123.namespace.NamespaceForURI(ns_uri)
         self.assertTrue(ns is not None)
         self.assertEqual(ns, en.namespace())
         self.assertEqual(ln, en.localName())
@@ -91,7 +91,7 @@ class TestExpandedName (unittest.TestCase):
         child = dom.documentElement.firstChild
         self.assertTrue(child is not None)
         self.assertEqual(xml.dom.Node.TEXT_NODE, child.nodeType)
-        self.assertRaises(pyxb.LogicError, ExpandedName, child)
+        self.assertRaises(pyxb_123.LogicError, ExpandedName, child)
 
     def testMapping (self):
         an1 = ExpandedName(None, 'string')
@@ -124,8 +124,8 @@ class TestExpandedName (unittest.TestCase):
         self.assertTrue(en2 > s1)
 
     def testAbsent (self):
-        an = pyxb.namespace.CreateAbsentNamespace()
-        an2 = pyxb.namespace.CreateAbsentNamespace()
+        an = pyxb_123.namespace.CreateAbsentNamespace()
+        an2 = pyxb_123.namespace.CreateAbsentNamespace()
         self.assertNotEqual(an, an2)
         self.assertEqual(an.uri(), an2.uri())
         ln = 'local'
@@ -140,9 +140,9 @@ class TestExpandedName (unittest.TestCase):
         self.assertEqual(hash(en2), hash(en3))
 
     def testCategoryDeferral (self):
-        int_en = pyxb.namespace.ExpandedName(xsd, 'int')
+        int_en = pyxb_123.namespace.ExpandedName(xsd, 'int')
         self.assertEqual(xsd_module.int, int_en.typeBinding())
-        self.assertRaises(pyxb.NamespaceError, getattr, int_en, 'notACategory')
+        self.assertRaises(pyxb_123.NamespaceError, getattr, int_en, 'notACategory')
 
 class TestCategories (unittest.TestCase):
     def testXSDCategories (self):
@@ -153,14 +153,14 @@ class TestCategories (unittest.TestCase):
     def testStandard (self):
         def_map = xsd.categoryMap('typeDefinition')
         binding_map = xsd.categoryMap('typeBinding')
-        int_en = pyxb.namespace.ExpandedName(xsd, 'int')
+        int_en = pyxb_123.namespace.ExpandedName(xsd, 'int')
         self.assertEqual(xsd_module.int, binding_map['int'])
         self.assertEqual(xsd_module.int.SimpleTypeDefinition(), def_map['int'])
         self.assertEqual(int_en.typeDefinition(), def_map['int'])
         self.assertEqual(xsd_module.int, int_en.typeBinding())
 
     def testNoCategory (self):
-        self.assertRaises(pyxb.NamespaceError, pyxb.namespace.XMLSchema.categoryMap, 'not a category')
+        self.assertRaises(pyxb_123.NamespaceError, pyxb_123.namespace.XMLSchema.categoryMap, 'not a category')
 
 if '__main__' == __name__:
     unittest.main()

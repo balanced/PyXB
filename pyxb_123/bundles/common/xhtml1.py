@@ -6,7 +6,7 @@ import pyxb_123.bundles.common.raw.xhtml1 as _raw
 # types replace the global validation configuration with one where the
 # content list is strictly obeyed when generating documents.
 
-DefaultValidationConfig = pyxb.GlobalValidationConfig.copy()
+DefaultValidationConfig = pyxb_123.GlobalValidationConfig.copy()
 """The validation configuration that applies to complex types in this namespace."""
 
 DefaultValidationConfig._setContentInfluencesGeneration(DefaultValidationConfig.ALWAYS)
@@ -19,7 +19,7 @@ def _setValidationConfig ():
     import pyxb_123.binding.basis
 
     for (n, v) in inspect.getmembers(_raw):
-        if inspect.isclass(v) and issubclass(v, pyxb.binding.basis._TypeBinding_mixin):
+        if inspect.isclass(v) and issubclass(v, pyxb_123.binding.basis._TypeBinding_mixin):
             v._SetValidationConfig(DefaultValidationConfig)
 
 _setValidationConfig()

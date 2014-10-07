@@ -138,11 +138,11 @@ open('resp.xml', 'w').write(rxml)
 r = None
 try:
     r = DWML.CreateFromDocument(rxml)
-except pyxb.UnrecognizedContentError as e:
+except pyxb_123.UnrecognizedContentError as e:
     print('*** ERROR validating response:')
     print(e.details())
 if r is None:
-    pyxb.RequireValidWhenParsing(False)
+    pyxb_123.RequireValidWhenParsing(False)
     r = DWML.CreateFromDocument(rxml)
 
 # Start spitting out the processed data.

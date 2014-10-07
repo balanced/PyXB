@@ -195,7 +195,7 @@ for possible_bundle in possible_bundles:
         continue
     b_packages = []
     b_data = { }
-    for fp in pyxb.utils.utility.GetMatchingFiles('%s//' % (bundle_root,), init_re):
+    for fp in pyxb_123.utils.utility.GetMatchingFiles('%s//' % (bundle_root,), init_re):
         bundle_path = os.path.dirname(os.path.normpath(fp))
         try:
             package_relpath = os.path.relpath(bundle_path, setup_path)
@@ -209,7 +209,7 @@ for possible_bundle in possible_bundles:
                 package_relpath = package_relpath[len(prefix_path):]
         package = package_relpath.replace(os.path.sep, '.')
         b_packages.append(package)
-        wxs_files = [os.path.basename(_f) for _f in pyxb.utils.utility.GetMatchingFiles(bundle_path, wxs_re) ]
+        wxs_files = [os.path.basename(_f) for _f in pyxb_123.utils.utility.GetMatchingFiles(bundle_path, wxs_re) ]
         if wxs_files:
             b_data[package] = wxs_files
     if 0 < len(b_data):
@@ -221,7 +221,7 @@ setup(name='PyXB',
       description = 'PyXB ("pixbee") is a pure Python package that generates Python source code for classes that correspond to data structures defined by XMLSchema.',
       author='Peter A. Bigot',
       author_email='pabigot@users.sourceforge.net',
-      url='http://pyxb.sourceforge.net',
+      url='http://pyxb_123.sourceforge.net',
       # Also change in README.TXT, pyxb_123/__init__.py, and doc/conf.py
       version=version,
       license='Apache License 2.0',

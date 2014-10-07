@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Check all exceptions under pyxb.BindingError
+# Check all exceptions under pyxb_123.BindingError
 
 import logging
 if __name__ == '__main__':
@@ -26,7 +26,7 @@ class TestReservedNameError (unittest.TestCase):
 
     def testException (self):
         instance = trac26.eCTwSC(4)
-        with self.assertRaises(pyxb.ReservedNameError) as cm:
+        with self.assertRaises(pyxb_123.ReservedNameError) as cm:
             instance.toxml = 1
         e = cm.exception
         self.assertEqual(e.instance, instance)
@@ -47,7 +47,7 @@ class TestNotComplexContentError (unittest.TestCase):
     def testEmptyException (self):
         content = None
         instance = trac26.eEmpty()
-        with self.assertRaises(pyxb.NotComplexContentError) as cm:
+        with self.assertRaises(pyxb_123.NotComplexContentError) as cm:
             content = instance.orderedContent()
         e = cm.exception
         self.assertEqual(e.instance, instance)
@@ -55,7 +55,7 @@ class TestNotComplexContentError (unittest.TestCase):
     def testSimpleException (self):
         content = None
         instance = trac26.eCTwSC(4)
-        with self.assertRaises(pyxb.NotComplexContentError) as cm:
+        with self.assertRaises(pyxb_123.NotComplexContentError) as cm:
             content = instance.orderedContent()
         e = cm.exception
         self.assertEqual(e.instance, instance)
@@ -76,7 +76,7 @@ class TestNotSimpleContentError (unittest.TestCase):
     def testEmptyException (self):
         value = None
         instance = trac26.eEmpty()
-        with self.assertRaises(pyxb.NotSimpleContentError) as cm:
+        with self.assertRaises(pyxb_123.NotSimpleContentError) as cm:
             value = instance.value()
         e = cm.exception
         self.assertEqual(e.instance, instance)
@@ -84,7 +84,7 @@ class TestNotSimpleContentError (unittest.TestCase):
     def testComplexException (self):
         value = None
         instance = trac26.eUseAbstract(trac26.tConcSubCymru('un'))
-        with self.assertRaises(pyxb.NotSimpleContentError) as cm:
+        with self.assertRaises(pyxb_123.NotSimpleContentError) as cm:
             value = instance.value()
         e = cm.exception
         self.assertEqual(e.instance, instance)

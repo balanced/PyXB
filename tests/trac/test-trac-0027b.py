@@ -59,7 +59,7 @@ xsd='''<?xml version="1.0" encoding="UTF-8"?>
 </xs:schema>'''
 
 #open('test.xsd', 'w').write(xsd)
-code = pyxb.binding.generate.GeneratePython(schema_text=xsd)
+code = pyxb_123.binding.generate.GeneratePython(schema_text=xsd)
 #open('code.py', 'w').write(code)
 
 rv = compile(code, 'test', 'exec')
@@ -80,7 +80,7 @@ class TestTrac0027b (unittest.TestCase):
         instance = subElt1("test")
         self.assertEqual(instance.attr_def, 10)
         self.assertEqual(instance.attr_fixed, 20)
-        self.assertRaises(pyxb.ProhibitedAttributeError, lambda _i: _i.attr, instance)
+        self.assertRaises(pyxb_123.ProhibitedAttributeError, lambda _i: _i.attr, instance)
 
     def testSub2 (self):
         instance = subElt2("test")

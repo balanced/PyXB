@@ -13,7 +13,7 @@ from xml.dom import Node
 
 import os.path
 schema_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '../schemas/xsi-nil.xsd'))
-code = pyxb.binding.generate.GeneratePython(schema_location=schema_path)
+code = pyxb_123.binding.generate.GeneratePython(schema_location=schema_path)
 
 rv = compile(code, 'test', 'exec')
 eval(rv)
@@ -30,11 +30,11 @@ class TestXSIType (unittest.TestCase):
 
     def testFull (self):
         xmlt = u'<full xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">content</full>'
-        doc = pyxb.utils.domutils.StringToDOM(xmlt)
+        doc = pyxb_123.utils.domutils.StringToDOM(xmlt)
         instance = CreateFromDOM(doc.documentElement)
         self.assertEqual(instance, 'content')
         self.assertFalse(instance._isNil())
-        self.assertRaises(pyxb.NoNillableSupportError, instance._setIsNil)
+        self.assertRaises(pyxb_123.NoNillableSupportError, instance._setIsNil)
 
         xmlt = u'<full xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="false">content</full>'
         instance = CreateFromDOM(doc.documentElement)
@@ -48,22 +48,22 @@ class TestXSIType (unittest.TestCase):
 
     def testXFull (self):
         xmlt = u'<xfull xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">content</xfull>'
-        doc = pyxb.utils.domutils.StringToDOM(xmlt)
+        doc = pyxb_123.utils.domutils.StringToDOM(xmlt)
         instance = CreateFromDOM(doc.documentElement)
         self.assertEqual(instance, 'content')
         self.assertFalse(instance._isNil())
-        self.assertRaises(pyxb.NoNillableSupportError, instance._setIsNil)
+        self.assertRaises(pyxb_123.NoNillableSupportError, instance._setIsNil)
 
     def testOptional (self):
         xmlt = u'<optional xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">content</optional>'
-        doc = pyxb.utils.domutils.StringToDOM(xmlt)
+        doc = pyxb_123.utils.domutils.StringToDOM(xmlt)
         instance = CreateFromDOM(doc.documentElement)
         self.assertEqual(instance, 'content')
         self.assertFalse(instance._isNil())
         instance._setIsNil()
         self.assertTrue(instance._isNil())
 
-        saxer = pyxb.binding.saxer.make_parser(fallback_namespace=Namespace)
+        saxer = pyxb_123.binding.saxer.make_parser(fallback_namespace=Namespace)
         handler = saxer.getContentHandler()
         saxer.parse(io.StringIO(xmlt))
         instance = handler.rootObject()
@@ -72,7 +72,7 @@ class TestXSIType (unittest.TestCase):
 
     def testOptionalNilFalse (self):
         xmlt = u'<optional xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="false">content</optional>'
-        doc = pyxb.utils.domutils.StringToDOM(xmlt)
+        doc = pyxb_123.utils.domutils.StringToDOM(xmlt)
         instance = CreateFromDOM(doc.documentElement)
         self.assertEqual(instance, 'content')
         self.assertFalse(instance._isNil())
@@ -81,12 +81,12 @@ class TestXSIType (unittest.TestCase):
 
     def testOptionalNilEETag (self):
         xmlt = u'<optional xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"/>'
-        doc = pyxb.utils.domutils.StringToDOM(xmlt)
+        doc = pyxb_123.utils.domutils.StringToDOM(xmlt)
         instance = CreateFromDOM(doc.documentElement)
         self.assertEqual(instance, '')
         self.assertTrue(instance._isNil())
 
-        saxer = pyxb.binding.saxer.make_parser(fallback_namespace=Namespace)
+        saxer = pyxb_123.binding.saxer.make_parser(fallback_namespace=Namespace)
         handler = saxer.getContentHandler()
         saxer.parse(io.StringIO(xmlt))
         instance = handler.rootObject()
@@ -95,12 +95,12 @@ class TestXSIType (unittest.TestCase):
 
     def testOptionalNilSETag (self):
         xmlt = u'<optional xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"></optional>'
-        doc = pyxb.utils.domutils.StringToDOM(xmlt)
+        doc = pyxb_123.utils.domutils.StringToDOM(xmlt)
         instance = CreateFromDOM(doc.documentElement)
         self.assertEqual(instance, '')
         self.assertTrue(instance._isNil())
 
-        saxer = pyxb.binding.saxer.make_parser(fallback_namespace=Namespace)
+        saxer = pyxb_123.binding.saxer.make_parser(fallback_namespace=Namespace)
         handler = saxer.getContentHandler()
         saxer.parse(io.StringIO(xmlt))
         instance = handler.rootObject()
@@ -109,12 +109,12 @@ class TestXSIType (unittest.TestCase):
 
     def testOptionalNilSCETag (self):
         xmlt = u'<optional xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"><!-- comment --></optional>'
-        doc = pyxb.utils.domutils.StringToDOM(xmlt)
+        doc = pyxb_123.utils.domutils.StringToDOM(xmlt)
         instance = CreateFromDOM(doc.documentElement)
         self.assertEqual(instance, '')
         self.assertTrue(instance._isNil())
 
-        saxer = pyxb.binding.saxer.make_parser(fallback_namespace=Namespace)
+        saxer = pyxb_123.binding.saxer.make_parser(fallback_namespace=Namespace)
         handler = saxer.getContentHandler()
         saxer.parse(io.StringIO(xmlt))
         instance = handler.rootObject()
@@ -123,16 +123,16 @@ class TestXSIType (unittest.TestCase):
 
     def testNilOptionalSpaceContent (self):
         xmlt = u'<optional xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"> </optional>'
-        self.assertRaises(pyxb.ContentInNilInstanceError, CreateFromDocument, xmlt)
+        self.assertRaises(pyxb_123.ContentInNilInstanceError, CreateFromDocument, xmlt)
 
     def testNilComplexSpaceContent (self):
         xmlt = u'<complex xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"> </complex>'
-        self.assertRaises(pyxb.ContentInNilInstanceError, CreateFromDocument, xmlt)
+        self.assertRaises(pyxb_123.ContentInNilInstanceError, CreateFromDocument, xmlt)
 
     def testComplexInternal (self):
         xmlt = u'<complex><full>full content</full><optional>optional content</optional></complex>'
         xmld = xmlt.encode('utf-8')
-        doc = pyxb.utils.domutils.StringToDOM(xmlt)
+        doc = pyxb_123.utils.domutils.StringToDOM(xmlt)
         instance = CreateFromDOM(doc.documentElement)
         self.assertEqual(instance.full, 'full content')
         self.assertEqual(instance.optional, 'optional content')
@@ -140,7 +140,7 @@ class TestXSIType (unittest.TestCase):
         self.assertEqual(instance.toDOM().documentElement.toxml("utf-8"), xmld)
         instance.validateBinding()
 
-        saxer = pyxb.binding.saxer.make_parser(fallback_namespace=Namespace)
+        saxer = pyxb_123.binding.saxer.make_parser(fallback_namespace=Namespace)
         handler = saxer.getContentHandler()
         saxer.parse(io.StringIO(xmlt))
         instance = handler.rootObject()
@@ -150,7 +150,7 @@ class TestXSIType (unittest.TestCase):
 
         xmlt = u'<complex xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><full>full content</full><optional xsi:nil="true"></optional></complex>'
         xmld = xmlt.encode('utf-8')
-        doc = pyxb.utils.domutils.StringToDOM(xmlt)
+        doc = pyxb_123.utils.domutils.StringToDOM(xmlt)
         instance = CreateFromDOM(doc.documentElement)
         self.assertEqual(instance.full, 'full content')
         self.assertEqual(instance.optional, '')
@@ -158,7 +158,7 @@ class TestXSIType (unittest.TestCase):
         self.assertEqual(instance.toDOM().documentElement.toxml("utf-8"), xmld)
         instance.validateBinding()
 
-        saxer = pyxb.binding.saxer.make_parser(fallback_namespace=Namespace)
+        saxer = pyxb_123.binding.saxer.make_parser(fallback_namespace=Namespace)
         handler = saxer.getContentHandler()
         saxer.parse(io.StringIO(xmlt))
         instance = handler.rootObject()
@@ -178,7 +178,7 @@ class TestXSIType (unittest.TestCase):
         for xmlt in ( canonicalt,
                      u'<complex xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"></complex>',
                      u'<complex xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"><!-- comment --></complex>') :
-            doc = pyxb.utils.domutils.StringToDOM(xmlt)
+            doc = pyxb_123.utils.domutils.StringToDOM(xmlt)
             instance = CreateFromDOM(doc.documentElement)
             self.assertTrue(instance._isNil())
             self.assertEqual(instance.toDOM().documentElement.toxml("utf-8"), canonicald)
@@ -200,16 +200,16 @@ class TestXSIType (unittest.TestCase):
 
     def testNilSetAndAppend (self):
         s = simple(_nil=True)
-        self.assertRaises(pyxb.ContentInNilInstanceError, s.append, 'one')
+        self.assertRaises(pyxb_123.ContentInNilInstanceError, s.append, 'one')
         c = complex(_nil=True)
-        self.assertRaises(pyxb.ContentInNilInstanceError, c.append, 'one')
+        self.assertRaises(pyxb_123.ContentInNilInstanceError, c.append, 'one')
         full = c._UseForTag('full')
-        self.assertRaises(pyxb.ContentInNilInstanceError, setFull, c, 'yes')
-        self.assertRaises(pyxb.ContentInNilInstanceError, full.append, c, 'yes')
-        self.assertRaises(pyxb.ContentInNilInstanceError, full.setOrAppend, c, 'yes')
+        self.assertRaises(pyxb_123.ContentInNilInstanceError, setFull, c, 'yes')
+        self.assertRaises(pyxb_123.ContentInNilInstanceError, full.append, c, 'yes')
+        self.assertRaises(pyxb_123.ContentInNilInstanceError, full.setOrAppend, c, 'yes')
         multi = c._UseForTag('multi')
-        self.assertRaises(pyxb.ContentInNilInstanceError, multi.append, c, 'one')
-        self.assertRaises(pyxb.ContentInNilInstanceError, multi.setOrAppend, c, 'one')
+        self.assertRaises(pyxb_123.ContentInNilInstanceError, multi.append, c, 'one')
+        self.assertRaises(pyxb_123.ContentInNilInstanceError, multi.setOrAppend, c, 'one')
         # Nothing we can do about assignments that bypass the validation hooks.
         # Customizing list would probably destroy performance.
         c.multi.append('one')

@@ -37,7 +37,7 @@ xst = '''<?xml version="1.0" encoding="UTF-8"?>
 </xs:schema>
 '''
 
-code = pyxb.binding.generate.GeneratePython(schema_text=xst)
+code = pyxb_123.binding.generate.GeneratePython(schema_text=xst)
 #print code
 
 rv = compile(code, 'test', 'exec')
@@ -59,7 +59,7 @@ class TestTrac0211 (unittest.TestCase):
 
         # Disallow creation from XML
         xmlt = u'<Int><ival>4</ival></Int>'
-        with self.assertRaises(pyxb.NonElementValidationError) as cm:
+        with self.assertRaises(pyxb_123.NonElementValidationError) as cm:
             instance = CreateFromDocument(xmlt)
         e = cm.exception
         self.assertTrue(isinstance(e.element, (ival.typeDefinition(), Node)))
@@ -73,12 +73,12 @@ class TestTrac0211 (unittest.TestCase):
         self.assertEqual(instance.value(), 4)
 
         # Disallow creation from complex value.
-        self.assertRaises(pyxb.NonElementValidationError, Int, cv4)
+        self.assertRaises(pyxb_123.NonElementValidationError, Int, cv4)
 
     def testInvalidSimple (self):
         # Disallow creation from XML
         xmlt = u'<ival><ival>4</ival></ival>'
-        with self.assertRaises(pyxb.NonElementValidationError) as cm:
+        with self.assertRaises(pyxb_123.NonElementValidationError) as cm:
             instance = CreateFromDocument(xmlt)
         e = cm.exception
         self.assertTrue(isinstance(e.element, (ival.typeDefinition(), Node)))
@@ -111,7 +111,7 @@ class TestTrac0211 (unittest.TestCase):
         instance = CreateFromDocument(xmld)
         self.assertEqual(instance.toxml('utf-8', root_only=True), xmld)
         self.assertEqual(3, len(instance.orderedContent()))
-        nec = list(pyxb.NonElementContent(instance))
+        nec = list(pyxb_123.NonElementContent(instance))
         self.assertEqual(2, len(nec))
         self.assertEqual(nec[0], u'pre')
         self.assertEqual(nec[1], u'post')
@@ -121,20 +121,20 @@ class TestTrac0211 (unittest.TestCase):
         # rest as mixed content.
         instance = Mixed('body', 'post')
         self.assertEqual('body', instance.mString)
-        self.assertEqual('post', ''.join(pyxb.NonElementContent(instance)))
+        self.assertEqual('post', ''.join(pyxb_123.NonElementContent(instance)))
 
         # This is more interesting: what isn't type-compatible gets to
         # be mixed content.
         instance = Mixed(4, 'body', 'post')
         self.assertEqual('body', instance.mString)
-        self.assertEqual('4post', ''.join(pyxb.NonElementContent(instance)))
+        self.assertEqual('4post', ''.join(pyxb_123.NonElementContent(instance)))
 
         # Even more interesting: a bound value is implicitly converted
         # to mixed content if the type doesn't match element content.
         bv4 = ival(4)
         instance = Mixed(bv4, 'body', 'post')
         self.assertEqual('body', instance.mString)
-        self.assertEqual('4post', ''.join(pyxb.NonElementContent(instance)))
+        self.assertEqual('4post', ''.join(pyxb_123.NonElementContent(instance)))
         oc = instance.orderedContent()
         self.assertEqual(3, len(oc))
         oc0 = oc[0].value

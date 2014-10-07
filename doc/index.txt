@@ -69,11 +69,11 @@ bindings::
        --module=weather \
        --write-for-customization
  Retrieving WSDL from http://wsf.cdyne.com/WeatherWS/Weather.asmx?WSDL
- WARNING:pyxb.binding.basis:Unable to convert DOM node {http://www.w3.org/2001/XMLSchema}schema at Weather.asmx?WSDL[4:4] to binding
+ WARNING:pyxb_123.binding.basis:Unable to convert DOM node {http://www.w3.org/2001/XMLSchema}schema at Weather.asmx?WSDL[4:4] to binding
  PS urn:uuid:029825d0-a6a3-11e2-a410-c8600024e903
- WARNING:pyxb.binding.generate:Complex type {http://ws.cdyne.com/WeatherWS/}ArrayOfWeatherDescription renamed to ArrayOfWeatherDescription_
- WARNING:pyxb.binding.generate:Complex type {http://ws.cdyne.com/WeatherWS/}ForecastReturn renamed to ForecastReturn_
- WARNING:pyxb.binding.generate:Complex type {http://ws.cdyne.com/WeatherWS/}WeatherReturn renamed to WeatherReturn_
+ WARNING:pyxb_123.binding.generate:Complex type {http://ws.cdyne.com/WeatherWS/}ArrayOfWeatherDescription renamed to ArrayOfWeatherDescription_
+ WARNING:pyxb_123.binding.generate:Complex type {http://ws.cdyne.com/WeatherWS/}ForecastReturn renamed to ForecastReturn_
+ WARNING:pyxb_123.binding.generate:Complex type {http://ws.cdyne.com/WeatherWS/}WeatherReturn renamed to WeatherReturn_
  Python for http://ws.cdyne.com/WeatherWS/ requires 1 modules
 
 Then write a program that uses them:

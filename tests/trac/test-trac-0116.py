@@ -13,7 +13,7 @@ xsd='''<?xml version="1.0" encoding="utf-8"?>
 <xsd:element name="root" type="xsd:string"/>
 </xsd:schema>'''
 
-code = pyxb.binding.generate.GeneratePython(schema_text=xsd)
+code = pyxb_123.binding.generate.GeneratePython(schema_text=xsd)
 #open('binding0116.py', 'w').write(code)
 
 rv = compile(code, 'test', 'exec')
@@ -25,7 +25,7 @@ class TestTrac0116 (unittest.TestCase):
     xmls = '''<?xml version="1.0" encoding="utf-8"?><root foo='boo'/>'''
 
     def testBasic (self):
-        self.assertRaises(pyxb.AttributeOnSimpleTypeError, CreateFromDocument, self.xmls)
+        self.assertRaises(pyxb_123.AttributeOnSimpleTypeError, CreateFromDocument, self.xmls)
 
 if __name__ == '__main__':
     unittest.main()

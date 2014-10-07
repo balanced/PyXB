@@ -44,7 +44,7 @@ uu_i = uu.elt(**elt_kw)
 i = mix.elt(qq_i, qu_i, uq_i, uu_i)
 try:
     print(i.toDOM().toprettyxml())
-except pyxb.ValidationError as e:
+except pyxb_123.ValidationError as e:
     print(e.details())
     raise
 

@@ -21,7 +21,7 @@ xsd='''<?xml version="1.0" encoding="UTF-8"?>
 </xs:schema>'''
 
 #open('schema.xsd', 'w').write(xsd)
-code = pyxb.binding.generate.GeneratePython(schema_text=xsd)
+code = pyxb_123.binding.generate.GeneratePython(schema_text=xsd)
 #open('code.py', 'w').write(code)
 #print code
 
@@ -44,9 +44,9 @@ class TestTrac_0051 (unittest.TestCase):
         self.assertEqual('hello', e.content_)
         e.content_ = 'goodbye'
         self.assertEqual('goodbye', e.content_)
-        if pyxb._CorruptionDetectionEnabled:
-            self.assertRaises(pyxb.BindingError, self.__setContent, e, 'invalid')
-            self.assertRaises(pyxb.BindingError, self.__setToXML, e, 32)
+        if pyxb_123._CorruptionDetectionEnabled:
+            self.assertRaises(pyxb_123.BindingError, self.__setContent, e, 'invalid')
+            self.assertRaises(pyxb_123.BindingError, self.__setToXML, e, 32)
 
 if __name__ == '__main__':
     unittest.main()

@@ -21,7 +21,7 @@ xsd='''<?xml version="1.0" encoding="UTF-8"?>
 </xs:schema>'''
 
 #open('schema.xsd', 'w').write(xsd)
-code = pyxb.binding.generate.GeneratePython(schema_text=xsd)
+code = pyxb_123.binding.generate.GeneratePython(schema_text=xsd)
 #open('code.py', 'w').write(code)
 #print code
 
@@ -35,7 +35,7 @@ import xml.dom
 
 class TestTrac_0052 (unittest.TestCase):
     def setUp (self):
-        self.__basis_log = logging.getLogger('pyxb.binding.basis')
+        self.__basis_log = logging.getLogger('pyxb_123.binding.basis')
         self.__basis_loglevel = self.__basis_log.level
 
     def tearDown (self):

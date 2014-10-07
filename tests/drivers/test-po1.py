@@ -9,7 +9,7 @@ from xml.dom import Node
 
 import os.path
 schema_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '../schemas/po1.xsd'))
-code = pyxb.binding.generate.GeneratePython(schema_location=schema_path)
+code = pyxb_123.binding.generate.GeneratePython(schema_location=schema_path)
 
 #open('code.py', 'w').write(code)
 rv = compile(code, 'test', 'exec')
@@ -29,14 +29,14 @@ class TestPO1 (unittest.TestCase):
 Anytown, AS  12345-6789'''
     street_xmlt = u'<street>%s</street>' % (street_content,)
     street_xmld = street_xmlt.encode('utf-8')
-    street_dom = pyxb.utils.domutils.StringToDOM(street_xmlt).documentElement
+    street_dom = pyxb_123.utils.domutils.StringToDOM(street_xmlt).documentElement
 
     address1_xmlt = u'<name>Customer</name><street>95 Main St</street>'
     address2_xmlt = u'<name>Sugar Mama</name><street>24 E. Dearling Ave.</street>'
 
     def tearDown (self):
-        pyxb.RequireValidWhenGenerating(True)
-        pyxb.RequireValidWhenParsing(True)
+        pyxb_123.RequireValidWhenGenerating(True)
+        pyxb_123.RequireValidWhenParsing(True)
 
     def testPythonElementSimpleContent (self):
         elt = USAddress._ElementMap['street'].elementBinding()(self.street_content)
@@ -59,7 +59,7 @@ Anytown, AS  12345-6789'''
         # NB: USAddress is a CTD, not an element.
         xmlt = u'<shipTo>%s</shipTo>' % (self.address1_xmlt,)
         xmld = xmlt.encode('utf-8')
-        dom = pyxb.utils.domutils.StringToDOM(xmlt)
+        dom = pyxb_123.utils.domutils.StringToDOM(xmlt)
         addr2 = USAddress.Factory(_dom_node=dom.documentElement)
 
     def testPurchaseOrder (self):
@@ -71,24 +71,24 @@ Anytown, AS  12345-6789'''
         xml1d = xml1t.encode('utf-8')
         self.assertEqual(xmld, xml1d)
 
-        dom = pyxb.utils.domutils.StringToDOM(xmld)
+        dom = pyxb_123.utils.domutils.StringToDOM(xmld)
         po2 = purchaseOrder.createFromDOM(dom.documentElement)
         self.assertEqual(xml1d, ToDOM(po2).toxml("utf-8"))
         loc = po2.shipTo._location()
-        self.assertTrue((not isinstance(loc, pyxb.utils.utility.Locatable_mixin)) or (58 == loc.columnNumber))
+        self.assertTrue((not isinstance(loc, pyxb_123.utils.utility.Locatable_mixin)) or (58 == loc.columnNumber))
         loc = po2.billTo.name._location()
-        self.assertTrue((not isinstance(loc, pyxb.utils.utility.Locatable_mixin)) or (131 == loc.columnNumber))
+        self.assertTrue((not isinstance(loc, pyxb_123.utils.utility.Locatable_mixin)) or (131 == loc.columnNumber))
 
         po2 = CreateFromDocument(xmld)
         self.assertEqual(xml1d, ToDOM(po2).toxml("utf-8"))
         loc = po2.shipTo._location()
-        self.assertTrue((not isinstance(loc, pyxb.utils.utility.Locatable_mixin)) or (58 == loc.columnNumber))
+        self.assertTrue((not isinstance(loc, pyxb_123.utils.utility.Locatable_mixin)) or (58 == loc.columnNumber))
         loc = po2.billTo.name._location()
-        self.assertTrue((not isinstance(loc, pyxb.utils.utility.Locatable_mixin)) or (131 == loc.columnNumber))
+        self.assertTrue((not isinstance(loc, pyxb_123.utils.utility.Locatable_mixin)) or (131 == loc.columnNumber))
 
         xml2t = '<purchaseOrder xmlns="http://www.example.com/PO1"><shipTo><name>Customer</name><street>95 Main St</street></shipTo><billTo><name>Sugar Mama</name><street>24 E. Dearling Ave</street></billTo><comment>Thanks!</comment></purchaseOrder>'
         xml2d = xml2t.encode('utf-8')
-        bds = pyxb.utils.domutils.BindingDOMSupport()
+        bds = pyxb_123.utils.domutils.BindingDOMSupport()
         bds.setDefaultNamespace(Namespace)
         self.assertEqual(xml2d, ToDOM(po2, dom_support=bds).toxml("utf-8"))
 
@@ -98,25 +98,25 @@ Anytown, AS  12345-6789'''
         self.assertEqual('General Delivery', po.shipTo.street)
         self.assertTrue(po.billTo is None)
 
-        self.assertTrue(pyxb.RequireValidWhenGenerating())
-        self.assertRaises(pyxb.IncompleteElementContentError, po.toxml)
+        self.assertTrue(pyxb_123.RequireValidWhenGenerating())
+        self.assertRaises(pyxb_123.IncompleteElementContentError, po.toxml)
         try:
-            pyxb.RequireValidWhenGenerating(False)
-            self.assertFalse(pyxb.RequireValidWhenGenerating())
+            pyxb_123.RequireValidWhenGenerating(False)
+            self.assertFalse(pyxb_123.RequireValidWhenGenerating())
             xmlt = u'<ns1:purchaseOrder xmlns:ns1="http://www.example.com/PO1"><shipTo><street>General Delivery</street><name>Robert Smith</name></shipTo></ns1:purchaseOrder>'
             xmlta = u'<ns1:purchaseOrder xmlns:ns1="http://www.example.com/PO1"><shipTo><name>Robert Smith</name><street>General Delivery</street></shipTo></ns1:purchaseOrder>'
             xmlds = [ _xmlt.encode('utf-8') for _xmlt in (xmlt, xmlta) ]
             self.assertTrue(po.toxml("utf-8", root_only=True) in xmlds)
         finally:
-            pyxb.RequireValidWhenGenerating(True)
-        self.assertRaises(pyxb.UnrecognizedContentError, CreateFromDocument, xmlt)
-        self.assertTrue(pyxb.RequireValidWhenParsing())
+            pyxb_123.RequireValidWhenGenerating(True)
+        self.assertRaises(pyxb_123.UnrecognizedContentError, CreateFromDocument, xmlt)
+        self.assertTrue(pyxb_123.RequireValidWhenParsing())
         try:
-            pyxb.RequireValidWhenParsing(False)
-            self.assertFalse(pyxb.RequireValidWhenParsing())
+            pyxb_123.RequireValidWhenParsing(False)
+            self.assertFalse(pyxb_123.RequireValidWhenParsing())
             po2 = CreateFromDocument(xmlt)
         finally:
-            pyxb.RequireValidWhenParsing(True)
+            pyxb_123.RequireValidWhenParsing(True)
         self.assertEqual('General Delivery', po2.shipTo.street)
         self.assertTrue(po2.billTo is None)
 

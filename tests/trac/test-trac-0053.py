@@ -31,7 +31,7 @@ xsd='''<?xml version="1.0" encoding="UTF-8"?>
 '''
 
 #open('schema.xsd', 'w').write(xsd)
-code = pyxb.binding.generate.GeneratePython(schema_text=xsd)
+code = pyxb_123.binding.generate.GeneratePython(schema_text=xsd)
 #open('code.py', 'w').write(code)
 #print code
 
@@ -56,16 +56,16 @@ class TestTrac_0053 (unittest.TestCase):
         instance = CreateFromDocument(xmls)
         self.assertEqual("value", instance.eattr)
         # Creation from DOM takes a different code path
-        domn = pyxb.utils.domutils.StringToDOM(xmls)
+        domn = pyxb_123.utils.domutils.StringToDOM(xmls)
         instance = CreateFromDOM(domn)
         self.assertEqual("value", instance.eattr)
 
     def testExtMissingRequired (self):
         xmls = '<ext/>'
-        self.assertRaises(pyxb.MissingAttributeError, CreateFromDocument, xmls)
+        self.assertRaises(pyxb_123.MissingAttributeError, CreateFromDocument, xmls)
         # Creation from DOM takes a different code path
-        domn = pyxb.utils.domutils.StringToDOM(xmls)
-        self.assertRaises(pyxb.MissingAttributeError, CreateFromDOM, domn)
+        domn = pyxb_123.utils.domutils.StringToDOM(xmls)
+        self.assertRaises(pyxb_123.MissingAttributeError, CreateFromDOM, domn)
 
 if __name__ == '__main__':
     unittest.main()

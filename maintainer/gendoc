@@ -9,7 +9,7 @@ import optparse
 
 program = 'pyxbgen'
 
-parser = pyxb.binding.generate.Generator().optionParser()
+parser = pyxb_123.binding.generate.Generator().optionParser()
 group = optparse.OptionGroup(parser, 'WSDL Options', 'Options relevant to generating bindings from WSDL service descriptions')
 group.add_option('-W', '--wsdl-location', metavar='FILE_or_URL',
                   action='append',

@@ -33,11 +33,11 @@ restrictions, and the leaf nodes denote symbols in the language of the
 regular expression.
 
 In the case of XML content models, the symbols include L{element
-declarations <pyxb.xmlschema.structures.ElementDeclaration>} and
-L{wildcard elements <pyxb.xmlschema.structures.Wildcard>}.  A
+declarations <pyxb_123.xmlschema.structures.ElementDeclaration>} and
+L{wildcard elements <pyxb_123.xmlschema.structures.Wildcard>}.  A
 numerical constraint node corresponds to an L{XML particle
-<pyxb.xmlschema.structures.Particle>}, and choice and sequence nodes
-derive from L{model groups <pyxb.xmlschema.structures.ModelGroup>} of
+<pyxb_123.xmlschema.structures.Particle>}, and choice and sequence nodes
+derive from L{model groups <pyxb_123.xmlschema.structures.ModelGroup>} of
 types B{choice} and B{sequence}.  As suggested in U{The Membership
 Problem for Regular Expressions with Unordered Concatenation and
 Numerical Constraints <http://www.ii.uib.no/~dagh/presLATA2012.pdf>}
@@ -1103,7 +1103,7 @@ class MultiConfiguration (Configuration_ABC):
     step admits multiple valid transitions, a configuration is added
     for each one.
 
-    See L{pyxb.binding.content.AutomatonConfiguration} for an
+    See L{pyxb_123.binding.content.AutomatonConfiguration} for an
     alternative solution which holds actions associated with the
     transition until the non-determinism is resolved."""
 
@@ -1166,7 +1166,7 @@ class Automaton (object):
 
         These correspond essentially to marked symbols in the original
         regular expression, or L{element
-        declarations<pyxb.xmlschema.structures.ElementDeclaration>} in
+        declarations<pyxb_123.xmlschema.structures.ElementDeclaration>} in
         an XML schema.
 
         @note: These are conceptually a set and are stored that way.
@@ -1181,7 +1181,7 @@ class Automaton (object):
         """The set of L{CounterCondition}s in the automaton.
 
         These are marked positions in the regular expression, or
-        L{particles<pyxb.xmlschema.structures.Particle>} in an XML
+        L{particles<pyxb_123.xmlschema.structures.Particle>} in an XML
         schema, paired with their occurrence constraints."""
         return self.__counterConditions
     counterConditions = property(__get_counterConditions)

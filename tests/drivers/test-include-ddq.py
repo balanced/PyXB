@@ -8,7 +8,7 @@ import pyxb_123.utils.domutils
 
 import os.path
 schema_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '../schemas/test-include-ddq.xsd'))
-code = pyxb.binding.generate.GeneratePython(schema_location=schema_path)
+code = pyxb_123.binding.generate.GeneratePython(schema_location=schema_path)
 #open('code.py', 'w').write(code)
 rv = compile(code, 'test', 'exec')
 eval(rv)

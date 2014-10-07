@@ -14,5 +14,5 @@ Traceback (most recent call last):
   File "/opt/pyxb_123/pyxb_123/binding/basis.py", line 924, in xsdConstraintsOK
     return self.XsdConstraintsOK(self)
   File "/opt/pyxb_123/pyxb_123/binding/basis.py", line 918, in XsdConstraintsOK
-    raise pyxb.SimpleTypeValueError('%s violation for %s in %s' % (f.Name(), value, cls.__name__))
-pyxb.exceptions_.SimpleTypeValueError: enumeration violation for NY in USState
+    raise pyxb_123.SimpleTypeValueError('%s violation for %s in %s' % (f.Name(), value, cls.__name__))
+pyxb_123.exceptions_.SimpleTypeValueError: enumeration violation for NY in USState

@@ -51,7 +51,7 @@ class CodePointSetError (LookupError):
     """Raised when some abuse of a L{CodePointSet} is detected."""
     pass
 
-@pyxb.utils.utility.BackfillComparisons
+@pyxb_123.utils.utility.BackfillComparisons
 class CodePointSet (object):
     """Represent a set of Unicode code points.
 

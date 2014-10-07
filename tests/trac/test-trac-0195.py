@@ -22,7 +22,7 @@ xsd='''<?xml version="1.0" encoding="UTF-8"?>
 
 </xs:schema>'''
 
-code = pyxb.binding.generate.GeneratePython(schema_text=xsd)
+code = pyxb_123.binding.generate.GeneratePython(schema_text=xsd)
 #open('code.py', 'w').write(code)
 
 rv = compile(code, 'test', 'exec')
@@ -41,11 +41,11 @@ class TestTrac0195 (unittest.TestCase):
 
     def testNotNil (self):
         xmls = '<root xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="file:test_enum.xsd" xsi:nil="true">foo</root>'
-        self.assertRaises(pyxb.ContentInNilInstanceError, CreateFromDocument, xmls)
+        self.assertRaises(pyxb_123.ContentInNilInstanceError, CreateFromDocument, xmls)
 
     def testInvalidNil (self):
         xmls = '<root xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="file:test_enum.xsd"/>'
-        self.assertRaises(pyxb.SimpleFacetValueError, CreateFromDocument, xmls)
+        self.assertRaises(pyxb_123.SimpleFacetValueError, CreateFromDocument, xmls)
 
     def testValidNotNil (self):
         xmls = '<root xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="file:test_enum.xsd">foo</root>'

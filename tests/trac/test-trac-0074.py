@@ -17,7 +17,7 @@ xsd='''<?xml version="1.0" encoding="UTF-8"?>
 </xs:schema>'''
 
 #open('schema.xsd', 'w').write(xsd)
-code = pyxb.binding.generate.GeneratePython(schema_text=xsd)
+code = pyxb_123.binding.generate.GeneratePython(schema_text=xsd)
 #open('code.py', 'w').write(code)
 #print code
 
@@ -36,25 +36,25 @@ class TestTrac_0074 (unittest.TestCase):
         try:
             dom_instance = CreateFromDOM(dom.documentElement)
             self.fail('DOM creation succeeded')
-        except pyxb.UnrecognizedDOMRootNodeError as e:
+        except pyxb_123.UnrecognizedDOMRootNodeError as e:
             self.assertEqual(dom.documentElement, e.node)
             self.assertEqual(t0p, e.node_name)
 
-        saxdom = pyxb.utils.saxdom.parseString(xmlt)
+        saxdom = pyxb_123.utils.saxdom.parseString(xmlt)
         try:
             saxdom_instance = CreateFromDOM(saxdom)
             self.fail('SAXDOM creation succeeded')
-        except pyxb.UnrecognizedDOMRootNodeError as e:
+        except pyxb_123.UnrecognizedDOMRootNodeError as e:
             self.assertEqual(saxdom.documentElement, e.node)
             self.assertEqual(t0p, e.node_name)
 
-        saxer = pyxb.binding.saxer.make_parser()
+        saxer = pyxb_123.binding.saxer.make_parser()
         handler = saxer.getContentHandler()
         saxer.parse(io.StringIO(xmlt))
         try:
             sax_instance = handler.rootObject()
             self.fail('SAXER creation succeeded')
-        except pyxb.UnrecognizedDOMRootNodeError as e:
+        except pyxb_123.UnrecognizedDOMRootNodeError as e:
             self.assertEqual(t0p, e.node_name)
 
 if __name__ == '__main__':

@@ -48,7 +48,7 @@ xsd='''<?xml version="1.0" encoding="UTF-8"?>
 '''
 
 #open('schema.xsd', 'w').write(xsd)
-code = pyxb.binding.generate.GeneratePython(schema_text=xsd)
+code = pyxb_123.binding.generate.GeneratePython(schema_text=xsd)
 #open('code.py', 'w').write(code)
 #print code
 
@@ -69,11 +69,11 @@ field_type = field_element.typeDefinition()
 value_element = field_type._ElementMap['value'].elementBinding()
 value_type = value_element.typeDefinition()
 
-v_bind = pyxb.BIND('foo', lang='ENG')
+v_bind = pyxb_123.BIND('foo', lang='ENG')
 
 class TestTrac_0071 (unittest.TestCase):
     def testFieldConstructor (self):
-        field = field_type('title', pyxb.BIND('foo', lang='ENG'), _element=field_element)
+        field = field_type('title', pyxb_123.BIND('foo', lang='ENG'), _element=field_element)
         self.assertTrue(isinstance(field.value_, collections.MutableSequence))
         self.assertEqual(1, len(field.value_))
         self.assertTrue(isinstance(field.value_[0], value_type))
@@ -87,7 +87,7 @@ class TestTrac_0071 (unittest.TestCase):
         newdoc.template = 'anewtemplate'
 
         field = field_type(name='title', _element=field_element)
-        field.value_.append(pyxb.BIND('foo', lang='ENG'))
+        field.value_.append(pyxb_123.BIND('foo', lang='ENG'))
         self.assertTrue(isinstance(field.value_, collections.MutableSequence))
         self.assertEqual(1, len(field.value_))
         self.assertTrue(isinstance(field.value_[0], value_type))
@@ -104,10 +104,10 @@ class TestTrac_0071 (unittest.TestCase):
         newdoc = MetadataDocument()
         newdoc.template = 'anewtemplate'
 
-        newdoc.timespan.append(pyxb.BIND( # Single timespan
-                pyxb.BIND( # First field instance
+        newdoc.timespan.append(pyxb_123.BIND( # Single timespan
+                pyxb_123.BIND( # First field instance
                     'title',
-                    pyxb.BIND('foo', lang='ENG')
+                    pyxb_123.BIND('foo', lang='ENG')
                     ),
                 start='-INF', end='+INF'))
         timespan = newdoc.timespan[0]
@@ -122,15 +122,15 @@ class TestTrac_0071 (unittest.TestCase):
         newdoc = MetadataDocument()
         newdoc.template = 'anewtemplate'
 
-        v_bind = pyxb.BIND('foo', lang='ENG')
+        v_bind = pyxb_123.BIND('foo', lang='ENG')
 
         # This binding is wrong: the field name is "value_" not "value"
-        f_bind = pyxb.BIND(name='title', value=v_bind)
-        ts_bind = pyxb.BIND(f_bind, start='-INF', end='+INF')
+        f_bind = pyxb_123.BIND(name='title', value=v_bind)
+        ts_bind = pyxb_123.BIND(f_bind, start='-INF', end='+INF')
         if sys.version_info[:2] < (2, 7):
-            self.assertRaises(pyxb.UnrecognizedContentError, newdoc.timespan.append, ts_bind)
+            self.assertRaises(pyxb_123.UnrecognizedContentError, newdoc.timespan.append, ts_bind)
             return
-        with self.assertRaises(pyxb.UnrecognizedContentError) as cm:
+        with self.assertRaises(pyxb_123.UnrecognizedContentError) as cm:
             newdoc.timespan.append(ts_bind)
         self.assertEqual(f_bind, cm.exception.value)
 
@@ -140,12 +140,12 @@ class TestTrac_0071 (unittest.TestCase):
 
         # This binding is wrong: the field "value_" is plural and the
         # value for the keyword must be iterable.
-        f_bind = pyxb.BIND(name='title', value_=v_bind)
-        ts_bind = pyxb.BIND(f_bind, start='-INF', end='+INF')
+        f_bind = pyxb_123.BIND(name='title', value_=v_bind)
+        ts_bind = pyxb_123.BIND(f_bind, start='-INF', end='+INF')
         if sys.version_info[:2] < (2, 7):
-            self.assertRaises(pyxb.UnrecognizedContentError, newdoc.timespan.append, ts_bind)
+            self.assertRaises(pyxb_123.UnrecognizedContentError, newdoc.timespan.append, ts_bind)
             return
-        with self.assertRaises(pyxb.UnrecognizedContentError) as cm:
+        with self.assertRaises(pyxb_123.UnrecognizedContentError) as cm:
             newdoc.timespan.append(ts_bind)
         self.assertEqual(f_bind, cm.exception.value)
 
@@ -154,11 +154,11 @@ class TestTrac_0071 (unittest.TestCase):
         newdoc.template = 'anewtemplate'
 
         # This one should be OK
-        bind = pyxb.BIND( # First field instance
+        bind = pyxb_123.BIND( # First field instance
                     name='title',
-                    value_=[pyxb.BIND('foo', lang='ENG')]
+                    value_=[pyxb_123.BIND('foo', lang='ENG')]
                     )
-        newdoc.timespan.append(pyxb.BIND(bind, start='-INF', end='+INF'))
+        newdoc.timespan.append(pyxb_123.BIND(bind, start='-INF', end='+INF'))
         timespan = newdoc.timespan[0]
         self.assertTrue(isinstance(timespan, timespan_type))
         newdoc.validateBinding()

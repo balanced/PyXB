@@ -8,8 +8,8 @@ import logging
 
 logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
 
-pyxb.namespace.archive.NamespaceArchive.PreLoadArchives()
-ans = pyxb.namespace.AvailableNamespaces()
+pyxb_123.namespace.archive.NamespaceArchive.PreLoadArchives()
+ans = pyxb_123.namespace.AvailableNamespaces()
 print '%d available namespaces' % (len(ans),)
 for ns in ans:
     for mr in ns.moduleRecords():
@@ -27,8 +27,8 @@ sys.exit(0)
 for fn in sys.argv[1:]:
     nsa = None
     try:
-        nsa = pyxb.namespace.archive.NamespaceArchive.ForPath(fn)
-    except pyxb.NamespaceArchiveError as e:
+        nsa = pyxb_123.namespace.archive.NamespaceArchive.ForPath(fn)
+    except pyxb_123.NamespaceArchiveError as e:
         print '%s: %s' % (fn, e)
         continue
     print '%s : %d namespaces:' % (fn, len(nsa.namespaces()))

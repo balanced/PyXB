@@ -37,7 +37,7 @@ xsd='''
 '''
 
 #open('schema.xsd', 'w').write(xsd)
-code = pyxb.binding.generate.GeneratePython(schema_text=xsd)
+code = pyxb_123.binding.generate.GeneratePython(schema_text=xsd)
 #open('code.py', 'w').write(code)
 #print code
 
@@ -51,15 +51,15 @@ import unittest
 class TestTrac_0056 (unittest.TestCase):
     def testNonType (self):
         xmls = '<Child xsi:type="NotAType" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/>'
-        self.assertRaises(pyxb.BadDocumentError, CreateFromDocument, xmls)
-        doc = pyxb.utils.domutils.StringToDOM(xmls)
-        self.assertRaises(pyxb.BadDocumentError, CreateFromDOM, doc)
+        self.assertRaises(pyxb_123.BadDocumentError, CreateFromDocument, xmls)
+        doc = pyxb_123.utils.domutils.StringToDOM(xmls)
+        self.assertRaises(pyxb_123.BadDocumentError, CreateFromDOM, doc)
 
     def testAnonymousBase (self):
         xmls = '<Child xsi:type="ChildT" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/>'
-        #self.assertRaises(pyxb.BadDocumentError, CreateFromDocument, xmls)
-        doc = pyxb.utils.domutils.StringToDOM(xmls)
-        self.assertRaises(pyxb.ValidationError, CreateFromDOM, doc)
+        #self.assertRaises(pyxb_123.BadDocumentError, CreateFromDocument, xmls)
+        doc = pyxb_123.utils.domutils.StringToDOM(xmls)
+        self.assertRaises(pyxb_123.ValidationError, CreateFromDOM, doc)
 
 
 if __name__ == '__main__':

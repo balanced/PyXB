@@ -42,7 +42,7 @@ process_schema () {
     && unzip -q ${UNPACK_DIR}/${target_zip} -d ${UNPACK_DIR} ) \
   || fail cannot unpack schema from ${target_zip}
   rm -f ${target_zip}
-  module_prefix="pyxb.bundles.${BUNDLE_TAG}.${submodule_prefix}"
+  module_prefix="pyxb_123.bundles.${BUNDLE_TAG}.${submodule_prefix}"
   submodule_path=`echo ${submodule_prefix} | tr [.] [/]`
   dd="${SCHEMA_DIR}/${submodule_path}"
   mkdir -p ${dd}

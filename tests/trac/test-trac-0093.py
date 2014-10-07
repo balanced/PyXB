@@ -20,7 +20,7 @@ import unittest
 
 class TestTrac_0093 (unittest.TestCase):
     def testRedefine (self):
-        self.assertRaises(pyxb.IncompleteImplementationError, pyxb.binding.generate.GeneratePython, schema_text=xsd)
+        self.assertRaises(pyxb_123.IncompleteImplementationError, pyxb_123.binding.generate.GeneratePython, schema_text=xsd)
 
 if __name__ == '__main__':
     unittest.main()

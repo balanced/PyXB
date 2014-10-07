@@ -25,7 +25,7 @@ xsd='''<?xml version="1.0" encoding="UTF-8"?>
 </xs:schema>'''
 
 #open('schema.xsd', 'w').write(xsd)
-code = pyxb.binding.generate.GeneratePython(schema_text=xsd)
+code = pyxb_123.binding.generate.GeneratePython(schema_text=xsd)
 #open('code.py', 'w').write(code)
 #print code
 
@@ -39,7 +39,7 @@ import unittest
 class TestTrac_0075 (unittest.TestCase):
     def setUp (self):
         # Prepare to hide warnings about failure to convert DOM node to binding
-        self.__basis_log = logging.getLogger('pyxb.binding.basis')
+        self.__basis_log = logging.getLogger('pyxb_123.binding.basis')
         self.__basis_loglevel = self.__basis_log.level
 
     def tearDown (self):
@@ -60,7 +60,7 @@ class TestTrac_0075 (unittest.TestCase):
 
     def testNotAnElementError (self):
         elt = tTop._UseForTag('inner')
-        self.assertTrue(isinstance(elt, pyxb.binding.content.ElementDeclaration))
+        self.assertTrue(isinstance(elt, pyxb_123.binding.content.ElementDeclaration))
         self.assertRaises(KeyError, tTop._UseForTag, 'notInner')
 
     def testUnrecognizedContentError (self):

@@ -23,7 +23,7 @@ import logging
 
 _log = logging.getLogger(__name__)
 
-class _Resolvable_mixin (pyxb.cscRoot):
+class _Resolvable_mixin (pyxb_123.cscRoot):
     """Mix-in indicating that this object may have references to unseen named components.
 
     This class is mixed-in to those XMLSchema components that have a reference
@@ -61,7 +61,7 @@ class _Resolvable_mixin (pyxb.cscRoot):
         resolution discard any cached dom node by setting C{self.__domNode=None}.
 
         @return: C{self}, whether or not resolution succeeds.
-        @raise pyxb.SchemaValidationError: if resolution requlres a reference to an unknown component
+        @raise pyxb_123.SchemaValidationError: if resolution requlres a reference to an unknown component
         """
         raise NotImplementedError("_Resolvable_mixin._resolve in %s"% (type(self).__name__,))
 
@@ -72,7 +72,7 @@ class _Resolvable_mixin (pyxb.cscRoot):
             _log.info('Resolution delayed for %s: %s\n\tDepends on: %s', self, why, depends_on)
         self._namespaceContext().queueForResolution(self, depends_on)
 
-class _NamespaceResolution_mixin (pyxb.cscRoot):
+class _NamespaceResolution_mixin (pyxb_123.cscRoot):
     """Mix-in that aggregates those aspects of XMLNamespaces relevant to
     resolving component references.
     """
@@ -199,7 +199,7 @@ class _NamespaceResolution_mixin (pyxb.cscRoot):
         invoking the _resolve method of each.  If the component could not be
         resolved in this pass, it iis placed back on the list for the next
         iteration.  If an iteration completes without resolving any of the
-        unresolved components, a pyxb.NotInNamespaceError exception is raised.
+        unresolved components, a pyxb_123.NotInNamespaceError exception is raised.
 
         @note: Do not invoke this until all top-level definitions for the
         namespace have been provided.  The resolution routines are entitled to
@@ -243,7 +243,7 @@ class _NamespaceResolution_mixin (pyxb.cscRoot):
                         failed_components.append('%s named %s' % (d.__class__.__name__, d.name()))
                     else:
                         failed_components.append('Anonymous %s' % (d.__class__.__name__,))
-                raise pyxb.NotInNamespaceError('Infinite loop in resolution:\n  %s' % ("\n  ".join(failed_components),))
+                raise pyxb_123.NotInNamespaceError('Infinite loop in resolution:\n  %s' % ("\n  ".join(failed_components),))
 
         # Replace the list of unresolved components with None, so that
         # attempts to subsequently add another component fail.
@@ -342,7 +342,7 @@ def ResolveSiblingNamespaces (sibling_namespaces):
             state.append( (ns, len(ns._unresolvedComponents())) )
         state = tuple(state)
         if last_state == state:
-            raise pyxb.LogicError('Unexpected external dependency in sibling namespaces: %s' % (u"\n  ".join( [unicode(_ns) for _ns in need_resolved_set ]),))
+            raise pyxb_123.LogicError('Unexpected external dependency in sibling namespaces: %s' % (u"\n  ".join( [unicode(_ns) for _ns in need_resolved_set ]),))
         last_state = state
 
 class NamespaceContext (object):
@@ -418,7 +418,7 @@ class NamespaceContext (object):
         one treating this as the root node and the keyword parameters as
         configuration information (e.g., default_namespace).
 
-        @raise pyxb.LogicError: no context is available and the keywords
+        @raise pyxb_123.LogicError: no context is available and the keywords
         required to create one were not provided
         """
         try:
@@ -456,7 +456,7 @@ class NamespaceContext (object):
             # paragraph 6 implies you can do this, but expat blows up
             # if you try it.  I don't think it's legal.
             if prefix is not None:
-                raise pyxb.NamespaceError(self, 'Attempt to undefine non-default namespace %s' % (prefix,))
+                raise pyxb_123.NamespaceError(self, 'Attempt to undefine non-default namespace %s' % (prefix,))
             self.__inScopeNamespaces.pop(prefix, None)
             self.__defaultNamespace = None
 
@@ -535,7 +535,7 @@ class NamespaceContext (object):
 
         if in_scope_namespaces is not None:
             if parent_context is not None:
-                raise pyxb.LogicError('Cannot provide both parent_context and in_scope_namespaces')
+                raise pyxb_123.LogicError('Cannot provide both parent_context and in_scope_namespaces')
             self.__inScopeNamespaces = builtin._UndeclaredNamespaceMap.copy()
             self.__inScopeNamespaces.update(in_scope_namespaces)
             self.__mutableInScopeNamespaces = True
@@ -552,7 +552,7 @@ class NamespaceContext (object):
         attribute_map = {}
         if dom_node is not None:
             if expanded_name is None:
-                expanded_name = pyxb.namespace.ExpandedName(dom_node)
+                expanded_name = pyxb_123.namespace.ExpandedName(dom_node)
             for ai in range(dom_node.attributes.length):
                 attr = dom_node.attributes.item(ai)
                 if builtin.XMLNamespaces.uri() == attr.namespaceURI:
@@ -563,9 +563,9 @@ class NamespaceContext (object):
                 else:
                     if attr.namespaceURI is not None:
                         uri = utility.NamespaceForURI(attr.namespaceURI, create_if_missing=True)
-                        key = pyxb.namespace.ExpandedName(uri, attr.localName)
+                        key = pyxb_123.namespace.ExpandedName(uri, attr.localName)
                     else:
-                        key = pyxb.namespace.ExpandedName(None, attr.localName)
+                        key = pyxb_123.namespace.ExpandedName(None, attr.localName)
                     attribute_map[key] = attr.value
 
         if finalize_target_namespace:
@@ -600,8 +600,8 @@ class NamespaceContext (object):
         there is no default namespace.  Note that a defined default namespace,
         even if absent, supersedes this value.
         @return: An L{ExpandedName} tuple: ( L{Namespace}, C{str} )
-        @raise pyxb.SchemaValidationError: The prefix is not in scope
-        @raise pyxb.SchemaValidationError: No prefix is given and the default namespace is absent
+        @raise pyxb_123.SchemaValidationError: The prefix is not in scope
+        @raise pyxb_123.SchemaValidationError: No prefix is given and the default namespace is absent
         """
         assert isinstance(name, (str, unicode))
         if 0 <= name.find(':'):
@@ -609,7 +609,7 @@ class NamespaceContext (object):
             assert self.inScopeNamespaces() is not None
             namespace = self.inScopeNamespaces().get(prefix)
             if namespace is None:
-                raise pyxb.SchemaValidationError('No namespace declared for QName %s prefix' % (name,))
+                raise pyxb_123.SchemaValidationError('No namespace declared for QName %s prefix' % (name,))
         else:
             local_name = name
             # Context default supersedes caller-provided namespace
@@ -620,13 +620,13 @@ class NamespaceContext (object):
             if (namespace is None) and self.__fallbackToTargetNamespace:
                 namespace = self.targetNamespace()
             if namespace is None:
-                raise pyxb.SchemaValidationError('QName %s with absent default namespace cannot be resolved' % (local_name,))
+                raise pyxb_123.SchemaValidationError('QName %s with absent default namespace cannot be resolved' % (local_name,))
         # Anything we're going to look stuff up in requires a component model.
         # Make sure we can load one, unless we're looking up in the thing
         # we're constructing (in which case it's being built right now).
         if (namespace != self.targetNamespace()):
             namespace.validateComponentModel()
-        return pyxb.namespace.ExpandedName(namespace, local_name)
+        return pyxb_123.namespace.ExpandedName(namespace, local_name)
 
     def queueForResolution (self, component, depends_on=None):
         """Forwards to L{queueForResolution()<Namespace.queueForResolution>} in L{targetNamespace()}."""

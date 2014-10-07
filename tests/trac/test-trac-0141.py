@@ -21,7 +21,7 @@ xsd='''<?xml version="1.0" encoding="UTF-8"?>
    <xs:element name="simple_element" type="simple_type"/>
 </xs:schema>'''
 
-code = pyxb.binding.generate.GeneratePython(schema_text=xsd)
+code = pyxb_123.binding.generate.GeneratePython(schema_text=xsd)
 rv = compile(code, 'test', 'exec')
 eval(rv)
 
@@ -35,18 +35,18 @@ def MakeCamelCase (identifier):
 
 class TestTrac0141 (unittest.TestCase):
     def tearDown (cls):
-        pyxb.utils.utility._SetXMLIdentifierToPython(None)
+        pyxb_123.utils.utility._SetXMLIdentifierToPython(None)
 
     def testDefaultMakeIdentifier (self):
         self.assertEqual(MakeIdentifier('is_string'), 'is_string')
 
     def testReplacedMakeIdentifier (self):
-        pyxb.utils.utility._SetXMLIdentifierToPython(MakeCamelCase)
+        pyxb_123.utils.utility._SetXMLIdentifierToPython(MakeCamelCase)
         self.assertEqual(MakeIdentifier('is_string'), 'isString')
 
     def testReplacedBuild (self):
-        pyxb.utils.utility._SetXMLIdentifierToPython(MakeCamelCase)
-        code = pyxb.binding.generate.GeneratePython(schema_text=xsd)
+        pyxb_123.utils.utility._SetXMLIdentifierToPython(MakeCamelCase)
+        code = pyxb_123.binding.generate.GeneratePython(schema_text=xsd)
         rv = compile(code, 'test', 'exec')
         xglobals = globals().copy()
         xlocals = locals().copy()

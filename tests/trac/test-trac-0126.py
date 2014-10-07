@@ -18,7 +18,7 @@ xsd='''<?xml version="1.0" encoding="UTF-8"?>
   </element>
 </schema>'''
 
-code = pyxb.binding.generate.GeneratePython(schema_text=xsd)
+code = pyxb_123.binding.generate.GeneratePython(schema_text=xsd)
 #open('code.py', 'w').write(code)
 
 rv = compile(code, 'test', 'exec')
@@ -30,20 +30,20 @@ import unittest
 
 class TestTrac0126 (unittest.TestCase):
     def tearDown (self):
-        pyxb.RequireValidWhenGenerating(True)
-        pyxb.RequireValidWhenParsing(True)
+        pyxb_123.RequireValidWhenGenerating(True)
+        pyxb_123.RequireValidWhenParsing(True)
 
     def testBasic (self):
         instance = Element()
         self.assertEqual(None, instance.Required)
         self.assertEqual(None, instance.Optional)
 
-        pyxb.RequireValidWhenGenerating(False)
+        pyxb_123.RequireValidWhenGenerating(False)
         xmlt = u'<Element/>'
         xmld = xmlt.encode('utf-8')
         self.assertEqual(instance.toDOM().documentElement.toxml("utf-8"), xmld)
-        pyxb.RequireValidWhenGenerating(True)
-        self.assertRaises(pyxb.MissingAttributeError, instance.toDOM)
+        pyxb_123.RequireValidWhenGenerating(True)
+        self.assertRaises(pyxb_123.MissingAttributeError, instance.toDOM)
         instance.Required = 'value'
         xmlt = u'<Element Required="value"/>'
         xmld = xmlt.encode('utf-8')

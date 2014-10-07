@@ -11,7 +11,7 @@ from xml.dom import Node
 
 import os.path
 schema_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '../schemas/time.xsd'))
-code = pyxb.binding.generate.GeneratePython(schema_location=schema_path)
+code = pyxb_123.binding.generate.GeneratePython(schema_location=schema_path)
 
 rv = compile(code, 'test', 'exec')
 eval(rv)
@@ -56,7 +56,7 @@ class TestTime (unittest.TestCase):
         self.assertEqual(instance.time.timetuple(), t.time.timetuple())
 
     def testAbstract (self):
-        self.assertRaises(pyxb.AbstractInstantiationError, tTime, **self.KW_tXMTime)
+        self.assertRaises(pyxb_123.AbstractInstantiationError, tTime, **self.KW_tXMTime)
         t = make_tTime(**self.KW_tXMTime)
         self.assertTrue(isinstance(t, tTime))
         self.assertTrue(isinstance(t, tXMTime))

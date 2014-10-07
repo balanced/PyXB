@@ -30,7 +30,7 @@ xsd='''<?xml version="1.0" encoding="UTF-8"?>
 </xs:schema>'''
 
 #open('schema.xsd', 'w').write(xsd)
-code = pyxb.binding.generate.GeneratePython(schema_text=xsd)
+code = pyxb_123.binding.generate.GeneratePython(schema_text=xsd)
 #open('code.py', 'w').write(code)
 
 rv = compile(code, 'test', 'exec')
@@ -55,10 +55,10 @@ class TestTrac0155 (unittest.TestCase):
 </OpaqueData> """
 
     def setUp (self):
-        pyxb.utils.domutils.BindingDOMSupport.SetDefaultNamespace(Namespace.uri())
+        pyxb_123.utils.domutils.BindingDOMSupport.SetDefaultNamespace(Namespace.uri())
 
     def tearDown (self):
-        pyxb.utils.domutils.BindingDOMSupport.SetDefaultNamespace(None)
+        pyxb_123.utils.domutils.BindingDOMSupport.SetDefaultNamespace(None)
 
     Expectedd = """<?xml version="1.0" encoding="utf-8"?><OpaqueData xmlns="http://schema.omg.org/spec/CTS2/1.0/Core" xmlns:ns1="http://www.w3.org/1999/xhtml"><v><ns1:ul><ns1:li>entry1</ns1:li><ns1:li>entry2</ns1:li></ns1:ul></v></OpaqueData>""".encode('utf-8')
 

@@ -59,7 +59,7 @@ operations and parameters.  For example::
 
   vmfed9[343]$ pyxbwsdl http://api.google.com/GoogleSearch.wsdl
   Need to dynamically create schema
-  Importing pyxb.standard.bindings.soap
+  Importing pyxb_123.standard.bindings.soap
   Attempting to load a namespace from /home/pab/pyxb_123/dev/pyxb_123/standard/bindings/raw/wsdl.wxs
   Attempting to load a namespace from /home/pab/pyxb_123/dev/pyxb_123/standard/bindings/raw/soapenc.wxs
   Attempting to load a namespace from /home/pab/pyxb_123/dev/pyxb_123/standard/bindings/raw/soap.wxs

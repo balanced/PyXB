@@ -42,7 +42,7 @@ msg = im_en.message()
 print(msg)
 for p in msg.part:
     print(p.toxml("utf-8"))
-msg_ns = pyxb.namespace.NamespaceForURI(body_dom.namespaceURI)
+msg_ns = pyxb_123.namespace.NamespaceForURI(body_dom.namespaceURI)
 print('%s %s' % (body_dom.namespaceURI, msg_ns))
 
 parts = msg.part
@@ -66,7 +66,7 @@ while parts and nodes:
 #print msg
 
 #print req
-#dom_support =  req.toDOM(pyxb.utils.domutils.BindingDOMSupport())
+#dom_support =  req.toDOM(pyxb_123.utils.domutils.BindingDOMSupport())
 #dom_support.finalize()
 #print dom_support.document().toxml("utf-8")
 

@@ -27,7 +27,7 @@ import logging
 
 _log = logging.getLogger(__name__)
 
-class _SAXElementState (pyxb.utils.saxutils.SAXElementState):
+class _SAXElementState (pyxb_123.utils.saxutils.SAXElementState):
     """State required to generate bindings for a specific element.
 
     If the document being parsed includes references to unrecognized elements,
@@ -109,12 +109,12 @@ class _SAXElementState (pyxb.utils.saxutils.SAXElementState):
 
         # Note whether the node is marked nil
         if self.__XSINilTuple in attrs:
-            kw['_nil'] = pyxb.binding.datatypes.boolean(attrs.getValue(self.__XSINilTuple))
+            kw['_nil'] = pyxb_123.binding.datatypes.boolean(attrs.getValue(self.__XSINilTuple))
 
         if content is None:
             content = []
         self.__bindingInstance = new_object_factory(*content, **kw)
-        if isinstance(self.__bindingInstance, pyxb.utils.utility.Locatable_mixin):
+        if isinstance(self.__bindingInstance, pyxb_123.utils.utility.Locatable_mixin):
             self.__bindingInstance._setLocation(self.location())
 
         # Record the namespace context so users of the binding can
@@ -126,9 +126,9 @@ class _SAXElementState (pyxb.utils.saxutils.SAXElementState):
         # that names are pairs of (namespaceURI, localName), just like we
         # want them to be.
         for attr_name in self.__attributes.getNames():
-            attr_en = pyxb.namespace.ExpandedName(attr_name)
+            attr_en = pyxb_123.namespace.ExpandedName(attr_name)
             # Ignore xmlns and xsi attributes; we've already handled those
-            if attr_en.namespace() in ( pyxb.namespace.XMLNamespaces, XSI ):
+            if attr_en.namespace() in ( pyxb_123.namespace.XMLNamespaces, XSI ):
                 continue
             # The binding instance may be a simple type that does not support
             # attributes; the following raises an exception in that case.
@@ -145,32 +145,32 @@ class _SAXElementState (pyxb.utils.saxutils.SAXElementState):
         Invoking this transitions the parser into DOM mode, creating a new DOM
         document that will represent this element including its content."""
         assert not self.__domDocument
-        self.__domDocument = pyxb.utils.saxdom.Document(namespace_context=self.namespaceContext())
+        self.__domDocument = pyxb_123.utils.saxdom.Document(namespace_context=self.namespaceContext())
         self.__domDepth = 0
         return self.startDOMElement(attrs)
 
     def startDOMElement (self, attrs):
         """Actions upon entering an element that is part of a DOM subtree."""
         self.__domDepth += 1
-        self.__attributes = pyxb.utils.saxdom.NamedNodeMap()
+        self.__attributes = pyxb_123.utils.saxdom.NamedNodeMap()
         ns_ctx = self.namespaceContext()
         for name in attrs.getNames():
-            attr_en = pyxb.namespace.ExpandedName(name)
-            self.__attributes._addItem(pyxb.utils.saxdom.Attr(expanded_name=attr_en, namespace_context=ns_ctx, value=attrs.getValue(name), location=self.location()))
+            attr_en = pyxb_123.namespace.ExpandedName(name)
+            self.__attributes._addItem(pyxb_123.utils.saxdom.Attr(expanded_name=attr_en, namespace_context=ns_ctx, value=attrs.getValue(name), location=self.location()))
 
     def endDOMElement (self):
         """Actions upon leaving an element that is part of a DOM subtree."""
         ns_ctx = self.namespaceContext()
-        element = pyxb.utils.saxdom.Element(namespace_context=ns_ctx, expanded_name=self.expandedName(), attributes=self.__attributes, location=self.location())
+        element = pyxb_123.utils.saxdom.Element(namespace_context=ns_ctx, expanded_name=self.expandedName(), attributes=self.__attributes, location=self.location())
         for info in self.content():
             if isinstance(info.item, xml.dom.Node):
                 element.appendChild(info.item)
             else:
-                element.appendChild(pyxb.utils.saxdom.Text(info.item, namespace_context=ns_ctx))
+                element.appendChild(pyxb_123.utils.saxdom.Text(info.item, namespace_context=ns_ctx))
         self.__domDepth -= 1
         if 0 == self.__domDepth:
             self.__domDocument.appendChild(element)
-            #pyxb.utils.saxdom._DumpDOM(self.__domDocument)
+            #pyxb_123.utils.saxdom._DumpDOM(self.__domDocument)
             self.__domDepth = None
             self.__domDocument = None
         parent_state = self.parentState()
@@ -215,7 +215,7 @@ class _SAXElementState (pyxb.utils.saxutils.SAXElementState):
             args = []
             for info in self.content():
                 if info.maybe_element or (info.element_decl is not None):
-                    raise pyxb.NonElementValidationError(info.item, info.location)
+                    raise pyxb_123.NonElementValidationError(info.item, info.location)
                 args.append(info.item)
             self.__constructElement(self.__delayedConstructor, self.__attributes, args)
         else:
@@ -232,7 +232,7 @@ class _SAXElementState (pyxb.utils.saxutils.SAXElementState):
             self.__bindingInstance._setElement(self.__elementBinding)
         return self.__bindingInstance._postDOMValidate()
 
-class PyXBSAXHandler (pyxb.utils.saxutils.BaseSAXHandler):
+class PyXBSAXHandler (pyxb_123.utils.saxutils.BaseSAXHandler):
     """A SAX handler class which generates a binding instance for a document
     through a streaming parser.
 
@@ -242,7 +242,7 @@ class PyXBSAXHandler (pyxb.utils.saxutils.BaseSAXHandler):
       import pyxb_123.binding.saxer
       import io
 
-      saxer = pyxb.binding.saxer.make_parser()
+      saxer = pyxb_123.binding.saxer.make_parser()
       handler = saxer.getContentHandler()
       saxer.parse(io.StringIO(xmlt))
       instance = handler.rootObject()
@@ -265,12 +265,12 @@ class PyXBSAXHandler (pyxb.utils.saxutils.BaseSAXHandler):
         @return: An instance of L{basis._TypeBinding_mixin} (most usually a
         L{basis.complexTypeDefinition}.
 
-        @raise pyxb.[UnrecognizedDOMRootNodeError: No binding could be found to
+        @raise pyxb_123.[UnrecognizedDOMRootNodeError: No binding could be found to
         match the top-level element in the document."""
         if not isinstance(self.__rootObject, basis._TypeBinding_mixin):
             # Happens if the top-level element got processed as a DOM instance.
             assert isinstance(self.__rootObject, xml.dom.Node)
-            raise pyxb.UnrecognizedDOMRootNodeError(self.__rootObject)
+            raise pyxb_123.UnrecognizedDOMRootNodeError(self.__rootObject)
         return self.__rootObject._postDOMValidate()
     __rootObject = None
 
@@ -289,7 +289,7 @@ class PyXBSAXHandler (pyxb.utils.saxutils.BaseSAXHandler):
 
         @keyword element_state_constructor: Overridden with the value
         L{_SAXElementState} before invoking the L{superclass
-        constructor<pyxb.utils.saxutils.BaseSAXHandler.__init__>}.
+        constructor<pyxb_123.utils.saxutils.BaseSAXHandler.__init__>}.
         """
 
         kw.setdefault('element_state_constructor', _SAXElementState)
@@ -348,7 +348,7 @@ class PyXBSAXHandler (pyxb.utils.saxutils.BaseSAXHandler):
         # Update the enclosing complex type definition for this
         # element state.
         assert type_class is not None
-        if issubclass(type_class, pyxb.binding.basis.complexTypeDefinition):
+        if issubclass(type_class, pyxb_123.binding.basis.complexTypeDefinition):
             this_state.setEnclosingCTD(type_class)
         else:
             this_state.setEnclosingCTD(parent_state.enclosingCTD())
@@ -390,11 +390,11 @@ class PyXBSAXHandler (pyxb.utils.saxutils.BaseSAXHandler):
             self.__rootObject = binding_object
 
 def make_parser (*args, **kw):
-    """Extend L{pyxb.utils.saxutils.make_parser} to change the default
+    """Extend L{pyxb_123.utils.saxutils.make_parser} to change the default
     C{content_handler_constructor} to be L{PyXBSAXHandler}.
     """
     kw.setdefault('content_handler_constructor', PyXBSAXHandler)
-    return pyxb.utils.saxutils.make_parser(*args, **kw)
+    return pyxb_123.utils.saxutils.make_parser(*args, **kw)
 
 ## Local Variables:
 ## fill-column:78

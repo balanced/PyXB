@@ -29,7 +29,7 @@ xsd='''<?xml version="1.0" encoding="UTF-8"?>
 '''
 
 #open('schema.xsd', 'w').write(xsd)
-code = pyxb.binding.generate.GeneratePython(schema_text=xsd)
+code = pyxb_123.binding.generate.GeneratePython(schema_text=xsd)
 #open('code.py', 'w').write(code)
 
 rv = compile(code, 'test', 'exec')
@@ -43,17 +43,17 @@ class TestTrac_0137 (unittest.TestCase):
     def setUp (self):
         # Hide the warning about failure to convert DOM node {}third
         # to a binding
-        self.__basis_log = logging.getLogger('pyxb.binding.basis')
+        self.__basis_log = logging.getLogger('pyxb_123.binding.basis')
         self.__basis_loglevel = self.__basis_log.level
         self.__basis_log.setLevel(logging.ERROR)
 
     def tearDown (self):
-        pyxb.RequireValidWhenParsing(True)
+        pyxb_123.RequireValidWhenParsing(True)
         self.__basis_log.level = self.__basis_loglevel
 
     def validate (self):
         xmls = '<wrapper><first/><second/><third><selt>text</selt></third></wrapper>'
-        doc = pyxb.utils.domutils.StringToDOM(xmls)
+        doc = pyxb_123.utils.domutils.StringToDOM(xmls)
         instance = wrapper.createFromDOM(doc.documentElement)
         self.assertEqual(1, len(instance.wildcardElements()))
         third = instance.wildcardElements()[0]
@@ -62,11 +62,11 @@ class TestTrac_0137 (unittest.TestCase):
         self.assertEqual('third', third.localName)
 
     def testWithValidation (self):
-        pyxb.RequireValidWhenParsing(True)
+        pyxb_123.RequireValidWhenParsing(True)
         self.validate()
 
     def testWithoutValidation (self):
-        pyxb.RequireValidWhenParsing(False)
+        pyxb_123.RequireValidWhenParsing(False)
         self.validate()
 
 if __name__ == '__main__':

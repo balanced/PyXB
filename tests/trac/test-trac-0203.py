@@ -19,7 +19,7 @@ xst = u'''<?xml version="1.0" encoding="UTF-8"?>
 </xs:schema>
 '''
 
-code = pyxb.binding.generate.GeneratePython(schema_text=xst)
+code = pyxb_123.binding.generate.GeneratePython(schema_text=xst)
 #print code
 
 rv = compile(code, 'test', 'exec')
@@ -32,7 +32,7 @@ import unittest
 class TestTrac0203 (unittest.TestCase):
     def testBasic (self):
         unbound = XsdWithHyphens('name')
-        with self.assertRaises(pyxb.UnboundElementError) as cm:
+        with self.assertRaises(pyxb_123.UnboundElementError) as cm:
             unbound.toxml('utf-8', root_only=True)
         e = cm.exception
         self.assertEqual(e.instance, unbound)

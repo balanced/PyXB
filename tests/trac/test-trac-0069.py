@@ -48,7 +48,7 @@ xsd='''<?xml version="1.0" encoding="UTF-8"?>
 '''
 
 #open('schema.xsd', 'w').write(xsd)
-code = pyxb.binding.generate.GeneratePython(schema_text=xsd)
+code = pyxb_123.binding.generate.GeneratePython(schema_text=xsd)
 #open('code.py', 'w').write(code)
 #print code
 
@@ -69,17 +69,17 @@ field_type = field_element.typeDefinition()
 value_element = field_type._ElementMap['value'].elementBinding()
 value_type = value_element.typeDefinition()
 
-v_bind = pyxb.BIND('foo', lang='ENG')
+v_bind = pyxb_123.BIND('foo', lang='ENG')
 
 class TestTrac_0069 (unittest.TestCase):
     def testMetaConstructor (self):
         newdoc = MetadataDocument()
         newdoc.template = 'anewtemplate'
 
-        newdoc.timespan.append(pyxb.BIND(start='-INF', end='+INF'))
+        newdoc.timespan.append(pyxb_123.BIND(start='-INF', end='+INF'))
         timespan = newdoc.timespan[0]
         self.assertTrue(isinstance(timespan, timespan_type))
-        timespan.field.append(pyxb.BIND('name', pyxb.BIND('fv0'), pyxb.BIND('fv1')))
+        timespan.field.append(pyxb_123.BIND('name', pyxb_123.BIND('fv0'), pyxb_123.BIND('fv1')))
         field = timespan.field[0]
         self.assertTrue(isinstance(field, field_type))
         field.value_.append('fv2')

@@ -30,7 +30,7 @@ xsd='''<?xml version="1.0" encoding="UTF-8"?>
 </xs:schema>
 '''
 
-code = pyxb.binding.generate.GeneratePython(schema_text=xsd)
+code = pyxb_123.binding.generate.GeneratePython(schema_text=xsd)
 #open('code.py', 'w').write(code)
 
 rv = compile(code, 'test', 'exec')
@@ -40,7 +40,7 @@ from pyxb_123.exceptions_ import *
 
 import unittest
 
-#pyxb.GlobalValidationConfig._setContentInfluencesGeneration(pyxb.GlobalValidationConfig.NEVER)
+#pyxb_123.GlobalValidationConfig._setContentInfluencesGeneration(pyxb_123.GlobalValidationConfig.NEVER)
 
 class TestTrac0184(unittest.TestCase):
    def testNesting(self):

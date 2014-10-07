@@ -10,7 +10,7 @@ from pyxb_123.namespace.builtin import XMLSchema_instance as xsi
 
 class TestTrac0202 (unittest.TestCase):
     def tearDown (self):
-        pyxb.utils.domutils.BindingDOMSupport.SetDefaultNamespace(sample.Namespace)
+        pyxb_123.utils.domutils.BindingDOMSupport.SetDefaultNamespace(sample.Namespace)
 
     Expectedt = """<?xml version="1.0" encoding="utf-8"?>
 <samplerootelement xmlns="http://sample" xmlns:ns1="http://sample" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="c:\sample.xsd">
@@ -27,7 +27,7 @@ class TestTrac0202 (unittest.TestCase):
         elm.ValueAmount.currencyID = 'abc'
         sam = sample.samplerootelement()
         sam.sampleelement.append(elm)
-        bds = pyxb.utils.domutils.BindingDOMSupport()
+        bds = pyxb_123.utils.domutils.BindingDOMSupport()
         bds.setDefaultNamespace(sample.Namespace)
         bds.declareNamespace(xsi)
         samdom = sam.toDOM(bds)

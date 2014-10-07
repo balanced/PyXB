@@ -9,7 +9,7 @@ from xml.dom import Node
 
 import os.path
 schema_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '../schemas/test-ctd-extension.xsd'))
-code = pyxb.binding.generate.GeneratePython(schema_location=schema_path)
+code = pyxb_123.binding.generate.GeneratePython(schema_location=schema_path)
 rv = compile(code, 'test', 'exec')
 eval(rv)
 
@@ -21,7 +21,7 @@ class TestCTDExtension (unittest.TestCase):
     def setUp (self):
         # Hide the warning about failure to convert DOM node {}third
         # to a binding
-        self.__basis_log = logging.getLogger('pyxb.binding.basis')
+        self.__basis_log = logging.getLogger('pyxb_123.binding.basis')
         self.__basis_loglevel = self.__basis_log.level
 
     def tearDown (self):
@@ -41,7 +41,7 @@ class TestCTDExtension (unittest.TestCase):
    <forename>Arnold</forename>
    <surname>Gore</surname>
   </oldAddressee>'''
-        doc = pyxb.utils.domutils.StringToDOM(xml)
+        doc = pyxb_123.utils.domutils.StringToDOM(xml)
         instance = oldAddressee.createFromDOM(doc.documentElement)
         self.assertEqual(2, len(instance.forename))
         # Note double dereference required because xs:anyType was used
@@ -58,7 +58,7 @@ class TestCTDExtension (unittest.TestCase):
    <surname>Gore</surname>
    <generation>Jr</generation>
   </addressee>'''
-        doc = pyxb.utils.domutils.StringToDOM(xml)
+        doc = pyxb_123.utils.domutils.StringToDOM(xml)
         instance = addressee.createFromDOM(doc.documentElement)
         self.assertEqual(2, len(instance.forename))
         self.assertEqual('Albert', instance.forename[0].orderedContent()[0].value)
@@ -72,7 +72,7 @@ class TestCTDExtension (unittest.TestCase):
         # Hide the warnings that other:something could not be converted
         self.__basis_log.setLevel(logging.ERROR)
         xml = '<defs xmlns:other="other"><documentation/><other:something/><message/><message/><import/><message/></defs>'
-        doc = pyxb.utils.domutils.StringToDOM(xml)
+        doc = pyxb_123.utils.domutils.StringToDOM(xml)
         instance = defs.createFromDOM(doc.documentElement)
         self.assertFalse(instance.documentation is None)
         self.assertEqual(3, len(instance.message))
@@ -80,7 +80,7 @@ class TestCTDExtension (unittest.TestCase):
         self.assertEqual(1, len(instance.wildcardElements()))
 
         xml = '<defs xmlns:other="other"><other:something/><other:else/><message/><message/><import/><message/></defs>'
-        doc = pyxb.utils.domutils.StringToDOM(xml)
+        doc = pyxb_123.utils.domutils.StringToDOM(xml)
         instance = defs.createFromDOM(doc.documentElement)
         self.assertTrue(instance.documentation is None)
         self.assertEqual(3, len(instance.message))
@@ -91,7 +91,7 @@ class TestCTDExtension (unittest.TestCase):
         # Hide the warnings that other:something could not be converted
         self.__basis_log.setLevel(logging.ERROR)
         xml = '<defs xmlns:other="other"><message/><other:something/></defs>'
-        doc = pyxb.utils.domutils.StringToDOM(xml)
+        doc = pyxb_123.utils.domutils.StringToDOM(xml)
         self.assertRaises(UnrecognizedContentError, defs.createFromDOM, doc.documentElement)
 
 if __name__ == '__main__':

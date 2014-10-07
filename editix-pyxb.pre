@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<MyProject path="editix-pyxb.pre">
+<MyProject path="editix-pyxb_123.pre">
  <group path="schemas">
   <item path="/home/pab/pyxb_123/dev/tests/schemas/test-union.xsd" type="XSD" encoding="AUTOMATIC" open="false" test="true">
    <property name="encoding" value="AUTOMATIC"/>

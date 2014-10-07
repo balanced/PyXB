@@ -197,7 +197,7 @@ that imports the generated bindings and extends them.
 Until this documentation is enhanced significantly, users interested in
 generating custom bindings are referred to the extensions for WSDL 1.1 that
 are provided in the WS-* support bundle as
-``pyxb.bundles.wssplat.wsdl11.py``.  An excerpt of the sort of thing done
+``pyxb_123.bundles.wssplat.wsdl11.py``.  An excerpt of the sort of thing done
 there is::
 
   from pyxb_123.bundles.wssplat.raw.wsdl11 import *
@@ -224,11 +224,11 @@ create instances of the customized class when automatically generating
 ``tParam`` instances from XML documents.
 
 To customize bindings, you will need to be familiar with the
-:api:`pyxb.binding.basis._DynamicCreate_mixin` class.
+:api:`pyxb_123.binding.basis._DynamicCreate_mixin` class.
 
 Be aware that :api:`_SetSupersedingClass
-<pyxb.binding.basis._DynamicCreate_mixin>` only affects the behavior of
-:api:`Factory <pyxb.binding.basis._TypeBinding_mixin>`, and does not change
+<pyxb_123.binding.basis._DynamicCreate_mixin>` only affects the behavior of
+:api:`Factory <pyxb_123.binding.basis._TypeBinding_mixin>`, and does not change
 the Python inheritance tree.  This means that the superseding class is only
 invoked when the content model requires an instance of the original type.
 When an instance of a subclass of a superseded class (that is not itself
@@ -271,7 +271,7 @@ directives like::
   import opengis.iso19139.gmd
 
 PyXB comes with :ref:`pre-defined bundles <bundles>` for related namespaces
-in the ``pyxb.bundles`` module hierarchy.  The command above is an excerpt
+in the ``pyxb_123.bundles`` module hierarchy.  The command above is an excerpt
 from an early version of the script that generates the :ref:`OpenGIS
 <bundle_opengis>` bundles.  See :ref:`Layout of a Bundle Directory
 <bundle_layout>` for more information and the location of the current

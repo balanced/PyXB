@@ -8,8 +8,8 @@ import datetime
 po = po4.purchaseOrder(orderDate=xs.date(1999, 10, 20))
 po.shipTo = address.USAddress('Alice Smith', '123 Maple Street', 'Anytown', 'AK', 12341)
 po.billTo = address.USAddress('Robert Smith', '8 Oak Avenue', 'Anytown', 'AK', 12341)
-po.items = pyxb.BIND(pyxb.BIND('Lapis necklace', 1, 99.95, partNum='833-AA'),
-                     pyxb.BIND('Plastic necklace', 4, 3.95, partNum='833-AB'))
+po.items = pyxb_123.BIND(pyxb_123.BIND('Lapis necklace', 1, 99.95, partNum='833-AA'),
+                     pyxb_123.BIND('Plastic necklace', 4, 3.95, partNum='833-AB'))
 
 po.shipTo.country = po.billTo.country = po.shipTo.country
 
@@ -19,7 +19,7 @@ lapis.comment = 'Want this for the holidays!'
 po.items.item[1].shipDate = po.items.item[0].shipDate + datetime.timedelta(days=19)
 
 import pyxb_123.utils.domutils
-pyxb.utils.domutils.BindingDOMSupport.DeclareNamespace(address.Namespace, 'addr')
-pyxb.utils.domutils.BindingDOMSupport.DeclareNamespace(po4.Namespace, 'po')
+pyxb_123.utils.domutils.BindingDOMSupport.DeclareNamespace(address.Namespace, 'addr')
+pyxb_123.utils.domutils.BindingDOMSupport.DeclareNamespace(po4.Namespace, 'po')
 
 print(po.toxml("utf-8"))

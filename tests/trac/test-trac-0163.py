@@ -21,7 +21,7 @@ xsd='''<?xml version="1.0" encoding="UTF-8"?>
 </xs:schema>'''
 
 #open('schema.xsd', 'w').write(xsd)
-code = pyxb.binding.generate.GeneratePython(schema_text=xsd)
+code = pyxb_123.binding.generate.GeneratePython(schema_text=xsd)
 #open('code.py', 'w').write(code)
 
 rv = compile(code, 'test', 'exec')
@@ -43,7 +43,7 @@ class TestTrac0163 (unittest.TestCase):
             instance = CreateFromDocument('<outer><inner>one</inner><inner>extra</inner></outer>')
             ran_test = False
         except Exception as e:
-            self.assertTrue(isinstance(e, pyxb.UnrecognizedContentError))
+            self.assertTrue(isinstance(e, pyxb_123.UnrecognizedContentError))
             self.assertTrue(isinstance(e.value, outer.typeDefinition()._UseForTag('inner').elementBinding().typeDefinition()))
             self.assertEqual(e.value, 'extra')
         self.assertTrue(ran_test)

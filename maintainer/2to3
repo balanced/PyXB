@@ -26,7 +26,7 @@ git commit -F 23o -a
         -e '/#!python3>!/,/#!python3<!/d' \
         -e '/#!python3!/d' \
         -e 's@^#python3:@@' \
-        -e 's@pyxb.utils.str@pyxb.utils.unicode@g' \
+        -e 's@pyxb_123.utils.str@pyxb_123.utils.unicode@g' \
         -e '/#python3:int:long/s@\bint\b@long@g' \
         -e 's@^import StringIO@import io@' \
         -e 's@StringIO.StringIO@io.StringIO@g' \

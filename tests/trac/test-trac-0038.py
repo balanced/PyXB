@@ -59,7 +59,7 @@ xsd='''<?xml version="1.0" encoding="UTF-8"?>
 
 </xs:schema>'''
 
-code = pyxb.binding.generate.GeneratePython(schema_text=xsd)
+code = pyxb_123.binding.generate.GeneratePython(schema_text=xsd)
 #open('code.py', 'w').write(code)
 
 rv = compile(code, 'test', 'exec')
@@ -85,7 +85,7 @@ class TestTrac0038 (unittest.TestCase):
         self.assertTrue(isinstance(w, welsh))
         self.assertEqual(w, welsh.dau)
         self.assertEqual(w, tUnion.dau)
-        self.assertRaises(pyxb.SimpleTypeValueError, union, 'deux')
+        self.assertRaises(pyxb_123.SimpleTypeValueError, union, 'deux')
         n = union('ni')
         self.assertEqual(n, tUnion.ni)
 

@@ -44,7 +44,7 @@ xsd='''<?xml version="1.0" encoding="UTF-8"?>
   </xs:simpleType>
 </xs:schema>'''
 
-code = pyxb.binding.generate.GeneratePython(schema_text=xsd)
+code = pyxb_123.binding.generate.GeneratePython(schema_text=xsd)
 #open('code.py', 'w').write(code)
 
 rv = compile(code, 'test', 'exec')
@@ -66,9 +66,9 @@ class TestTrac0099 (unittest.TestCase):
         i = fixs('fixed')
         self.assertEqual('fixed', i)
         if sys.version_info[:2] < (2, 7):
-            self.assertRaises(pyxb.ElementChangeError, fixs, 'other')
+            self.assertRaises(pyxb_123.ElementChangeError, fixs, 'other')
             return
-        with self.assertRaises(pyxb.ElementChangeError) as cm:
+        with self.assertRaises(pyxb_123.ElementChangeError) as cm:
             i = fixs('other')
         e = cm.exception
         self.assertEqual(e.value, 'other')
@@ -88,9 +88,9 @@ class TestTrac0099 (unittest.TestCase):
         self.assertEqual(21, i._UseForTag('fixi').defaultValue())
 
         if sys.version_info[:2] < (2, 7):
-            self.assertRaises(pyxb.ElementChangeError, complex, fixs='hi')
+            self.assertRaises(pyxb_123.ElementChangeError, complex, fixs='hi')
             return
-        with self.assertRaises(pyxb.ElementChangeError) as cm:
+        with self.assertRaises(pyxb_123.ElementChangeError) as cm:
             i = complex(fixs='hi')
         e = cm.exception
         self.assertEqual(e.value, 'hi')
@@ -102,7 +102,7 @@ class TestTrac0099 (unittest.TestCase):
         if sys.version_info[:2] < (2, 7):
             return
         # Cannot assign a non-fixed value
-        with self.assertRaises(pyxb.ElementChangeError) as cm:
+        with self.assertRaises(pyxb_123.ElementChangeError) as cm:
             i.fixs = 'hi'
         e = cm.exception
         self.assertEqual(e.value, 'hi')

@@ -9,7 +9,7 @@ from xml.dom import Node
 
 import os.path
 schema_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '../schemas/test-mg-sequence.xsd'))
-code = pyxb.binding.generate.GeneratePython(schema_location=schema_path)
+code = pyxb_123.binding.generate.GeneratePython(schema_location=schema_path)
 
 rv = compile(code, 'test', 'exec')
 eval(rv)
@@ -27,7 +27,7 @@ class TestMGSeq (unittest.TestCase):
     def setUp (self):
         # Hide the warning about failure to convert DOM node {}third
         # to a binding
-        self.__basis_log = logging.getLogger('pyxb.binding.basis')
+        self.__basis_log = logging.getLogger('pyxb_123.binding.basis')
         self.__basis_loglevel = self.__basis_log.level
 
     def tearDown (self):
@@ -38,13 +38,13 @@ class TestMGSeq (unittest.TestCase):
         # Hide warning about failure to convert
         self.__basis_log.level = logging.ERROR
         xml = '<ns1:wrapper xmlns:ns1="URN:test-mg-sequence"><first/><second/><third/><fourth_0_2/></ns1:wrapper>'
-        dom = pyxb.utils.domutils.StringToDOM(xml)
+        dom = pyxb_123.utils.domutils.StringToDOM(xml)
         self.assertRaises(UnrecognizedContentError, wrapper.createFromDOM, dom.documentElement)
 
     def testBasics (self):
         xmlt = u'<ns1:wrapper xmlns:ns1="URN:test-mg-sequence"><first/><second_opt/><third/><fourth_0_2/></ns1:wrapper>'
         xmld = xmlt.encode('utf-8')
-        dom = pyxb.utils.domutils.StringToDOM(xmlt)
+        dom = pyxb_123.utils.domutils.StringToDOM(xmlt)
         instance = wrapper.createFromDOM(dom.documentElement)
         self.assertTrue(isinstance(instance.first, sequence._ElementMap['first'].elementBinding().typeDefinition()))
         self.assertTrue(isinstance(instance.second_opt, sequence._ElementMap['second_opt'].elementBinding().typeDefinition()))
@@ -57,7 +57,7 @@ class TestMGSeq (unittest.TestCase):
     def testMultiplesAtEnd (self):
         xmlt = u'<ns1:wrapper xmlns:ns1="URN:test-mg-sequence"><first/><third/><fourth_0_2/><fourth_0_2/></ns1:wrapper>'
         xmld = xmlt.encode('utf-8')
-        dom = pyxb.utils.domutils.StringToDOM(xmlt)
+        dom = pyxb_123.utils.domutils.StringToDOM(xmlt)
         instance = wrapper.createFromDOM(dom.documentElement)
         self.assertTrue(isinstance(instance.first, sequence._ElementMap['first'].elementBinding().typeDefinition()))
         self.assertTrue(instance.second_opt is None)
@@ -70,7 +70,7 @@ class TestMGSeq (unittest.TestCase):
     def testMultiplesInMiddle (self):
         xmlt = u'<ns1:altwrapper xmlns:ns1="URN:test-mg-sequence"><first/><second_multi/><second_multi/><third/></ns1:altwrapper>'
         xmld = xmlt.encode('utf-8')
-        dom = pyxb.utils.domutils.StringToDOM(xmlt)
+        dom = pyxb_123.utils.domutils.StringToDOM(xmlt)
         instance = altwrapper.createFromDOM(dom.documentElement)
         self.assertTrue(isinstance(instance.first, collections.MutableSequence))
         self.assertEqual(1, len(instance.first))
@@ -81,7 +81,7 @@ class TestMGSeq (unittest.TestCase):
     def testMultiplesAtStart (self):
         xmlt = u'<ns1:altwrapper xmlns:ns1="URN:test-mg-sequence"><first/><first/><third/></ns1:altwrapper>'
         xmld = xmlt.encode('utf-8')
-        dom = pyxb.utils.domutils.StringToDOM(xmlt)
+        dom = pyxb_123.utils.domutils.StringToDOM(xmlt)
         instance = altwrapper.createFromDOM(dom.documentElement)
         self.assertTrue(isinstance(instance.first, collections.MutableSequence))
         self.assertEqual(2, len(instance.first))
@@ -94,7 +94,7 @@ class TestMGSeq (unittest.TestCase):
     def testMissingInMiddle (self):
         xmlt = u'<ns1:wrapper xmlns:ns1="URN:test-mg-sequence"><first/><third/></ns1:wrapper>'
         xmld = xmlt.encode('utf-8')
-        dom = pyxb.utils.domutils.StringToDOM(xmlt)
+        dom = pyxb_123.utils.domutils.StringToDOM(xmlt)
         instance = wrapper.createFromDOM(dom.documentElement)
         self.assertTrue(isinstance(instance.first, sequence._ElementMap['first'].elementBinding().typeDefinition()))
         self.assertTrue(instance.second_opt is None)
@@ -105,32 +105,32 @@ class TestMGSeq (unittest.TestCase):
 
     def testMissingAtStart (self):
         xmlt = u'<ns1:altwrapper xmlns:ns1="URN:test-mg-sequence"><third/></ns1:altwrapper>'
-        dom = pyxb.utils.domutils.StringToDOM(xmlt)
+        dom = pyxb_123.utils.domutils.StringToDOM(xmlt)
         self.assertRaises(UnrecognizedContentError, altwrapper.createFromDOM, dom.documentElement)
         instance = altwrapper(third=altsequence._ElementMap['third'].elementBinding()())
-        self.assertRaises(pyxb.IncompleteElementContentError, ToDOM, instance)
+        self.assertRaises(pyxb_123.IncompleteElementContentError, ToDOM, instance)
 
     def testMissingAtEndLeadingContent (self):
         xmlt = u'<ns1:altwrapper xmlns:ns1="URN:test-mg-sequence"><first/></ns1:altwrapper>'
-        dom = pyxb.utils.domutils.StringToDOM(xmlt)
+        dom = pyxb_123.utils.domutils.StringToDOM(xmlt)
         self.assertRaises(IncompleteElementContentError, altwrapper.createFromDOM, dom.documentElement)
 
     def testMissingAtEndNoContent (self):
         xmlt = u'<ns1:altwrapper xmlns:ns1="URN:test-mg-sequence"></ns1:altwrapper>'
-        dom = pyxb.utils.domutils.StringToDOM(xmlt)
+        dom = pyxb_123.utils.domutils.StringToDOM(xmlt)
         self.assertRaises(IncompleteElementContentError, altwrapper.createFromDOM, dom.documentElement)
 
     def testTooManyAtEnd (self):
         xmlt = u'<ns1:wrapper xmlns:ns1="URN:test-mg-sequence"><first/><third/><fourth_0_2/><fourth_0_2/><fourth_0_2/></ns1:wrapper>'
-        dom = pyxb.utils.domutils.StringToDOM(xmlt)
+        dom = pyxb_123.utils.domutils.StringToDOM(xmlt)
         self.assertRaises(UnrecognizedContentError, wrapper.createFromDOM, dom.documentElement)
 
     def testTooManyAtStart (self):
         xmlt = u'<ns1:altwrapper xmlns:ns1="URN:test-mg-sequence"><first/><first/><first/><third/></ns1:altwrapper>'
-        dom = pyxb.utils.domutils.StringToDOM(xmlt)
+        dom = pyxb_123.utils.domutils.StringToDOM(xmlt)
         self.assertRaises(UnrecognizedContentError, altwrapper.createFromDOM, dom.documentElement)
         instance = altwrapper(first=[ altsequence._ElementMap['first'].elementBinding()(), altsequence._ElementMap['first'].elementBinding()(), altsequence._ElementMap['first'].elementBinding()() ], third=altsequence._ElementMap['third'].elementBinding()())
-        self.assertRaises(pyxb.UnprocessedElementContentError, ToDOM, instance)
+        self.assertRaises(pyxb_123.UnprocessedElementContentError, ToDOM, instance)
         if sys.version_info[:2] >= (2, 7):
             with self.assertRaises(UnprocessedElementContentError) as cm:
                 instance.toxml('utf-8')
@@ -142,7 +142,7 @@ class TestMGSeq (unittest.TestCase):
 
     def testTooManyInMiddle (self):
         xml = '<ns1:altwrapper xmlns:ns1="URN:test-mg-sequence"><second_multi/><second_multi/><second_multi/><third/></ns1:altwrapper>'
-        dom = pyxb.utils.domutils.StringToDOM(xml)
+        dom = pyxb_123.utils.domutils.StringToDOM(xml)
         self.assertRaises(UnrecognizedContentError, altwrapper.createFromDOM, dom.documentElement)
 
 

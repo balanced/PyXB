@@ -8,8 +8,8 @@ import pyxb_123.utils.domutils
 import bindings.s0 as s0
 import bindings.s1 as s1
 
-pyxb.utils.domutils.BindingDOMSupport.DeclareNamespace(s0.Namespace, 's0')
-pyxb.utils.domutils.BindingDOMSupport.DeclareNamespace(s1.Namespace, 's1')
+pyxb_123.utils.domutils.BindingDOMSupport.DeclareNamespace(s0.Namespace, 's0')
+pyxb_123.utils.domutils.BindingDOMSupport.DeclareNamespace(s1.Namespace, 's1')
 
 import unittest
 
@@ -19,7 +19,7 @@ class ExternalTrac0184 (unittest.TestCase):
         e1i = s1.e1i(4)
         e1s = s1.e1s('ext0')
         e0extend0 = s0.e0extend0()
-        with self.assertRaises(pyxb.IncompleteElementContentError) as cm:
+        with self.assertRaises(pyxb_123.IncompleteElementContentError) as cm:
             e0extend0.toxml('utf-8')
         e0extend0.e0i = e0i
         xmlt = u'<s0:e0extend0 xmlns:s0="urn:s0add"><s0:e0i>32</s0:e0i></s0:e0extend0>'
@@ -39,7 +39,7 @@ class ExternalTrac0184 (unittest.TestCase):
         e1i = s1.e1i(4)
         e1s = s1.e1s('ext1')
         e0extend1 = s0.e0extend1()
-        with self.assertRaises(pyxb.IncompleteElementContentError) as cm:
+        with self.assertRaises(pyxb_123.IncompleteElementContentError) as cm:
             e0extend1.toxml('utf-8')
         e0extend1.e0i = e0i
         xmlt = u'<s0:e0extend1 xmlns:s0="urn:s0add"><s0:e0i>32</s0:e0i></s0:e0extend1>'

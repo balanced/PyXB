@@ -32,7 +32,7 @@ xsd='''
 '''
 
 #open('schema.xsd', 'w').write(xsd)
-code = pyxb.binding.generate.GeneratePython(schema_text=xsd)
+code = pyxb_123.binding.generate.GeneratePython(schema_text=xsd)
 #open('code.py', 'w').write(code)
 #print code
 
@@ -51,15 +51,15 @@ class TestTrac_0057 (unittest.TestCase):
         return v.toxml("utf-8")
 
     def tearDown (self):
-        pyxb.RequireValidWhenGenerating(True)
-        pyxb.RequireValidWhenParsing(True)
+        pyxb_123.RequireValidWhenGenerating(True)
+        pyxb_123.RequireValidWhenParsing(True)
 
     def testDefault (self):
-        self.assertTrue(pyxb._GenerationRequiresValid)
-        self.assertTrue(pyxb._ParsingRequiresValid)
-        self.assertRaises(pyxb.UnrecognizedContentError, CreateFromDocument, self.XMLs)
-        doc = pyxb.utils.domutils.StringToDOM(self.XMLs)
-        self.assertRaises(pyxb.UnrecognizedContentError, CreateFromDOM, doc)
+        self.assertTrue(pyxb_123._GenerationRequiresValid)
+        self.assertTrue(pyxb_123._ParsingRequiresValid)
+        self.assertRaises(pyxb_123.UnrecognizedContentError, CreateFromDocument, self.XMLs)
+        doc = pyxb_123.utils.domutils.StringToDOM(self.XMLs)
+        self.assertRaises(pyxb_123.UnrecognizedContentError, CreateFromDOM, doc)
         if sys.version_info[:2] >= (2, 7):
             with self.assertRaises(UnrecognizedContentError) as cm:
                 CreateFromDocument(self.XMLs)
@@ -75,9 +75,9 @@ class TestTrac_0057 (unittest.TestCase):
             self.assertEqual(accept[0].elementDeclaration(), assigned_priority_ed)
 
     def testDisable (self):
-        pyxb.RequireValidWhenParsing(False)
+        pyxb_123.RequireValidWhenParsing(False)
         instance = CreateFromDocument(self.XMLs)
-        self.assertRaises(pyxb.IncompleteElementContentError, self.exec_toxmld, instance)
+        self.assertRaises(pyxb_123.IncompleteElementContentError, self.exec_toxmld, instance)
         if sys.version_info[:2] >= (2, 7):
             with self.assertRaises(IncompleteElementContentError) as cm:
                 instance.toxml('utf-8', root_only=True)
@@ -92,9 +92,9 @@ class TestTrac_0057 (unittest.TestCase):
             time_of_creation_ed = ObsProject.typeDefinition()._UseForTag(Namespace.createExpandedName('timeOfCreation'))
             self.assertEqual(instance.timeOfCreation, cm.exception.symbol_set[time_of_creation_ed][0])
 
-        doc = pyxb.utils.domutils.StringToDOM(self.XMLs)
+        doc = pyxb_123.utils.domutils.StringToDOM(self.XMLs)
         instance = CreateFromDOM(doc)
-        pyxb.RequireValidWhenGenerating(False)
+        pyxb_123.RequireValidWhenGenerating(False)
         xmld = instance.toxml("utf-8", root_only=True)
         self.assertEqual(xmld, self.XMLd)
 

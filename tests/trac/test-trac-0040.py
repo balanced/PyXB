@@ -33,7 +33,7 @@ xsd='''<?xml version="1.0" encoding="UTF-8"?>
   <xs:element name="aggregate" type="tAggregate"/>
 </xs:schema>'''
 
-code = pyxb.binding.generate.GeneratePython(schema_text=xsd)
+code = pyxb_123.binding.generate.GeneratePython(schema_text=xsd)
 #open('code.py', 'w').write(code)
 
 rv = compile(code, 'test', 'exec')
@@ -58,8 +58,8 @@ class TestTrac0040 (unittest.TestCase):
         self.assertEqual(instance.lu.xsdLiteral(), '1 two 3')
 
         # These also caught a missed TypeError to PyXBException conversion
-        self.assertRaises(pyxb.SimpleTypeValueError, SET_lu, instance, 1)
-        self.assertRaises(pyxb.SimpleTypeValueError, SET_lu, instance, [[1,'two',3], ['two',3,4]])
+        self.assertRaises(pyxb_123.SimpleTypeValueError, SET_lu, instance, 1)
+        self.assertRaises(pyxb_123.SimpleTypeValueError, SET_lu, instance, [[1,'two',3], ['two',3,4]])
 
         instance = aggregate([1,'two',3])
         self.assertEqual(3, len(instance.lu))

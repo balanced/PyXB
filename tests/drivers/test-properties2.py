@@ -11,7 +11,7 @@ from xml.dom import Node
 import pyxb_123.binding.basis
 import os.path
 schema_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '../schemas/test-collision.xsd'))
-code = pyxb.binding.generate.GeneratePython(schema_location=schema_path)
+code = pyxb_123.binding.generate.GeneratePython(schema_location=schema_path)
 #open('code.py', 'w').write(code)
 
 rv = compile(code, 'test', 'exec')

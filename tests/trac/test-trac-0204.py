@@ -22,7 +22,7 @@ xsd='''<?xml version="1.0" encoding="UTF-8"?>
   <xs:element name="yesNoChoice" type="YesNoChoice"/>
 </xs:schema>'''
 
-code = pyxb.binding.generate.GeneratePython(schema_text=xsd)
+code = pyxb_123.binding.generate.GeneratePython(schema_text=xsd)
 #open('code.py', 'w').write(code)
 
 rv = compile(code, 'test', 'exec')
@@ -42,7 +42,7 @@ class TestTrac0204 (unittest.TestCase):
         self.assertIsNotNone(instance.Yes)
         self.assertIsNone(instance.No)
         instance = yesNoChoice(Yes=True, No=True)
-        self.assertRaises(pyxb.UnprocessedElementContentError, instance.validateBinding)
+        self.assertRaises(pyxb_123.UnprocessedElementContentError, instance.validateBinding)
 
 if __name__ == '__main__':
     unittest.main()

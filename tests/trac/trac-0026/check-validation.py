@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Check all exceptions under pyxb.ValidationError
+# Check all exceptions under pyxb_123.ValidationError
 
 # ElementValidationError
 # . AbstractElementError
@@ -91,7 +91,7 @@ class TestAbstractElementError (unittest.TestCase):
 
     def testException (self):
         instance = None
-        with self.assertRaises(pyxb.AbstractElementError) as cm:
+        with self.assertRaises(pyxb_123.AbstractElementError) as cm:
             instance = trac26.eAbstractCard('un')
         e = cm.exception
         self.assertTrue(instance is None)
@@ -101,7 +101,7 @@ class TestAbstractElementError (unittest.TestCase):
 
     def testFromDocument (self):
         instance = None
-        with self.assertRaises(pyxb.AbstractElementError) as cm:
+        with self.assertRaises(pyxb_123.AbstractElementError) as cm:
             instance = trac26.CreateFromDocument(self.Bad_xmlt)
         e = cm.exception
         self.assertFalse(e.location is None)
@@ -117,7 +117,7 @@ class TestAbstractElementError (unittest.TestCase):
         # model fails to recognize it, and it looks like mixed content.
         instance = trac26.eCardinals()
         self.assertEqual(0, len(instance.eAbstractCard))
-        self.assertRaises(pyxb.MixedContentError, instance.append, 'un')
+        self.assertRaises(pyxb_123.MixedContentError, instance.append, 'un')
 
 class TestAbstractInstantiationError (unittest.TestCase):
 
@@ -139,7 +139,7 @@ class TestAbstractInstantiationError (unittest.TestCase):
     def testException (self):
         scym1 = trac26.tCardCymru('un')
         instance = None
-        with self.assertRaises(pyxb.AbstractInstantiationError) as cm:
+        with self.assertRaises(pyxb_123.AbstractInstantiationError) as cm:
             instance = trac26.eAbstract(scym1)
         e = cm.exception
         self.assertTrue(instance is None)
@@ -147,7 +147,7 @@ class TestAbstractInstantiationError (unittest.TestCase):
 
     def testFromDocument (self):
         instance = None
-        with self.assertRaises(pyxb.AbstractInstantiationError) as cm:
+        with self.assertRaises(pyxb_123.AbstractInstantiationError) as cm:
             instance = trac26.CreateFromDocument(self.Bad_xmlt)
         e = cm.exception
         self.assertTrue(instance is None)
@@ -192,7 +192,7 @@ class TestSimpleContentAbsentError (unittest.TestCase):
 
     def testDirect (self):
         instance = None
-        with self.assertRaises(pyxb.SimpleContentAbsentError) as cm:
+        with self.assertRaises(pyxb_123.SimpleContentAbsentError) as cm:
             instance = trac26.eCTwSC()
         e = cm.exception
         self.assertTrue(instance is None)
@@ -201,7 +201,7 @@ class TestSimpleContentAbsentError (unittest.TestCase):
         instance = trac26.eCTwSC(3)
         self.assertTrue(instance.validateBinding())
         instance.reset()
-        with self.assertRaises(pyxb.SimpleContentAbsentError) as cm:
+        with self.assertRaises(pyxb_123.SimpleContentAbsentError) as cm:
             instance.xsdConstraintsOK()
         e = cm.exception
         self.assertEqual(str(e), 'Type tCTwSC requires content')
@@ -210,14 +210,14 @@ class TestSimpleContentAbsentError (unittest.TestCase):
         instance = trac26.eCTwSC(3)
         self.assertTrue(instance.validateBinding())
         instance.reset()
-        with self.assertRaises(pyxb.SimpleContentAbsentError) as cm:
+        with self.assertRaises(pyxb_123.SimpleContentAbsentError) as cm:
             instance.validateBinding()
         e = cm.exception
         self.assertEqual(str(e), 'Type tCTwSC requires content')
 
     def testDocument (self):
         instance = None
-        with self.assertRaises(pyxb.SimpleContentAbsentError) as cm:
+        with self.assertRaises(pyxb_123.SimpleContentAbsentError) as cm:
             instance = trac26.CreateFromDocument(self.Bad_xmlt)
         e = cm.exception
         self.assertTrue(instance is None)
@@ -228,7 +228,7 @@ class TestSimpleContentAbsentError (unittest.TestCase):
 
     def testDocumentSeq (self):
         instance = None
-        with self.assertRaises(pyxb.SimpleContentAbsentError) as cm:
+        with self.assertRaises(pyxb_123.SimpleContentAbsentError) as cm:
             instance = trac26.CreateFromDocument(self.BadSeq_xmlt)
         e = cm.exception
         self.assertTrue(instance is None)
@@ -276,7 +276,7 @@ class TestAttributeChangeError (unittest.TestCase):
 
     def testDirect (self):
         instance = trac26.tAttributes(aReq=2)
-        with self.assertRaises(pyxb.AttributeChangeError) as cm:
+        with self.assertRaises(pyxb_123.AttributeChangeError) as cm:
             instance.aFixed = 1
         e = cm.exception
         self.assertEqual(e.type, trac26.tAttributes)
@@ -290,7 +290,7 @@ class TestAttributeChangeError (unittest.TestCase):
 
     def testDocument (self):
         instance = None
-        with self.assertRaises(pyxb.AttributeChangeError) as cm:
+        with self.assertRaises(pyxb_123.AttributeChangeError) as cm:
             instance = trac26.CreateFromDocument(self.Bad_xmlt)
         self.assertTrue(instance is None)
         e = cm.exception
@@ -327,22 +327,22 @@ class TestAttributeValueError (unittest.TestCase):
 
     def testAssignment (self):
         instance = trac26.eAttributes(aReq=4)
-        with self.assertRaises(pyxb.SimpleTypeValueError) as cm:
+        with self.assertRaises(pyxb_123.SimpleTypeValueError) as cm:
             instance.aCardCymru = 'four'
         e = cm.exception
         au = trac26.tAttributes._AttributeMap['aCardCymru']
-        self.assertTrue(isinstance(e, pyxb.SimpleFacetValueError))
+        self.assertTrue(isinstance(e, pyxb_123.SimpleFacetValueError))
         self.assertEqual(e.type, au.dataType())
         self.assertEqual(e.value, 'four')
         self.assertEqual(e.facet, au.dataType()._CF_enumeration)
         self.assertEqual(str(e), "Type tCardCymru enumeration constraint violated by value four")
 
     def testConstructor (self):
-        with self.assertRaises(pyxb.SimpleTypeValueError) as cm:
+        with self.assertRaises(pyxb_123.SimpleTypeValueError) as cm:
             instance = trac26.eAttributes(aReq=4, aCardCymru='four')
 
     def testDocument (self):
-        with self.assertRaises(pyxb.SimpleTypeValueError) as cm:
+        with self.assertRaises(pyxb_123.SimpleTypeValueError) as cm:
             instance = trac26.CreateFromDocument(self.Bad_xmlt)
 
 class TestMissingAttributeError (unittest.TestCase):
@@ -361,25 +361,25 @@ class TestMissingAttributeError (unittest.TestCase):
 
     def testBatch (self):
         instance = trac26.tAttributes()
-        with self.assertRaises(pyxb.MissingAttributeError) as cm:
+        with self.assertRaises(pyxb_123.MissingAttributeError) as cm:
             instance.validateBinding()
 
     def testBatchReqFixed (self):
         instance = trac26.tAttributeReqFixed()
-        with self.assertRaises(pyxb.MissingAttributeError) as cm:
+        with self.assertRaises(pyxb_123.MissingAttributeError) as cm:
             instance.validateBinding()
 
     def testAssignment (self):
         instance = trac26.tAttributes(aReq=3)
         self.assertTrue(instance.validateBinding())
-        with self.assertRaises(pyxb.MissingAttributeError) as cm:
+        with self.assertRaises(pyxb_123.MissingAttributeError) as cm:
             instance.aReq = None
         e = cm.exception
         self.assertEqual(e.instance, instance)
 
     def testDocument (self):
         instance = None
-        with self.assertRaises(pyxb.MissingAttributeError) as cm:
+        with self.assertRaises(pyxb_123.MissingAttributeError) as cm:
             instance = trac26.CreateFromDocument(self.Bad_xmlt)
         e = cm.exception
         au = trac26.tAttributes._AttributeMap['aReq']
@@ -422,23 +422,23 @@ class TestProhibitedAttributeError (unittest.TestCase):
 
     def testConstructor (self):
         instance = None
-        with self.assertRaises(pyxb.ProhibitedAttributeError) as cm:
+        with self.assertRaises(pyxb_123.ProhibitedAttributeError) as cm:
             instance = trac26.eAttributesProhibited(aReq=2, aProhibited=6)
 
     def testAssignment (self):
         instance = trac26.eAttributesProhibited(aReq=2)
-        with self.assertRaises(pyxb.ProhibitedAttributeError) as cm:
+        with self.assertRaises(pyxb_123.ProhibitedAttributeError) as cm:
             instance.aProhibited = 6
 
     def testSet (self):
         instance = trac26.eAttributesProhibited(aReq=2)
         au = instance._AttributeMap['aProhibited']
-        with self.assertRaises(pyxb.ProhibitedAttributeError) as cm:
+        with self.assertRaises(pyxb_123.ProhibitedAttributeError) as cm:
             au.set(instance, 6)
 
     def testDocument (self):
         instance = None
-        with self.assertRaises(pyxb.ProhibitedAttributeError) as cm:
+        with self.assertRaises(pyxb_123.ProhibitedAttributeError) as cm:
             instance = trac26.CreateFromDocument(self.Bad_xmlt)
         e = cm.exception
         self.assertFalse(e.instance is None)
@@ -464,13 +464,13 @@ class TestUnrecognizedAttributeError (unittest.TestCase):
     Bad_xmld = Bad_xmlt.encode('utf-8')
 
     def testSchemaSupport (self):
-        dom = pyxb.utils.domutils.StringToDOM(self.Good_xmlt)
+        dom = pyxb_123.utils.domutils.StringToDOM(self.Good_xmlt)
         instance = trac26.CreateFromDOM(dom)
         self.assertEqual(self.Good_xmld, instance.toxml('utf-8', root_only=True))
 
     def testDOM (self):
-        dom = pyxb.utils.domutils.StringToDOM(self.Bad_xmlt)
-        with self.assertRaises(pyxb.UnrecognizedAttributeError) as cm:
+        dom = pyxb_123.utils.domutils.StringToDOM(self.Bad_xmlt)
+        with self.assertRaises(pyxb_123.UnrecognizedAttributeError) as cm:
             instance = trac26.CreateFromDOM(dom)
         e = cm.exception
         # The code path for this is creating a map from attribute tags
@@ -485,7 +485,7 @@ class TestUnrecognizedAttributeError (unittest.TestCase):
 
     def testDocument (self):
         instance = None
-        with self.assertRaises(pyxb.UnrecognizedAttributeError) as cm:
+        with self.assertRaises(pyxb_123.UnrecognizedAttributeError) as cm:
             instance = trac26.CreateFromDocument(self.Bad_xmlt)
         self.assertTrue(instance is None)
         e = cm.exception
@@ -501,7 +501,7 @@ class TestUnrecognizedAttributeError (unittest.TestCase):
 
     def testDisplayDOM (self):
         if DisplayException:
-            trac26.CreateFromDOM(pyxb.utils.domutils.StringToDOM(self.Bad_xmlt))
+            trac26.CreateFromDOM(pyxb_123.utils.domutils.StringToDOM(self.Bad_xmlt))
 
     def testDisplayDoc (self):
         if DisplayException:
@@ -524,7 +524,7 @@ class TestAttributeOnSimpleTypeError (unittest.TestCase):
 
     def testException (self):
         instance = None
-        with self.assertRaises(pyxb.AttributeOnSimpleTypeError) as cm:
+        with self.assertRaises(pyxb_123.AttributeOnSimpleTypeError) as cm:
             instance = trac26.CreateFromDocument(self.Bad_xmlt)
         e = cm.exception
         self.assertEqual(e.tag, 'bits')
@@ -541,7 +541,7 @@ class TestAttributeOnSimpleTypeError (unittest.TestCase):
 class TestUnprocessedKeywordContentError (unittest.TestCase):
     def testException (self):
         instance = None
-        with self.assertRaises(pyxb.UnprocessedKeywordContentError) as cm:
+        with self.assertRaises(pyxb_123.UnprocessedKeywordContentError) as cm:
             instance = trac26.eAttributes(foo=3)
         self.assertTrue(instance is None)
         e = cm.exception
@@ -557,13 +557,13 @@ class TestExtraSimpleContentError (unittest.TestCase):
         instance = trac26.eCTwSC(1)
         self.assertTrue(instance.validateBinding())
         instance.reset()
-        self.assertRaises(pyxb.SimpleContentAbsentError, instance.validateBinding)
+        self.assertRaises(pyxb_123.SimpleContentAbsentError, instance.validateBinding)
         instance.append(1)
         self.assertTrue(instance.validateBinding())
 
     def testException (self):
         instance = trac26.eCTwSC(1)
-        with self.assertRaises(pyxb.ExtraSimpleContentError) as cm:
+        with self.assertRaises(pyxb_123.ExtraSimpleContentError) as cm:
             instance.append(2)
         e = cm.exception
         self.assertEqual(e.instance, instance)
@@ -591,7 +591,7 @@ class TestMixedContentError (unittest.TestCase):
     def testException (self):
         instance = trac26.eCTwSCSequence()
         instance.append(trac26.eCTwSC(2))
-        with self.assertRaises(pyxb.MixedContentError) as cm:
+        with self.assertRaises(pyxb_123.MixedContentError) as cm:
             instance.append('noise')
         e = cm.exception
         self.assertTrue(e.location is None)
@@ -601,7 +601,7 @@ class TestMixedContentError (unittest.TestCase):
 
     def testDocument (self):
         instance = None
-        with self.assertRaises(pyxb.MixedContentError) as cm:
+        with self.assertRaises(pyxb_123.MixedContentError) as cm:
             instance = trac26.CreateFromDocument(self.Bad_xmlt)
         e = cm.exception
         self.assertFalse(e.location is None)
@@ -640,7 +640,7 @@ The following element and wildcard content would be accepted:
 
     def testException (self):
         instance = trac26.eIntsPlus()
-        with self.assertRaises(pyxb.UnrecognizedContentError) as cm:
+        with self.assertRaises(pyxb_123.UnrecognizedContentError) as cm:
             instance.append(trac26.eCTwSC(2))
         e = cm.exception
         self.assertTrue(e.location is None)
@@ -648,16 +648,16 @@ The following element and wildcard content would be accepted:
         self.assertTrue(isinstance(e.value, trac26.tCTwSC))
         acceptable = e.automaton_configuration.acceptableContent()
         self.assertEqual(2, len(acceptable))
-        self.assertTrue(isinstance(acceptable[0], pyxb.binding.content.ElementUse))
+        self.assertTrue(isinstance(acceptable[0], pyxb_123.binding.content.ElementUse))
         self.assertNotEqual(acceptable[0].elementBinding(), trac26.eInt)
         self.assertEqual(acceptable[0].typeDefinition(), trac26.eInt.typeDefinition())
-        self.assertTrue(isinstance(acceptable[1], pyxb.binding.content.WildcardUse))
+        self.assertTrue(isinstance(acceptable[1], pyxb_123.binding.content.WildcardUse))
         self.assertEqual(str(e), 'Invalid content eCTwSC (expect eInt or xs:any)')
         self.assertEqual(e.details(), self.Bad_details)
 
     def testDocument (self):
         instance = None
-        with self.assertRaises(pyxb.UnrecognizedContentError) as cm:
+        with self.assertRaises(pyxb_123.UnrecognizedContentError) as cm:
             instance = trac26.CreateFromDocument(self.Bad_xmlt)
         e = cm.exception
         self.assertFalse(e.location is None)
@@ -708,7 +708,7 @@ The following content was not processed by the automaton:
     def testException (self):
         instance = trac26.eTranslateCard(trac26.eConcCardCymru('un'))
         instance.cardinal = 1
-        with self.assertRaises(pyxb.IncompleteElementContentError) as cm:
+        with self.assertRaises(pyxb_123.IncompleteElementContentError) as cm:
             instance.validateBinding()
         e = cm.exception
         self.assertFalse(e.fac_configuration.isAccepting())
@@ -745,7 +745,7 @@ The following content was not processed by the automaton:
                                               xs.int(1))
         self.assertTrue(instance.validateBinding())
         instance.cardinal.append(2)
-        with self.assertRaises(pyxb.UnprocessedElementContentError) as cm:
+        with self.assertRaises(pyxb_123.UnprocessedElementContentError) as cm:
             instance.validateBinding()
         e = cm.exception
         self.assertTrue(e.fac_configuration.isAccepting())
@@ -787,7 +787,7 @@ class TestContentInNilInstanceError (unittest.TestCase):
         self.assertTrue(instance.validateBinding())
 
     def testConstructor (self):
-        with self.assertRaises(pyxb.ContentInNilInstanceError) as cm:
+        with self.assertRaises(pyxb_123.ContentInNilInstanceError) as cm:
             trac26.eNilInt(4, _nil=True)
         e = cm.exception
         self.assertTrue(e.location is None)
@@ -796,7 +796,7 @@ class TestContentInNilInstanceError (unittest.TestCase):
 
     def testAppend (self):
         instance = trac26.eNilCTwSC(_nil=True)
-        with self.assertRaises(pyxb.ContentInNilInstanceError) as cm:
+        with self.assertRaises(pyxb_123.ContentInNilInstanceError) as cm:
             instance.append(4)
         e = cm.exception
         self.assertTrue(e.location is None)
@@ -809,7 +809,7 @@ class TestContentInNilInstanceError (unittest.TestCase):
         self.assertTrue(instance.validateBinding())
         # Not a valid way to do things, but only way to test this raise
         instance.content().append(1)
-        with self.assertRaises(pyxb.ContentInNilInstanceError) as cm:
+        with self.assertRaises(pyxb_123.ContentInNilInstanceError) as cm:
             instance.validateBinding()
         e = cm.exception
         self.assertTrue(e.location is None)
@@ -818,7 +818,7 @@ class TestContentInNilInstanceError (unittest.TestCase):
     def testContentAppend (self):
         instance = trac26.eNilInts(_nil=True)
         self.assertTrue(instance._isNil())
-        with self.assertRaises(pyxb.ContentInNilInstanceError) as cm:
+        with self.assertRaises(pyxb_123.ContentInNilInstanceError) as cm:
             type(instance)._UseForTag('eInt').append(instance, 1)
         e = cm.exception
         self.assertTrue(e.location is None)
@@ -826,7 +826,7 @@ class TestContentInNilInstanceError (unittest.TestCase):
 
     def testContentSet (self):
         instance = trac26.eNilOneInt(_nil=True)
-        with self.assertRaises(pyxb.ContentInNilInstanceError) as cm:
+        with self.assertRaises(pyxb_123.ContentInNilInstanceError) as cm:
             instance.eInt = 1
         e = cm.exception
         self.assertTrue(e.location is None)
@@ -834,7 +834,7 @@ class TestContentInNilInstanceError (unittest.TestCase):
 
     def testDocument (self):
         instance = None
-        with self.assertRaises(pyxb.ContentInNilInstanceError) as cm:
+        with self.assertRaises(pyxb_123.ContentInNilInstanceError) as cm:
             instance = trac26.CreateFromDocument(self.Bad_xmlt)
         e = cm.exception
         self.assertFalse(e.location is None)
@@ -855,7 +855,7 @@ class TestContentInNilInstanceError (unittest.TestCase):
 
     def testException (self):
         instance = trac26.eCTwSC(4)
-        with self.assertRaises(pyxb.NoNillableSupportError) as cm:
+        with self.assertRaises(pyxb_123.NoNillableSupportError) as cm:
             instance._setIsNil(True)
         e = cm.exception
         self.assertTrue(e.location is None)
@@ -883,7 +883,7 @@ class TestSimpleListValueError (unittest.TestCase):
 
     def testException (self):
         instance = trac26.eListCardCymru()
-        with self.assertRaises(pyxb.SimpleListValueError) as cm:
+        with self.assertRaises(pyxb_123.SimpleListValueError) as cm:
             instance.append('pump')
         e = cm.exception
         self.assertEqual(e.type, trac26.tListCardCymru)
@@ -893,7 +893,7 @@ class TestSimpleListValueError (unittest.TestCase):
 
     def testException (self):
         instance = None
-        with self.assertRaises(pyxb.SimpleListValueError) as cm:
+        with self.assertRaises(pyxb_123.SimpleListValueError) as cm:
             instance = trac26.CreateFromDocument(self.Bad_xmlt)
         e = cm.exception
         self.assertEqual(e.type, trac26.tListCardCymru)
@@ -920,7 +920,7 @@ class TestSimpleUnionValueError (unittest.TestCase):
 
     def testException (self):
         instance = None
-        with self.assertRaises(pyxb.SimpleUnionValueError) as cm:
+        with self.assertRaises(pyxb_123.SimpleUnionValueError) as cm:
             instance = trac26.eUnionCard('pump')
         e = cm.exception
         self.assertEqual(e.type, trac26.tUnionCard)
@@ -930,7 +930,7 @@ class TestSimpleUnionValueError (unittest.TestCase):
 
     def testDocument (self):
         instance = None
-        with self.assertRaises(pyxb.SimpleUnionValueError) as cm:
+        with self.assertRaises(pyxb_123.SimpleUnionValueError) as cm:
             instance = trac26.CreateFromDocument(self.Bad_xmlt)
         e = cm.exception
         self.assertEqual(e.type, trac26.tUnionCard)
@@ -953,7 +953,7 @@ class TestSimpleFacetValueError (unittest.TestCase):
 
     def testException (self):
         instance = None
-        with self.assertRaises(pyxb.SimpleFacetValueError) as cm:
+        with self.assertRaises(pyxb_123.SimpleFacetValueError) as cm:
             instance = trac26.eTLA('ABCD')
         e = cm.exception
         self.assertTrue(e.location is None)
@@ -964,7 +964,7 @@ class TestSimpleFacetValueError (unittest.TestCase):
 
     def testDocument (self):
         instance = None
-        with self.assertRaises(pyxb.SimpleFacetValueError) as cm:
+        with self.assertRaises(pyxb_123.SimpleFacetValueError) as cm:
             instance = trac26.CreateFromDocument(self.Bad_xmlt)
         e = cm.exception
         self.assertFalse(e.location is None)

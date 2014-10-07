@@ -37,7 +37,7 @@ xsd='''<?xml version="1.0" encoding="UTF-8"?>
   <xs:element name="structure" type="tStructure"/>
 </xs:schema>'''
 
-code = pyxb.binding.generate.GeneratePython(schema_text=xsd)
+code = pyxb_123.binding.generate.GeneratePython(schema_text=xsd)
 #open('code.py', 'w').write(code)
 
 rv = compile(code, 'test', 'exec')
@@ -94,7 +94,7 @@ class TestTrac0037 (unittest.TestCase):
         self.assertEqual(1, i.index('two'))
 
     def testConstructor (self):
-        self.assertRaises(pyxb.SimpleTypeValueError, structure, attr='three')
+        self.assertRaises(pyxb_123.SimpleTypeValueError, structure, attr='three')
         i = structure(attr=4)
         self.assertTrue(i.validateBinding())
         i = structure(attr='two')
@@ -112,8 +112,8 @@ class TestTrac0037 (unittest.TestCase):
         self.assertEqual(i.attr, 'two')
         self.assertEqual(i.enum, 'one')
         self.assertTrue(isinstance(i.enum, tEnum))
-        self.assertRaises(pyxb.SimpleTypeValueError, setAttr, i, 'three')
-        self.assertRaises(pyxb.SimpleTypeValueError, setEnum, i, 4)
+        self.assertRaises(pyxb_123.SimpleTypeValueError, setAttr, i, 'three')
+        self.assertRaises(pyxb_123.SimpleTypeValueError, setEnum, i, 4)
 
 
 if __name__ == '__main__':

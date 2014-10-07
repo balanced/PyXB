@@ -20,7 +20,7 @@ import unittest
 
 class TestTrac_200908181430 (unittest.TestCase):
     def testParsing (self):
-        self.assertRaises(pyxb.SchemaValidationError, pyxb.binding.generate.GeneratePython, schema_text=xsd)
+        self.assertRaises(pyxb_123.SchemaValidationError, pyxb_123.binding.generate.GeneratePython, schema_text=xsd)
 
 if __name__ == '__main__':
     unittest.main()

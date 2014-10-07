@@ -27,7 +27,7 @@ import logging
 
 _log = logging.getLogger(__name__)
 
-@pyxb.utils.utility.BackfillComparisons
+@pyxb_123.utils.utility.BackfillComparisons
 class ExpandedName (object):
 
     """Represent an U{expanded name
@@ -95,7 +95,7 @@ class ExpandedName (object):
             return super(ExpandedName, self).__getattr__(name)
         if self.namespace() is None:
             return lambda: None
-        # NOTE: This will raise pyxb.NamespaceError if the category does not exist.
+        # NOTE: This will raise pyxb_123.NamespaceError if the category does not exist.
         category_value = self.namespace().categoryMap(name).get(self.localName())
         return lambda : category_value
 
@@ -120,7 +120,7 @@ class ExpandedName (object):
         localName as but is different from the global element (with a
         namespace), this will improperly provide a namespace when one should
         not be present.  See the comments in
-        L{pyxb.binding.basis.element.elementForName}.
+        L{pyxb_123.binding.basis.element.elementForName}.
         """
 
         if not isinstance(name, ExpandedName):
@@ -150,9 +150,9 @@ class ExpandedName (object):
         """
         fallback_namespace = kw.get('fallback_namespace')
         if 0 == len(args):
-            raise pyxb.LogicError('Too few arguments to ExpandedName constructor')
+            raise pyxb_123.LogicError('Too few arguments to ExpandedName constructor')
         if 2 < len(args):
-            raise pyxb.LogicError('Too many arguments to ExpandedName constructor')
+            raise pyxb_123.LogicError('Too many arguments to ExpandedName constructor')
         if 2 == len(args):
             # Namespace(str, unicode, Namespace) and local name (str, unicode)
             ( ns, ln ) = args
@@ -170,11 +170,11 @@ class ExpandedName (object):
                 ln = ln.localName()
             elif isinstance(ln, xml.dom.Node):
                 if not(ln.nodeType in (xml.dom.Node.ELEMENT_NODE, xml.dom.Node.ATTRIBUTE_NODE)):
-                    raise pyxb.LogicError('Cannot create expanded name from non-element DOM node %s' % (ln.nodeType,))
+                    raise pyxb_123.LogicError('Cannot create expanded name from non-element DOM node %s' % (ln.nodeType,))
                 ns = ln.namespaceURI
                 ln = ln.localName
             else:
-                raise pyxb.LogicError('Unrecognized argument type %s' % (type(ln),))
+                raise pyxb_123.LogicError('Unrecognized argument type %s' % (type(ln),))
         if (ns is None) and (fallback_namespace is not None):
             if fallback_namespace.isAbsentNamespace():
                 ns = fallback_namespace
@@ -183,7 +183,7 @@ class ExpandedName (object):
         if isinstance(ns, ExpandedName):
             ns = ns.namespace()
         if (ns is not None) and not isinstance(ns, Namespace):
-            raise pyxb.LogicError('ExpandedName must include a valid (perhaps absent) namespace, or None.')
+            raise pyxb_123.LogicError('ExpandedName must include a valid (perhaps absent) namespace, or None.')
         self.__namespace = ns
         if self.__namespace is not None:
             self.__namespaceURI = self.__namespace.uri()
@@ -217,12 +217,12 @@ class ExpandedName (object):
     def __eq__ (self, other):
         if other is None:
             return False
-        return 0 == pyxb.utils.utility.IteratedCompareMixed(self.__uriTuple, self.__otherForCompare(other))
+        return 0 == pyxb_123.utils.utility.IteratedCompareMixed(self.__uriTuple, self.__otherForCompare(other))
 
     def __lt__ (self, other):
         if other is None:
             return False
-        return 0 > pyxb.utils.utility.IteratedCompareMixed(self.__uriTuple, self.__otherForCompare(other))
+        return 0 > pyxb_123.utils.utility.IteratedCompareMixed(self.__uriTuple, self.__otherForCompare(other))
 
     def getAttribute (self, dom_node):
         """Return the value of the attribute identified by this name in the given node.
@@ -261,7 +261,7 @@ class NamedObjectMap (dict):
         self.__namespace = namespace
         super(NamedObjectMap, self).__init__(*args, **kw)
 
-class _NamespaceCategory_mixin (pyxb.cscRoot):
+class _NamespaceCategory_mixin (pyxb_123.cscRoot):
     """Mix-in that aggregates those aspects of XMLNamespaces that hold
     references to categories of named objects.
 
@@ -301,7 +301,7 @@ class _NamespaceCategory_mixin (pyxb.cscRoot):
         try:
             return self.__categoryMap[category]
         except KeyError:
-            raise pyxb.NamespaceError(self, '%s has no category %s' % (self, category))
+            raise pyxb_123.NamespaceError(self, '%s has no category %s' % (self, category))
 
     def __defineCategoryAccessors (self):
         """Define public methods on the Namespace which provide access to
@@ -333,12 +333,12 @@ class _NamespaceCategory_mixin (pyxb.cscRoot):
         """Allow access to the named_object by looking up the local_name in
         the given category.
 
-        Raises pyxb.NamespaceUniquenessError if an object with the same name
+        Raises pyxb_123.NamespaceUniquenessError if an object with the same name
         already exists in the category."""
         name_map = self.categoryMap(category)
         old_object = name_map.get(local_name)
         if (old_object is not None) and (old_object != named_object):
-            raise pyxb.NamespaceUniquenessError(self, '%s: name %s used for multiple values in %s' % (self, local_name, category))
+            raise pyxb_123.NamespaceUniquenessError(self, '%s: name %s used for multiple values in %s' % (self, local_name, category))
         name_map[local_name] = named_object
         return named_object
 
@@ -402,7 +402,7 @@ class _NamespaceCategory_mixin (pyxb.cscRoot):
                 elif existing_component._allowUpdateFromOther(component):
                     existing_component._updateFromOther(component)
                 else:
-                    raise pyxb.NamespaceError(self, 'Load attempted to override %s %s in %s' % (category, local_name, self.uri()))
+                    raise pyxb_123.NamespaceError(self, 'Load attempted to override %s %s in %s' % (category, local_name, self.uri()))
         self.__defineCategoryAccessors()
 
     def hasSchemaComponents (self):
@@ -415,7 +415,7 @@ class _NamespaceCategory_mixin (pyxb.cscRoot):
         return 'typeDefinition' in self.__categoryMap
 
     def _associateOrigins (self, module_record):
-        """Add links from L{pyxb.namespace.archive._ObjectOrigin} instances.
+        """Add links from L{pyxb_123.namespace.archive._ObjectOrigin} instances.
 
         For any resolvable item in this namespace from an origin managed by
         the module_record, ensure that item can be found via a lookup through
@@ -433,7 +433,7 @@ class _NamespaceCategory_mixin (pyxb.cscRoot):
                 if isinstance(v, archive._ArchivableObject_mixin) and (v._objectOrigin() in origin_set):
                     v._objectOrigin().addCategoryMember(cat, n, v)
 
-class _ComponentDependency_mixin (pyxb.utils.utility.PrivateTransient_mixin, pyxb.cscRoot):
+class _ComponentDependency_mixin (pyxb_123.utils.utility.PrivateTransient_mixin, pyxb_123.cscRoot):
     """Mix-in for components that can depend on other components."""
 
     __PrivateTransient = set()
@@ -463,11 +463,11 @@ class _ComponentDependency_mixin (pyxb.utils.utility.PrivateTransient_mixin, pyx
         @keyword include_lax: if C{False} (default), only the requirements of
         the class itself are returned.  If C{True}, all requirements are
         returned.
-        @rtype: C{set(L{pyxb.xmlschema.structures._SchemaComponent_mixin})}
+        @rtype: C{set(L{pyxb_123.xmlschema.structures._SchemaComponent_mixin})}
         """
         if reset or (self.__bindingRequires is None):
             if isinstance(self, resolution._Resolvable_mixin) and not (self.isResolved()):
-                raise pyxb.LogicError('Unresolved %s in %s: %s' % (self.__class__.__name__, self._namespaceContext().targetNamespace(), self.name()))
+                raise pyxb_123.LogicError('Unresolved %s in %s: %s' % (self.__class__.__name__, self._namespaceContext().targetNamespace(), self.name()))
             self.__bindingRequires = self._bindingRequires_vx(include_lax)
         return self.__bindingRequires
 
@@ -480,9 +480,9 @@ class _ComponentDependency_mixin (pyxb.utils.utility.PrivateTransient_mixin, pyx
         @rtype: C{frozenset}
         @raise LogicError: A subclass failed to implement this method
         """
-        raise pyxb.LogicError('%s does not implement _bindingRequires_vx' % (type(self),))
+        raise pyxb_123.LogicError('%s does not implement _bindingRequires_vx' % (type(self),))
 
-class _NamespaceComponentAssociation_mixin (pyxb.cscRoot):
+class _NamespaceComponentAssociation_mixin (pyxb_123.cscRoot):
     """Mix-in for managing components defined within this namespace.
 
     The component set includes not only top-level named components (such as
@@ -528,7 +528,7 @@ class _NamespaceComponentAssociation_mixin (pyxb.cscRoot):
         for sr in self.__origins:
             if isinstance(sr, archive._SchemaOrigin) and sr.match(schema=schema):
                 _log.info('Hash for %s matches %s already registered as %s', schema.location(), sr.schema().location(), self)
-                raise pyxb.SchemaUniquenessError(self, schema.location(), sr.schema())
+                raise pyxb_123.SchemaUniquenessError(self, schema.location(), sr.schema())
         sr = archive._SchemaOrigin(schema=schema)
         schema.generationUID().associateObject(sr)
         self.__origins.add(sr)
@@ -575,7 +575,7 @@ class Namespace (_NamespaceCategory_mixin, resolution._NamespaceResolution_mixin
     instance also supports associating arbitrary L{maps<NamedObjectMap>} from
     names to objects, in separate categories.  The default categories are
     configured externally; for example, the
-    L{Schema<pyxb.xmlschema.structures.Schema>} component defines a category
+    L{Schema<pyxb_123.xmlschema.structures.Schema>} component defines a category
     for each named component in XMLSchema, and the customizing subclass for
     WSDL definitions adds categories for the service bindings, messages, etc.
 
@@ -670,7 +670,7 @@ class Namespace (_NamespaceCategory_mixin, resolution._NamespaceResolution_mixin
         URI, we ensure that the routine that creates unpickled
         instances knows what it's supposed to return."""
         if self.uri() is None:
-            raise pyxb.LogicError('Illegal to serialize absent namespaces')
+            raise pyxb_123.LogicError('Illegal to serialize absent namespaces')
         return (self.uri(),)
 
     def __new__ (cls, *args, **kw):
@@ -728,7 +728,7 @@ class Namespace (_NamespaceCategory_mixin, resolution._NamespaceResolution_mixin
         is_builtin_namespace = not (builtin_namespace is None)
         if not is_builtin_namespace:
             if bound_prefix is not None:
-                raise pyxb.LogicError('Only permanent Namespaces may have bound prefixes')
+                raise pyxb_123.LogicError('Only permanent Namespaces may have bound prefixes')
 
         # We actually set the uri when this instance was allocated;
         # see __new__().
@@ -762,7 +762,7 @@ class Namespace (_NamespaceCategory_mixin, resolution._NamespaceResolution_mixin
         if self.__boundPrefix is not None:
             if self.__boundPrefix == prefix:
                 return self
-            raise pyxb.NamespaceError(self, 'Cannot change the prefix of a bound namespace')
+            raise pyxb_123.NamespaceError(self, 'Cannot change the prefix of a bound namespace')
         self.__prefix = prefix
         return self
 
@@ -819,12 +819,12 @@ class Namespace (_NamespaceCategory_mixin, resolution._NamespaceResolution_mixin
 
     def builtinNamespaceRepresentation (self):
         assert self.__builtinNamespaceVariable is not None
-        return 'pyxb.namespace.%s' % (self.__builtinNamespaceVariable,)
+        return 'pyxb_123.namespace.%s' % (self.__builtinNamespaceVariable,)
 
     def builtinModulePath (self):
         from pyxb_123.namespace import builtin
         if not self.__builtinModulePath:
-            raise pyxb.LogicError('Namespace has no built-in module: %s' % (self,))
+            raise pyxb_123.LogicError('Namespace has no built-in module: %s' % (self,))
         mr = self.lookupModuleRecordByUID(builtin.BuiltInObjectUID)
         assert mr is not None
         assert mr.modulePath() == self.__builtinModulePath
@@ -901,7 +901,7 @@ class Namespace (_NamespaceCategory_mixin, resolution._NamespaceResolution_mixin
                     _log.info('Load %s from %s', mr, mr.archive())
                     try:
                         mr.archive().readNamespaces()
-                    except pyxb.NamespaceArchiveError:
+                    except pyxb_123.NamespaceArchiveError:
                         _log.exception("Failure reading namespaces in archive")
                 else:
                     _log.info('Ignoring private module %s in validation', mr)
@@ -986,7 +986,7 @@ class Namespace (_NamespaceCategory_mixin, resolution._NamespaceResolution_mixin
             nsval = globals().get(nsval)
         if isinstance(nsval, Namespace):
             return nsval
-        raise pyxb.LogicError('Cannot identify namespace from %s' % (nsval,))
+        raise pyxb_123.LogicError('Cannot identify namespace from %s' % (nsval,))
 
     def __str__ (self):
         if self.__uri is None:

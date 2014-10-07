@@ -24,7 +24,7 @@ xsd='''<?xml version="1.0" encoding="UTF-8"?>
   </xs:complexType>
 </xs:schema>'''
 
-code = pyxb.binding.generate.GeneratePython(schema_text=xsd)
+code = pyxb_123.binding.generate.GeneratePython(schema_text=xsd)
 #print code
 
 rv = compile(code, 'test', 'exec')
@@ -39,17 +39,17 @@ class TestTrac0021 (unittest.TestCase):
     elements in that group to not be generated."""
     def testEmpty (self):
         instance = empty()
-        self.assertRaises(pyxb.NotSimpleContentError, instance.value)
-        self.assertRaises(pyxb.NotComplexContentError, instance.orderedContent)
+        self.assertRaises(pyxb_123.NotSimpleContentError, instance.value)
+        self.assertRaises(pyxb_123.NotComplexContentError, instance.orderedContent)
 
     def testSimple (self):
         instance = simple("hi")
         self.assertEqual("hi", instance.value())
-        self.assertRaises(pyxb.NotComplexContentError, instance.orderedContent)
+        self.assertRaises(pyxb_123.NotComplexContentError, instance.orderedContent)
 
     def testComplex (self):
         instance = complex("hi")
-        self.assertRaises(pyxb.NotSimpleContentError, instance.value)
+        self.assertRaises(pyxb_123.NotSimpleContentError, instance.value)
         elt = instance.orderedContent()[0]
         self.assertTrue(isinstance(elt.value, basestring))
         self.assertEqual("hi", elt.value)

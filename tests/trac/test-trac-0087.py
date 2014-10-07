@@ -25,7 +25,7 @@ xsd='''<?xml version="1.0" encoding="UTF-8"?>
 </schema>'''
 
 #open('schema.xsd', 'w').write(xsd)
-code = pyxb.binding.generate.GeneratePython(schema_text=xsd)
+code = pyxb_123.binding.generate.GeneratePython(schema_text=xsd)
 #open('code.py', 'w').write(code)
 
 rv = compile(code, 'test', 'exec')
@@ -44,11 +44,11 @@ import unittest
 class TestTrac_0087 (unittest.TestCase):
     def testReservedWords (self):
         # Element global
-        self.assertTrue(isinstance(global_, pyxb.binding.basis.element))
+        self.assertTrue(isinstance(global_, pyxb_123.binding.basis.element))
         # Complex type class
-        self.assertTrue(issubclass(class_, pyxb.binding.basis.complexTypeDefinition))
+        self.assertTrue(issubclass(class_, pyxb_123.binding.basis.complexTypeDefinition))
         # Simple type def
-        self.assertTrue(issubclass(def_, pyxb.binding.datatypes.string))
+        self.assertTrue(issubclass(def_, pyxb_123.binding.datatypes.string))
 
     def testPyxbSymbols (self):
         xmls = '<tgt:global value="text" xmlns:tgt="urn:tgt"/>'

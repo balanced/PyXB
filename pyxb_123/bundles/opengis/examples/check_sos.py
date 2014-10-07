@@ -10,7 +10,7 @@ import pyxb_123.bundles.opengis.tml
 
 for f in sys.argv[1:]:
     print '------------------ %s' % (f,)
-    xmld = pyxb.utils.utility.DataFromURI(f)
+    xmld = pyxb_123.utils.utility.DataFromURI(f)
     try:
         instance = sos.CreateFromDocument(xmld)
         #print xmld

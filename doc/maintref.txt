@@ -17,7 +17,7 @@ Git Repository
 PyXB is developed using `git <http://gitscm.org>`_.  You can check out the
 development branch with::
 
- git clone git://pyxb.git.sourceforge.net/gitroot/pyxb_123/pyxb
+ git clone git://pyxb_123.git.sourceforge.net/gitroot/pyxb_123/pyxb
 
 Public development is mostly done on the ``next`` branch, which is the
 default for checkouts from SourceForge.  The ``master`` branch contains
@@ -92,18 +92,18 @@ Exceptions
 ==========
 
 PyXB provides a `standard exception hierarchy
-<api/pyxb.exceptions_-module.html>`_ that extends the one built into Python.
+<api/pyxb_123.exceptions_-module.html>`_ that extends the one built into Python.
 
 Where an execution branch has been identified that requires behavior that
 has not yet been implemented, raise an
-:api:`pyxb.exceptions_.IncompleteImplementationError`.  At the current stage
+:api:`pyxb_123.exceptions_.IncompleteImplementationError`.  At the current stage
 of development, these should be extremely rare.
 
 Where the system detects that a precondition is not satisfied, processing
 must stop.  If the precondition failure is due to improper use of the PyXB
-internal or public API, a :api:`pyxb.exceptions_.LogicError` should be
+internal or public API, a :api:`pyxb_123.exceptions_.LogicError` should be
 raised.  If the precondition failure is due to invalid input from the
-schema, a :api:`pyxb.exceptions_.SchemaValidationError` should be raised.
+schema, a :api:`pyxb_123.exceptions_.SchemaValidationError` should be raised.
 
 If the precondition is inexplicably false, Python's ``assert`` functionality
 may be used.  Use of ``assert`` should be rare, and only in places that are
@@ -216,8 +216,8 @@ Class Variables At Multiple Levels
 
 There are several cases where we want to store information in a class, but
 allow subclasses (not instances) to override it.  An example is in the
-:api:`pyxb.binding.basis.simpleTypeDefinition` hierarchy where each class
-maintains a set of :api:`pyxb.binding.facets.ConstrainingFacet` instances
+:api:`pyxb_123.binding.basis.simpleTypeDefinition` hierarchy where each class
+maintains a set of :api:`pyxb_123.binding.facets.ConstrainingFacet` instances
 that are available for constraining values of the class.  In many cases, a
 subclass will not change the set of facets that affect instances, so we want
 to be able to inherit the parent class map; but in other cases we may need

@@ -6,10 +6,10 @@ if __name__ == '__main__':
 _log = logging.getLogger(__name__)
 import pyxb_123
 
-print("\n".join([ str(_ns) for _ns in pyxb.namespace.AvailableNamespaces() ]))
-ns = pyxb.namespace.NamespaceForURI('URN:shared-types', True)
+print("\n".join([ str(_ns) for _ns in pyxb_123.namespace.AvailableNamespaces() ]))
+ns = pyxb_123.namespace.NamespaceForURI('URN:shared-types', True)
 ns.validateComponentModel()
-ns = pyxb.namespace.NamespaceForURI('URN:test-external', True)
+ns = pyxb_123.namespace.NamespaceForURI('URN:test-external', True)
 ns.validateComponentModel()
 
 import bindings.st as st

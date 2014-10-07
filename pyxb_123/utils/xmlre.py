@@ -48,16 +48,16 @@ def _InitializeAllEsc ():
     """Set the values in _AllEsc without introducing C{k} and C{v} into
     the module."""
 
-    _AllEsc.update({ u'.': pyxb.utils.unicode.WildcardEsc })
-    for k, v in pyxb.utils.unicode.SingleCharEsc.iteritems():
+    _AllEsc.update({ u'.': pyxb_123.utils.unicode.WildcardEsc })
+    for k, v in pyxb_123.utils.unicode.SingleCharEsc.iteritems():
         _AllEsc[u'\\' + unicode(k)] = v
-    for k, v in pyxb.utils.unicode.MultiCharEsc.iteritems():
+    for k, v in pyxb_123.utils.unicode.MultiCharEsc.iteritems():
         _AllEsc[u'\\' + unicode(k)] = v
-    for k, v in pyxb.utils.unicode.catEsc.iteritems():
+    for k, v in pyxb_123.utils.unicode.catEsc.iteritems():
         _AllEsc[u'\\' + unicode(k)] = v
-    for k, v in pyxb.utils.unicode.complEsc.iteritems():
+    for k, v in pyxb_123.utils.unicode.complEsc.iteritems():
         _AllEsc[u'\\' + unicode(k)] = v
-    for k, v in pyxb.utils.unicode.IsBlockEsc.iteritems():
+    for k, v in pyxb_123.utils.unicode.IsBlockEsc.iteritems():
         _AllEsc[u'\\' + unicode(k)] = v
 _InitializeAllEsc()
 
@@ -90,7 +90,7 @@ def _MatchCharClassEsc(text, position):
     If the parsing fails, throws a RegularExpressionError.
 
     @return: A pair C{(cps, p)} where C{cps} is a
-    L{pyxb.utils.unicode.CodePointSet} containing the code points
+    L{pyxb_123.utils.unicode.CodePointSet} containing the code points
     associated with the character class, and C{p} is the text offset
     immediately following the escape sequence.
 
@@ -116,7 +116,7 @@ def _MatchPosCharGroup(text, position):
     '''Parse a U{posCharGroup<http://www.w3.org/TR/xmlschema-2/#nt-posCharGroup>} term.
 
     @return: A tuple C{(cps, fs, p)} where:
-      - C{cps} is a L{pyxb.utils.unicode.CodePointSet} containing the code points associated with the group;
+      - C{cps} is a L{pyxb_123.utils.unicode.CodePointSet} containing the code points associated with the group;
       - C{fs} is a C{bool} that is C{True} if the next character is the C{-} in a U{charClassSub<http://www.w3.org/TR/xmlschema-2/#nt-charClassSub>} and C{False} if the group is not part of a charClassSub;
       - C{p} is the text offset immediately following the closing brace.
 
@@ -176,7 +176,7 @@ def _MatchPosCharGroup(text, position):
         tokens[0] = u'-'
     if tokens[-1] is DASH:
         tokens[-1] = u'-'
-    result_cps = pyxb.utils.unicode.CodePointSet()
+    result_cps = pyxb_123.utils.unicode.CodePointSet()
     cur_token = 0
     while cur_token < len(tokens):
         start = tokens[cur_token]
@@ -213,7 +213,7 @@ def _MatchCharClassExpr(text, position):
     @param position: The offset of the start of the character group.
 
     @return: A pair C{(cps, p)} where C{cps} is a
-    L{pyxb.utils.unicode.CodePointSet} containing the code points
+    L{pyxb_123.utils.unicode.CodePointSet} containing the code points
     associated with the property, and C{p} is the text offset
     immediately following the closing brace.
 
@@ -259,7 +259,7 @@ def MaybeMatchCharacterClass (text, position):
 
     @return: C{None} if C{position} does not begin a character class
     expression; otherwise a pair C{(cps, p)} where C{cps} is a
-    L{pyxb.utils.unicode.CodePointSet} containing the code points associated with
+    L{pyxb_123.utils.unicode.CodePointSet} containing the code points associated with
     the property, and C{p} is the text offset immediately following
     the closing brace."""
     if position >= len(text):
@@ -267,7 +267,7 @@ def MaybeMatchCharacterClass (text, position):
     c = text[position]
     np = position + 1
     if '.' == c:
-        return (pyxb.utils.unicode.WildcardEsc, np)
+        return (pyxb_123.utils.unicode.WildcardEsc, np)
     if '[' == c:
         return _MatchCharClassExpr(text, position)
     if '\\' == c:

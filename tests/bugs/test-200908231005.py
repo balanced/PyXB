@@ -17,7 +17,7 @@ xsd='''<?xml version="1.0" encoding="UTF-8"?>
 </xs:schema>'''
 
 #open('schema.xsd', 'w').write(xsd)
-code = pyxb.binding.generate.GeneratePython(schema_text=xsd)
+code = pyxb_123.binding.generate.GeneratePython(schema_text=xsd)
 #open('code.py', 'w').write(code)
 
 rv = compile(code, 'test', 'exec')
@@ -27,7 +27,7 @@ from pyxb_123.exceptions_ import *
 
 import unittest
 
-AttributeNamespace = pyxb.namespace.NamespaceInstance('URN:attr:200908231005')
+AttributeNamespace = pyxb_123.namespace.NamespaceInstance('URN:attr:200908231005')
 
 class TestTrac_200908231005 (unittest.TestCase):
     def testParsing (self):

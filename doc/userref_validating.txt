@@ -45,15 +45,15 @@ instance:
    r = None
    try:
        r = DWML.CreateFromDocument(rxml)
-   except pyxb.UnrecognizedContentError as e:
+   except pyxb_123.UnrecognizedContentError as e:
        print '*** ERROR validating response:'
        print e.details()
    if r is None:
-       pyxb.RequireValidWhenParsing(False)
+       pyxb_123.RequireValidWhenParsing(False)
        r = DWML.CreateFromDocument(rxml)
    
 When invoking the program, the following diagnostic output is provided
-through the :api:`details <pyxb.exceptions_.ValidationError.details>`
+through the :api:`details <pyxb_123.exceptions_.ValidationError.details>`
 method:
 
 .. code-block:: none
@@ -99,7 +99,7 @@ This tells the user that:
 A much shorter but still useful synopsis of the invalidity would be
 available through the ``str`` operation on the exception.  Full details are
 available through attributes on the :api:`UnrecognizedContentError
-<pyxb.exceptions_.UnrecognizedContentError>` and other exceptions.
+<pyxb_123.exceptions_.UnrecognizedContentError>` and other exceptions.
 
 In cases where the service generating the documents is under your control,
 you can use this information to correct the documents.  In cases like this
@@ -112,7 +112,7 @@ Runtime Exception Hierarchy
 ---------------------------
 
 Details on the interfaces presented by these exceptions can be found through
-the :api:`API Documentation <pyxb.exceptions_.ValidationError>`.
+the :api:`API Documentation <pyxb_123.exceptions_.ValidationError>`.
 
 .. image:: Images/RuntimeExceptions.jpg
 

@@ -26,7 +26,7 @@ xsd='''<?xml version="1.0" encoding="UTF-8"?>
   </xs:element>
 </xs:schema>'''
 
-code = pyxb.binding.generate.GeneratePython(schema_text=xsd)
+code = pyxb_123.binding.generate.GeneratePython(schema_text=xsd)
 #open('code.py', 'w').write(code)
 
 rv = compile(code, 'test', 'exec')
@@ -38,28 +38,28 @@ import unittest
 
 class TestTrac0117 (unittest.TestCase):
     def tearDown (self):
-        pyxb.RequireValidWhenGenerating(True)
-        pyxb.RequireValidWhenParsing(True)
+        pyxb_123.RequireValidWhenGenerating(True)
+        pyxb_123.RequireValidWhenParsing(True)
 
     def testRequired (self):
         xmls = '<Element/>'
-        pyxb.RequireValidWhenParsing(True)
+        pyxb_123.RequireValidWhenParsing(True)
         self.assertRaises(MissingAttributeError, CreateFromDocument, xmls)
-        pyxb.RequireValidWhenParsing(False)
-        self.assertFalse(pyxb._ParsingRequiresValid)
+        pyxb_123.RequireValidWhenParsing(False)
+        self.assertFalse(pyxb_123._ParsingRequiresValid)
         instance = CreateFromDocument(xmls)
         self.assertEqual(None, instance.attr)
 
     def testEnumeration (self):
-        pyxb.RequireValidWhenParsing(True)
+        pyxb_123.RequireValidWhenParsing(True)
         xmls = '<Element Required="true" attr="Q"/>'
-        self.assertRaises(pyxb.SimpleTypeValueError, CreateFromDocument, xmls)
-        pyxb.RequireValidWhenParsing(False)
+        self.assertRaises(pyxb_123.SimpleTypeValueError, CreateFromDocument, xmls)
+        pyxb_123.RequireValidWhenParsing(False)
         instance = CreateFromDocument(xmls)
         self.assertEqual('Q', instance.attr)
 
     def testGood (self):
-        pyxb.RequireValidWhenParsing(True)
+        pyxb_123.RequireValidWhenParsing(True)
         xmls = '<Element Required="true" attr="D"/>'
         instance = CreateFromDocument(xmls)
         self.assertEqual('D', instance.attr)

@@ -3,7 +3,7 @@ from __future__ import print_function
 import pyxb_123.bundles.common.xhtml1 as xhtml
 import pyxb_123.utils.domutils
 
-pyxb.utils.domutils.BindingDOMSupport.SetDefaultNamespace(xhtml.Namespace)
+pyxb_123.utils.domutils.BindingDOMSupport.SetDefaultNamespace(xhtml.Namespace)
 
 head = xhtml.head(title='A Test Document')
 body = xhtml.body()
@@ -29,7 +29,7 @@ assert 1 == len(p2.em)
 doc = xhtml.html(head, body)
 try:
     xmls = doc.toDOM().toprettyxml()
-except pyxb.ValidationError as e:
+except pyxb_123.ValidationError as e:
     print(e.details())
     raise
 open('genout.xhtml', 'w').write(xmls)

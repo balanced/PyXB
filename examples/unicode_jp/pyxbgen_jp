@@ -15,7 +15,7 @@ import re
 
 # trac/139: Ensure that libxml2's XmlReader is used.  This must be done
 # before external schema are resolved.
-pyxb.utils.saxutils.SetCreateParserModules(['drv_libxml2'])
+pyxb_123.utils.saxutils.SetCreateParserModules(['drv_libxml2'])
 
 # trac/141: Replace the standard routine for generating identifiers with
 # one that transliterates Japanese characters into characters allowed
@@ -35,7 +35,7 @@ try:
     import romkan
     _tagger1 = MeCab.Tagger("-Owakati")
     _tagger2 = MeCab.Tagger("-Oyomi")
-    pyxb.utils.utility._SetXMLIdentifierToPython(ConvertJPIdentifier)
+    pyxb_123.utils.utility._SetXMLIdentifierToPython(ConvertJPIdentifier)
 except ImportError as e:
     print 'WARNING: No Kanji/Hiragana/Katana-to-ASCII transliteration available'
     print e
@@ -43,7 +43,7 @@ except ImportError as e:
 # The rest of this is the standard pyxbgen, with the WSDL support code
 # removed.
 
-generator = pyxb.binding.generate.Generator()
+generator = pyxb_123.binding.generate.Generator()
 parser = generator.optionParser()
 
 (options, args) = parser.parse_args()

@@ -36,7 +36,7 @@ import logging
 
 _log = logging.getLogger(__name__)
 
-class AttributeUse (pyxb.cscRoot):
+class AttributeUse (pyxb_123.cscRoot):
     """A helper class that encapsulates everything we need to know
     about the way an attribute is used within a binding class.
 
@@ -58,7 +58,7 @@ class AttributeUse (pyxb.cscRoot):
     """Private Python attribute used in instances to hold the attribute value"""
 
     __dataType = None
-    """The L{pyxb.binding.basis.simpleTypeDefinition} for values of the attribute"""
+    """The L{pyxb_123.binding.basis.simpleTypeDefinition} for values of the attribute"""
 
     __unicodeDefault = None
     """The default attribute value as a unicode string, or C{None}"""
@@ -79,10 +79,10 @@ class AttributeUse (pyxb.cscRoot):
         """Create an AttributeUse instance.
 
         @param name: The name by which the attribute is referenced in the XML
-        @type name: L{pyxb.namespace.ExpandedName}
+        @type name: L{pyxb_123.namespace.ExpandedName}
 
         @param id: The Python identifier for the attribute within the
-        containing L{pyxb.basis.binding.complexTypeDefinition}.  This is a
+        containing L{pyxb_123.basis.binding.complexTypeDefinition}.  This is a
         public identifier, derived from the local part of the attribute name
         and modified to be unique, and is usually used as the name of the
         attribute's inspector method.
@@ -90,12 +90,12 @@ class AttributeUse (pyxb.cscRoot):
 
         @param key: The string used to store the attribute
         value in the dictionary of the containing
-        L{pyxb.basis.binding.complexTypeDefinition}.  This is mangled so
+        L{pyxb_123.basis.binding.complexTypeDefinition}.  This is mangled so
         that it is unique among and is treated as a Python private member.
         @type key: C{str}
 
         @param data_type: The class reference to the subclass of
-        L{pyxb.binding.basis.simpleTypeDefinition} of which the attribute
+        L{pyxb_123.binding.basis.simpleTypeDefinition} of which the attribute
         values must be instances.
         @type data_type: C{type}
 
@@ -111,19 +111,19 @@ class AttributeUse (pyxb.cscRoot):
 
         @keyword required: If C{True}, indicates that the attribute must appear
         in the DOM node used to create an instance of the corresponding
-        L{pyxb.binding.basis.complexTypeDefinition}.  The default value is
+        L{pyxb_123.binding.basis.complexTypeDefinition}.  The default value is
         C{False}.  No more that one of L{required} and L{prohibited} should be
         assigned C{True}.
         @type required: C{bool}
 
         @keyword prohibited: If C{True}, indicates that the attribute must
         B{not} appear in the DOM node used to create an instance of the
-        corresponding L{pyxb.binding.basis.complexTypeDefinition}.  The
+        corresponding L{pyxb_123.binding.basis.complexTypeDefinition}.  The
         default value is C{False}.  No more that one of L{required} and
         L{prohibited} should be assigned C{True}.
         @type prohibited: C{bool}
 
-        @raise pyxb.SimpleTypeValueError: the L{unicode_default} cannot be used
+        @raise pyxb_123.SimpleTypeValueError: the L{unicode_default} cannot be used
         to initialize an instance of L{data_type}
         """
 
@@ -142,7 +142,7 @@ class AttributeUse (pyxb.cscRoot):
     def name (self):
         """The expanded name of the element.
 
-        @rtype: L{pyxb.namespace.ExpandedName}
+        @rtype: L{pyxb_123.namespace.ExpandedName}
         """
         return self.__name
 
@@ -183,14 +183,14 @@ class AttributeUse (pyxb.cscRoot):
         return self.__key
 
     def dataType (self):
-        """The subclass of L{pyxb.binding.basis.simpleTypeDefinition} of which any attribute value must be an instance."""
+        """The subclass of L{pyxb_123.binding.basis.simpleTypeDefinition} of which any attribute value must be an instance."""
         return self.__dataType
 
     def __getValue (self, ctd_instance):
         """Retrieve the value information for this attribute in a binding instance.
 
         @param ctd_instance: The instance object from which the attribute is to be retrieved.
-        @type ctd_instance: subclass of L{pyxb.binding.basis.complexTypeDefinition}
+        @type ctd_instance: subclass of L{pyxb_123.binding.basis.complexTypeDefinition}
         @return: C{(provided, value)} where C{provided} is a C{bool} and
         C{value} is C{None} or an instance of the attribute's datatype.
 
@@ -203,7 +203,7 @@ class AttributeUse (pyxb.cscRoot):
     def value (self, ctd_instance):
         """Get the value of the attribute from the instance."""
         if self.__prohibited:
-            raise pyxb.ProhibitedAttributeError(type(ctd_instance), self.__name, ctd_instance)
+            raise pyxb_123.ProhibitedAttributeError(type(ctd_instance), self.__name, ctd_instance)
         return self.__getValue(ctd_instance)[1]
 
     def __setValue (self, ctd_instance, new_value, provided):
@@ -231,24 +231,24 @@ class AttributeUse (pyxb.cscRoot):
 
         @param ctd_instance : An instance of a complex type definition.
 
-        @raise pyxb.ProhibitedAttributeError: when instance has attribute but must not
-        @raise pyxb.MissingAttributeError: when instance lacks attribute but
+        @raise pyxb_123.ProhibitedAttributeError: when instance has attribute but must not
+        @raise pyxb_123.MissingAttributeError: when instance lacks attribute but
         must have it (including when a required fixed-value attribute is
         missing).
-        @raise pyxb.BatchContentValidationError: when instance has attribute but its value is not acceptable
+        @raise pyxb_123.BatchContentValidationError: when instance has attribute but its value is not acceptable
         """
         (provided, value) = self.__getValue(ctd_instance)
         if value is not None:
             if self.__prohibited:
-                raise pyxb.ProhibitedAttributeError(type(ctd_instance), self.__name, ctd_instance)
+                raise pyxb_123.ProhibitedAttributeError(type(ctd_instance), self.__name, ctd_instance)
             if self.__required and not provided:
                 assert self.__fixed
-                raise pyxb.MissingAttributeError(type(ctd_instance), self.__name, ctd_instance)
+                raise pyxb_123.MissingAttributeError(type(ctd_instance), self.__name, ctd_instance)
             self.__dataType._CheckValidValue(value)
             self.__dataType.XsdConstraintsOK(value)
         else:
             if self.__required:
-                raise pyxb.MissingAttributeError(type(ctd_instance), self.__name, ctd_instance)
+                raise pyxb_123.MissingAttributeError(type(ctd_instance), self.__name, ctd_instance)
 
     def set (self, ctd_instance, new_value, from_xml=False):
         """Set the value of the attribute.
@@ -257,7 +257,7 @@ class AttributeUse (pyxb.cscRoot):
 
         @param ctd_instance: The binding instance for which the attribute
         value is to be set
-        @type ctd_instance: subclass of L{pyxb.binding.basis.complexTypeDefinition}
+        @type ctd_instance: subclass of L{pyxb_123.binding.basis.complexTypeDefinition}
         @param new_value: The value for the attribute
         @type new_value: Any value that is permitted as the input parameter to
         the C{Factory} method of the attribute's datatype.
@@ -270,14 +270,14 @@ class AttributeUse (pyxb.cscRoot):
         assert not isinstance(new_value, xml.dom.Node)
         if new_value is None:
             if self.__required:
-                raise pyxb.MissingAttributeError(type(ctd_instance), self.__name, ctd_instance)
+                raise pyxb_123.MissingAttributeError(type(ctd_instance), self.__name, ctd_instance)
             provided = False
         if self.__prohibited:
-            raise pyxb.ProhibitedAttributeError(type(ctd_instance), self.__name, ctd_instance)
+            raise pyxb_123.ProhibitedAttributeError(type(ctd_instance), self.__name, ctd_instance)
         if (new_value is not None) and (from_xml or not isinstance(new_value, self.__dataType)):
             new_value = self.__dataType.Factory(new_value, _from_xml=from_xml)
         if self.__fixed and (new_value != self.__defaultValue):
-            raise pyxb.AttributeChangeError(type(ctd_instance), self.__name, ctd_instance)
+            raise pyxb_123.AttributeChangeError(type(ctd_instance), self.__name, ctd_instance)
         self.__setValue(ctd_instance, new_value, provided)
         return new_value
 
@@ -302,11 +302,11 @@ class AttributeUse (pyxb.cscRoot):
         return ''.join(desc)
 
 class AutomatonConfiguration (object):
-    """State for a L{pyxb.utils.fac.Automaton} monitoring content for an
+    """State for a L{pyxb_123.utils.fac.Automaton} monitoring content for an
     incrementally constructed complex type binding instance.
 
     @warning: This is not an implementation of
-    L{pyxb.utils.fac.Configuration_ABC} because we need the L{step} function
+    L{pyxb_123.utils.fac.Configuration_ABC} because we need the L{step} function
     to return a different type of value."""
 
     # The binding instance for which content is being built
@@ -356,7 +356,7 @@ class AutomatonConfiguration (object):
         declaration) for a transition from the current automaton state.
 
         @param element_decl: optional
-        L{pyxb.binding.content.ElementDeclaration} that is the preferred
+        L{pyxb_123.binding.content.ElementDeclaration} that is the preferred
         symbol for the transition.
 
         @return: the cardinal number of successful transitions from the
@@ -445,8 +445,8 @@ class AutomatonConfiguration (object):
     def acceptableContent (self):
         """Return the sequence of acceptable symbols at this state.
 
-        The list comprises the L{pyxb.binding.content.ElementUse} and
-        L{pyxb.binding.content.WildcardUse} instances that are used to
+        The list comprises the L{pyxb_123.binding.content.ElementUse} and
+        L{pyxb_123.binding.content.WildcardUse} instances that are used to
         validate proposed symbols, in preferred order."""
         rv = []
         seen = set()
@@ -474,7 +474,7 @@ class AutomatonConfiguration (object):
     def _diagnoseIncompleteContent (self, symbols, symbol_set):
         """Check for incomplete content.
 
-        @raises pyxb.IncompleteElementContentError: if a non-accepting state is found
+        @raises pyxb_123.IncompleteElementContentError: if a non-accepting state is found
         @return: the topmost configuration (if accepting)
         """
         # Exit out of any sub-configurations (they might be accepting while
@@ -484,7 +484,7 @@ class AutomatonConfiguration (object):
             cfg = cfg.superConfiguration
         if not cfg.isAccepting():
             _log.warning('Incomplete content, expect %s' % (' or '.join(map(str, cfg.acceptableSymbols()))))
-            raise pyxb.IncompleteElementContentError(self.__instance, cfg, symbols, symbol_set)
+            raise pyxb_123.IncompleteElementContentError(self.__instance, cfg, symbols, symbol_set)
         return cfg
 
     def diagnoseIncompleteContent (self):
@@ -514,7 +514,7 @@ class AutomatonConfiguration (object):
         nec = self.__pendingNonElementContent
         if nec is not None:
             for csym in preferred_sequence[pi:]:
-                if isinstance(csym, pyxb.binding.basis.NonElementContent):
+                if isinstance(csym, pyxb_123.binding.basis.NonElementContent):
                     nec.append(csym)
         return None
 
@@ -531,7 +531,7 @@ class AutomatonConfiguration (object):
                 break
             csym = preferred_sequence[pi]
             pi += 1
-            if (nec is not None) and isinstance(csym, pyxb.binding.basis.NonElementContent):
+            if (nec is not None) and isinstance(csym, pyxb_123.binding.basis.NonElementContent):
                 nec.append(csym)
                 continue
             vals = symbol_set.get(csym.elementDeclaration, [])
@@ -546,12 +546,12 @@ class AutomatonConfiguration (object):
                 if vc.GIVE_UP == vc.orphanElementInContent:
                     preferred_sequence = self.__discardPreferredSequence(preferred_sequence, pi)
                     break
-                raise pyxb.OrphanElementContentError(self.__instance, csym)
+                raise pyxb_123.OrphanElementContentError(self.__instance, csym)
         self.__preferredSequenceIndex = pi
         return (preferred_sequence, psym)
 
     def sequencedChildren (self):
-        """Implement L{pyxb.binding.basis.complexTypeDefinition._validatedChildren}.
+        """Implement L{pyxb_123.binding.basis.complexTypeDefinition._validatedChildren}.
 
         Go there for the interface.
         """
@@ -626,12 +626,12 @@ class AutomatonConfiguration (object):
                     if vc.GIVE_UP == vc.invalidElementInContent:
                         preferred_sequence = self.__discardPreferredSequence(preferred_sequence)
                         continue
-                    raise pyxb.InvalidPreferredElementContentError(self.__instance, cfg, symbols, symbol_set, psym)
+                    raise pyxb_123.InvalidPreferredElementContentError(self.__instance, cfg, symbols, symbol_set, psym)
                 break
             cfg = selected_xit.apply(cfg)
         cfg = self._diagnoseIncompleteContent(symbols, symbol_set)
         if symbol_set:
-            raise pyxb.UnprocessedElementContentError(self.__instance, cfg, symbols, symbol_set)
+            raise pyxb_123.UnprocessedElementContentError(self.__instance, cfg, symbols, symbol_set)
         # Validate any remaining material in the preferred sequence.  This
         # also extracts remaining non-element content.  Note there are
         # no more symbols, so any remaining element content is orphan.
@@ -639,13 +639,13 @@ class AutomatonConfiguration (object):
             (preferred_sequence, psym) = self.__processPreferredSequence(preferred_sequence, symbol_set, vc)
             if psym is not None:
                 if not (vc.orphanElementInContent in ( vc.IGNORE_ONCE, vc.GIVE_UP )):
-                    raise pyxb.OrphanElementContentError(self.__instance, psym.value)
+                    raise pyxb_123.OrphanElementContentError(self.__instance, psym.value)
         if nec is not None:
             symbols.extend(nec)
         return symbols
 
-class _FACSymbol (pyxb.utils.fac.SymbolMatch_mixin):
-    """Base class for L{pyxb.utils.fac.Symbol} instances associated with PyXB content models.
+class _FACSymbol (pyxb_123.utils.fac.SymbolMatch_mixin):
+    """Base class for L{pyxb_123.utils.fac.Symbol} instances associated with PyXB content models.
 
     This holds the location in the schema of the L{ElementUse} or
     L{WildcardUse} and documents the methods expected of its children."""
@@ -681,7 +681,7 @@ class _FACSymbol (pyxb.utils.fac.SymbolMatch_mixin):
         raise NotImplementedError('%s._consumingClosure' % (type(self).__name__,))
 
     def __init__ (self, xsd_location):
-        """@param xsd_location: the L{location<pyxb.utils.utility.Location>} of the element use or wildcard declaration."""
+        """@param xsd_location: the L{location<pyxb_123.utils.utility.Location>} of the element use or wildcard declaration."""
         self.__xsdLocation = xsd_location
         super(_FACSymbol, self).__init__()
 
@@ -698,19 +698,19 @@ class ElementUse (_FACSymbol):
     __elementDeclaration = None
 
     def elementDeclaration (self):
-        """Return the L{element declaration<pyxb.binding.content.ElementDeclaration>} associated with the use."""
+        """Return the L{element declaration<pyxb_123.binding.content.ElementDeclaration>} associated with the use."""
         return self.__elementDeclaration
 
     def elementBinding (self):
-        """Return the L{element binding<pyxb.binding.content.ElementDeclaration.elementBinding>} associated with the use.
+        """Return the L{element binding<pyxb_123.binding.content.ElementDeclaration.elementBinding>} associated with the use.
 
-        Equivalent to L{elementDeclaration}().L{elementBinding()<pyxb.binding.content.ElementDeclaration.elementBinding>}."""
+        Equivalent to L{elementDeclaration}().L{elementBinding()<pyxb_123.binding.content.ElementDeclaration.elementBinding>}."""
         return self.__elementDeclaration.elementBinding()
 
     def typeDefinition (self):
         """Return the element type.
 
-        Equivalent to L{elementDeclaration}().L{elementBinding()<pyxb.binding.content.ElementDeclaration.elementBinding>}.L{typeDefinition()<pyxb.binding.basis.element.typeDefinition>}."""
+        Equivalent to L{elementDeclaration}().L{elementBinding()<pyxb_123.binding.content.ElementDeclaration.elementBinding>}.L{typeDefinition()<pyxb_123.binding.basis.element.typeDefinition>}."""
         return self.__elementDeclaration.elementBinding().typeDefinition()
 
     def __init__ (self, element_declaration, xsd_location):
@@ -729,14 +729,14 @@ class ElementUse (_FACSymbol):
         return lambda _inst,_eu=self,_sy=sym: _eu.__elementDeclaration.setOrAppend(_inst, _eu.matchValue(_sy))
 
     def match (self, symbol):
-        """Satisfy L{pyxb.utils.fac.SymbolMatch_mixin}.
+        """Satisfy L{pyxb_123.utils.fac.SymbolMatch_mixin}.
 
         Determine whether the proposed content encapsulated in C{symbol} is
         compatible with the element declaration.  If so, the accepted value is
         cached internally and return C{True}; otherwise return C{False}.
 
         @param symbol: a pair C{(value, element_decl)}.
-        L{pyxb.binding.content.ElementDeclaration._matches} is used to
+        L{pyxb_123.binding.content.ElementDeclaration._matches} is used to
         determine whether the proposed content is compatible with this element
         declaration."""
         (value, element_decl) = symbol
@@ -770,14 +770,14 @@ class WildcardUse (_FACSymbol):
         return lambda _inst,_av=self.matchValue(sym): _inst._appendWildcardElement(_av)
 
     def match (self, symbol):
-        """Satisfy L{pyxb.utils.fac.SymbolMatch_mixin}.
+        """Satisfy L{pyxb_123.utils.fac.SymbolMatch_mixin}.
 
         Determine whether the proposed content encapsulated in C{symbol} is
         compatible with the wildcard declaration.  If so, the accepted value
         is cached internally and return C{True}; otherwise return C{False}.
 
         @param symbol: a pair C{(value, element_decl)}.
-        L{pyxb.binding.content.Wildcard.matches} is used to determine whether
+        L{pyxb_123.binding.content.Wildcard.matches} is used to determine whether
         the proposed content is compatible with this wildcard.
         """
         (value, element_decl) = symbol
@@ -797,7 +797,7 @@ import collections
 # instance of list that's held internally.  Inherit from the ABC that
 # represents list-style data structures so we can identify both lists and
 # these things which are not lists.
-@pyxb.utils.utility.BackfillComparisons
+@pyxb_123.utils.utility.BackfillComparisons
 class _PluralBinding (collections.MutableSequence):
     """Helper for element content that supports multiple occurences.
 
@@ -897,7 +897,7 @@ class ElementDeclaration (object):
     """
 
     def xsdLocation (self):
-        """The L{location<pyxb.utils.utility.Location>} in the schema where the
+        """The L{location<pyxb_123.utils.utility.Location>} in the schema where the
         element was declared.
 
         Note that this is not necessarily the same location as its use."""
@@ -907,7 +907,7 @@ class ElementDeclaration (object):
     def name (self):
         """The expanded name of the element.
 
-        @rtype: L{pyxb.namespace.ExpandedName}
+        @rtype: L{pyxb_123.namespace.ExpandedName}
         """
         return self.__name
     __name = None
@@ -954,17 +954,17 @@ class ElementDeclaration (object):
         """Create an ElementDeclaration instance.
 
         @param name: The name by which the element is referenced in the XML
-        @type name: L{pyxb.namespace.ExpandedName}
+        @type name: L{pyxb_123.namespace.ExpandedName}
 
         @param id: The Python name for the element within the containing
-        L{pyxb.basis.binding.complexTypeDefinition}.  This is a public
+        L{pyxb_123.basis.binding.complexTypeDefinition}.  This is a public
         identifier, albeit modified to be unique, and is usually used as the
         name of the element's inspector method or property.
         @type id: C{str}
 
         @param key: The string used to store the element
         value in the dictionary of the containing
-        L{pyxb.basis.binding.complexTypeDefinition}.  This is mangled so
+        L{pyxb_123.basis.binding.complexTypeDefinition}.  This is mangled so
         that it is unique among and is treated as a Python private member.
         @type key: C{str}
 
@@ -972,7 +972,7 @@ class ElementDeclaration (object):
         have multiple instances of this element.  As a consequence, the value
         of the element will be a list.  If C{False}, the value will be C{None}
         if the element is absent, and a reference to an instance of the type
-        identified by L{pyxb.binding.basis.element.typeDefinition} if present.
+        identified by L{pyxb_123.binding.basis.element.typeDefinition} if present.
         @type is_plural: C{bool}
 
         @param element_binding: Reference to the class that serves as the
@@ -1027,9 +1027,9 @@ class ElementDeclaration (object):
         if value is None:
             return self.reset(ctd_instance)
         if ctd_instance._isNil():
-            raise pyxb.ContentInNilInstanceError(ctd_instance, value)
+            raise pyxb_123.ContentInNilInstanceError(ctd_instance, value)
         assert self.__elementBinding is not None
-        if ctd_instance._validationConfig.forBinding or isinstance(value, pyxb.BIND):
+        if ctd_instance._validationConfig.forBinding or isinstance(value, pyxb_123.BIND):
             value = self.__elementBinding.compatibleValue(value, is_plural=self.isPlural())
         setattr(ctd_instance, self.__key, value)
         ctd_instance._addContent(basis.ElementContent(value, self))
@@ -1044,12 +1044,12 @@ class ElementDeclaration (object):
 
     def append (self, ctd_instance, value):
         """Add the given value as another instance of this element within the binding instance.
-        @raise pyxb.StructuralBadDocumentError: invoked on an element use that is not plural
+        @raise pyxb_123.StructuralBadDocumentError: invoked on an element use that is not plural
         """
         if ctd_instance._isNil():
-            raise pyxb.ContentInNilInstanceError(ctd_instance, value)
+            raise pyxb_123.ContentInNilInstanceError(ctd_instance, value)
         if not self.isPlural():
-            raise pyxb.NonPluralAppendError(ctd_instance, self, value)
+            raise pyxb_123.NonPluralAppendError(ctd_instance, self, value)
         values = self.value(ctd_instance)
         if ctd_instance._validationConfig.forBinding:
             value = self.__elementBinding.compatibleValue(value)
@@ -1061,14 +1061,14 @@ class ElementDeclaration (object):
         """Convert the given value to DOM as an instance of this element.
 
         @param dom_support: Helper for managing DOM properties
-        @type dom_support: L{pyxb.utils.domutils.BindingDOMSupport}
+        @type dom_support: L{pyxb_123.utils.domutils.BindingDOMSupport}
         @param parent: The DOM node within which this element should be generated.
         @type parent: C{xml.dom.Element}
         @param value: The content for this element.  May be text (if the
         element allows mixed content), or an instance of
         L{basis._TypeBinding_mixin}.
 
-        @raise pyxb.AbstractElementError: the binding to be used is abstract
+        @raise pyxb_123.AbstractElementError: the binding to be used is abstract
         """
         if isinstance(value, basis._TypeBinding_mixin):
             element_binding = self.__elementBinding
@@ -1076,7 +1076,7 @@ class ElementDeclaration (object):
                 element_binding = value._element()
             assert element_binding is not None
             if element_binding.abstract():
-                raise pyxb.AbstractElementError(self, value)
+                raise pyxb_123.AbstractElementError(self, value)
             element = dom_support.createChildElement(element_binding.name(), parent)
             elt_type = element_binding.typeDefinition()
             val_type = type(value)
@@ -1090,13 +1090,13 @@ class ElementDeclaration (object):
                 tns_prefix = dom_support.namespacePrefix(value._ExpandedName.namespace())
                 if tns_prefix is not None:
                     val_type_qname = '%s:%s' % (tns_prefix, val_type_qname)
-                dom_support.addAttribute(element, pyxb.namespace.XMLSchema_instance.createExpandedName('type'), val_type_qname)
+                dom_support.addAttribute(element, pyxb_123.namespace.XMLSchema_instance.createExpandedName('type'), val_type_qname)
             value._toDOM_csc(dom_support, element)
         elif isinstance(value, (str, unicode)):
             element = dom_support.createChildElement(self.name(), parent)
             element.appendChild(dom_support.document().createTextNode(value))
         else:
-            raise pyxb.LogicError('toDOM with unrecognized value type %s: %s' % (type(value), value))
+            raise pyxb_123.LogicError('toDOM with unrecognized value type %s: %s' % (type(value), value))
 
     def _description (self, name_only=False, user_documentation=True):
         if name_only:
@@ -1127,7 +1127,7 @@ class ElementDeclaration (object):
             try:
                 value = self.__elementBinding.compatibleValue(value, _convert_string_values=False)
                 accept = True
-            except (pyxb.ValidationError, pyxb.BindingError):
+            except (pyxb_123.ValidationError, pyxb_123.BindingError):
                 pass
         return (accept, value)
 
@@ -1150,8 +1150,8 @@ class Wildcard (object):
         Valid values are:
 
          - L{Wildcard.NC_any}
-         - A tuple ( L{Wildcard.NC_not}, a L{namespace<pyxb.namespace.Namespace>} instance )
-         - set(of L{namespace<pyxb.namespace.Namespace>} instances)
+         - A tuple ( L{Wildcard.NC_not}, a L{namespace<pyxb_123.namespace.Namespace>} instance )
+         - set(of L{namespace<pyxb_123.namespace.Namespace>} instances)
 
         Namespaces are represented by their URIs.  Absence is
         represented by C{None}, both in the "not" pair and in the set.
@@ -1177,8 +1177,8 @@ class Wildcard (object):
         if nsv is None:
             return None
         if isinstance(nsv, basestring):
-            nsv = pyxb.namespace.NamespaceForURI(nsv, create_if_missing=True)
-        assert isinstance(nsv, pyxb.namespace.Namespace), 'unexpected non-namespace %s' % (nsv,)
+            nsv = pyxb_123.namespace.NamespaceForURI(nsv, create_if_missing=True)
+        assert isinstance(nsv, pyxb_123.namespace.Namespace), 'unexpected non-namespace %s' % (nsv,)
         return nsv
 
     def __init__ (self, *args, **kw):
@@ -1205,7 +1205,7 @@ class Wildcard (object):
         ns = None
         if isinstance(value, xml.dom.Node):
             if value.namespaceURI is not None:
-                ns = pyxb.namespace.NamespaceForURI(value.namespaceURI)
+                ns = pyxb_123.namespace.NamespaceForURI(value.namespaceURI)
         elif isinstance(value, basis._TypeBinding_mixin):
             elt = value._element()
             if elt is not None:
@@ -1215,7 +1215,7 @@ class Wildcard (object):
         else:
             # Assume that somebody will handle the conversion to xs:anyType
             pass
-        if isinstance(ns, pyxb.namespace.Namespace) and ns.isAbsentNamespace():
+        if isinstance(ns, pyxb_123.namespace.Namespace) and ns.isAbsentNamespace():
             ns = None
         if self.NC_any == self.__namespaceConstraint:
             return True

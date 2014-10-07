@@ -46,7 +46,7 @@ xsd='''<?xml version="1.0" encoding="UTF-8"?>
 </xs:schema>'''
 
 #open('schema.xsd', 'w').write(xsd)
-code = pyxb.binding.generate.GeneratePython(schema_text=xsd)
+code = pyxb_123.binding.generate.GeneratePython(schema_text=xsd)
 #open('code.py', 'w').write(code)
 #print code
 
@@ -64,40 +64,40 @@ class TestTrac_0061 (unittest.TestCase):
 
     def testTLA (self):
         self.assertEqual("tla", tla('tla'))
-        self.assertRaises(pyxb.SimpleTypeValueError, tla, 'four')
-        self.assertRaises(pyxb.SimpleTypeValueError, tla, '1')
+        self.assertRaises(pyxb_123.SimpleTypeValueError, tla, 'four')
+        self.assertRaises(pyxb_123.SimpleTypeValueError, tla, '1')
 
     def testAtla (self):
-        self.assertRaises(pyxb.SimpleTypeValueError, Atla, 'four')
-        self.assertRaises(pyxb.SimpleTypeValueError, Atla, '1')
+        self.assertRaises(pyxb_123.SimpleTypeValueError, Atla, 'four')
+        self.assertRaises(pyxb_123.SimpleTypeValueError, Atla, '1')
         self.assertEqual("A23", Atla('A23'))
         self.assertEqual("A2Z", Atla('A2Z'))
-        self.assertRaises(pyxb.SimpleTypeValueError, Atla, 'B12')
+        self.assertRaises(pyxb_123.SimpleTypeValueError, Atla, 'B12')
 
     def testtlaZ (self):
-        self.assertRaises(pyxb.SimpleTypeValueError, tlaZ, 'four')
-        self.assertRaises(pyxb.SimpleTypeValueError, tlaZ, '1')
+        self.assertRaises(pyxb_123.SimpleTypeValueError, tlaZ, 'four')
+        self.assertRaises(pyxb_123.SimpleTypeValueError, tlaZ, '1')
         self.assertEqual("12Z", tlaZ('12Z'))
         self.assertEqual("A2Z", tlaZ('A2Z'))
-        self.assertRaises(pyxb.SimpleTypeValueError, tlaZ, '12X')
+        self.assertRaises(pyxb_123.SimpleTypeValueError, tlaZ, '12X')
 
     def testcombAtlaZ (self):
-        self.assertRaises(pyxb.SimpleTypeValueError, combAtlaZ, 'four')
-        self.assertRaises(pyxb.SimpleTypeValueError, combAtlaZ, '1')
+        self.assertRaises(pyxb_123.SimpleTypeValueError, combAtlaZ, 'four')
+        self.assertRaises(pyxb_123.SimpleTypeValueError, combAtlaZ, '1')
         self.assertEqual("A2Z", combAtlaZ('A2Z'))
         self.assertEqual("A23", combAtlaZ('A23'))
         self.assertEqual("12Z", combAtlaZ('12Z'))
-        self.assertRaises(pyxb.SimpleTypeValueError, combAtlaZ, '12X')
-        self.assertRaises(pyxb.SimpleTypeValueError, combAtlaZ, 'X23')
+        self.assertRaises(pyxb_123.SimpleTypeValueError, combAtlaZ, '12X')
+        self.assertRaises(pyxb_123.SimpleTypeValueError, combAtlaZ, 'X23')
 
     def testdervAtlaZ (self):
-        self.assertRaises(pyxb.SimpleTypeValueError, dervAtlaZ, 'four')
-        self.assertRaises(pyxb.SimpleTypeValueError, dervAtlaZ, '1')
+        self.assertRaises(pyxb_123.SimpleTypeValueError, dervAtlaZ, 'four')
+        self.assertRaises(pyxb_123.SimpleTypeValueError, dervAtlaZ, '1')
         self.assertEqual("A2Z", dervAtlaZ('A2Z'))
-        self.assertRaises(pyxb.SimpleTypeValueError, dervAtlaZ, 'A23')
-        self.assertRaises(pyxb.SimpleTypeValueError, dervAtlaZ, '12Z')
-        self.assertRaises(pyxb.SimpleTypeValueError, dervAtlaZ, '12X')
-        self.assertRaises(pyxb.SimpleTypeValueError, dervAtlaZ, 'X23')
+        self.assertRaises(pyxb_123.SimpleTypeValueError, dervAtlaZ, 'A23')
+        self.assertRaises(pyxb_123.SimpleTypeValueError, dervAtlaZ, '12Z')
+        self.assertRaises(pyxb_123.SimpleTypeValueError, dervAtlaZ, '12X')
+        self.assertRaises(pyxb_123.SimpleTypeValueError, dervAtlaZ, 'X23')
 
 if __name__ == '__main__':
     unittest.main()

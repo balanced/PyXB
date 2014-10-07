@@ -22,7 +22,7 @@ xsd='''<?xml version="1.0" encoding="UTF-8"?>
 </xs:schema>'''
 
 #open('schema.xsd', 'w').write(xsd)
-code = pyxb.binding.generate.GeneratePython(schema_text=xsd)
+code = pyxb_123.binding.generate.GeneratePython(schema_text=xsd)
 #open('code.py', 'w').write(code)
 #print code
 
@@ -37,21 +37,21 @@ class TestTrac_0190 (unittest.TestCase):
     def testBasic (self):
         i = UC('A')
         self.assertEqual(i, 'A')
-        with self.assertRaises(pyxb.SimpleFacetValueError) as cm:
+        with self.assertRaises(pyxb_123.SimpleFacetValueError) as cm:
             i = UC('a')
         e = cm.exception
         self.assertEqual(e.type, tUC)
         self.assertEqual(e.value, 'a')
-        self.assertTrue(isinstance(e.facet, pyxb.binding.facets.CF_pattern))
+        self.assertTrue(isinstance(e.facet, pyxb_123.binding.facets.CF_pattern))
         self.assertEqual(e.details(), 'Type tUC pattern constraint violated by value a')
 
     def testUnicode (self):
-        with self.assertRaises(pyxb.SimpleFacetValueError) as cm:
+        with self.assertRaises(pyxb_123.SimpleFacetValueError) as cm:
             i = UC(u'\xf6')
         e = cm.exception
         self.assertEqual(e.type, tUC)
         self.assertEqual(e.value, u'\xf6')
-        self.assertTrue(isinstance(e.facet, pyxb.binding.facets.CF_pattern))
+        self.assertTrue(isinstance(e.facet, pyxb_123.binding.facets.CF_pattern))
         self.assertRaises(UnicodeEncodeError, str, e.details())  #!python3!
         self.assertEqual(e.details(), u'Type tUC pattern constraint violated by value \xf6')
 

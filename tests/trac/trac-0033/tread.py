@@ -37,7 +37,7 @@ for size in xrange(1, max_reps):
     (schema, xmls) = buildTest(size)
 
     t0 = time.time()
-    code = pyxb.binding.generate.GeneratePython(schema_text=schema)
+    code = pyxb_123.binding.generate.GeneratePython(schema_text=schema)
     t1 = time.time()
     rv = compile(code, 'test', 'exec')
     t2 = time.time()

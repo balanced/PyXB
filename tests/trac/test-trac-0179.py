@@ -20,7 +20,7 @@ xsd='''<?xml version="1.0" encoding="UTF-8"?>
   <xsd:element name="eAny" type="tAny"/>
 </xsd:schema>'''
 
-code = pyxb.binding.generate.GeneratePython(schema_text=xsd)
+code = pyxb_123.binding.generate.GeneratePython(schema_text=xsd)
 #open('code.py', 'w').write(code)
 
 rv = compile(code, 'test', 'exec')
@@ -41,7 +41,7 @@ class TestTrac0179 (unittest.TestCase):
         instance = CreateFromDocument("<eAny><b>2</b><a>1</a></eAny>")
         self.assertEqual(instance.a, 1)
         self.assertEqual(instance.b, 2)
-        self.assertRaises(pyxb.IncompleteElementContentError, CreateFromDocument, "<eAny><a>1</a></eAny>")
+        self.assertRaises(pyxb_123.IncompleteElementContentError, CreateFromDocument, "<eAny><a>1</a></eAny>")
 
 if __name__ == '__main__':
     unittest.main()

@@ -289,9 +289,9 @@ class _DeconflictSymbols_mixin (object):
     """Mix-in used to deconflict public symbols in classes that may be
     inherited by generated binding classes.
 
-    Some classes, like the L{pyxb.binding.basis.element} or
-    L{pyxb.binding.basis.simpleTypeDefinition} classes in
-    L{pyxb.binding.basis}, have public symbols associated with
+    Some classes, like the L{pyxb_123.binding.basis.element} or
+    L{pyxb_123.binding.basis.simpleTypeDefinition} classes in
+    L{pyxb_123.binding.basis}, have public symbols associated with
     functions and variables.  It is possible that an XML schema might
     include tags and attribute names that match these symbols.  To
     avoid conflict, the reserved symbols marked in this class are
@@ -354,7 +354,7 @@ class Graph:
     """Represent a directed graph with arbitrary objects as nodes.
 
     This is used in the L{code
-    generator<pyxb.binding.generate.Generator>} to determine order
+    generator<pyxb_123.binding.generate.Generator>} to determine order
     dependencies among components within a namespace, and schema that
     comprise various namespaces.  An edge from C{source} to C{target}
     indicates that some aspect of C{source} requires that some aspect
@@ -862,7 +862,7 @@ class UniqueIdentifier (object):
     An instance of this class compares equal to, and hashes equivalent
     to, the uid string.  When C{str}'d, the result is the uid; when
     C{repr}'d, the result is a constructor call to
-    C{pyxb.utils.utility.UniqueIdentifier}.
+    C{pyxb_123.utils.utility.UniqueIdentifier}.
     """
 
     # A map from UID string to the instance that represents it
@@ -941,7 +941,7 @@ class UniqueIdentifier (object):
         return self.uid()
 
     def __repr__ (self):
-        return 'pyxb.utils.utility.UniqueIdentifier(%s)' % (repr(self.uid()),)
+        return 'pyxb_123.utils.utility.UniqueIdentifier(%s)' % (repr(self.uid()),)
 
 @BackfillComparisons
 class UTCOffsetTimeZone (datetime.tzinfo):
@@ -1061,7 +1061,7 @@ class LocalTimeZone (datetime.tzinfo):
         tt = time.localtime(time.mktime(tt))
         return tt.tm_isdst > 0
 
-class PrivateTransient_mixin (pyxb.cscRoot):
+class PrivateTransient_mixin (pyxb_123.cscRoot):
     """Emulate the B{transient} keyword from Java for private member
     variables.
 
@@ -1072,12 +1072,12 @@ class PrivateTransient_mixin (pyxb.cscRoot):
     corresponding private variable "_Class__s" will be removed from
     the state dictionary.  This is used to eliminate unnecessary
     fields from instances placed in L{namespace
-    archives<pyxb.namespace.archive.NamespaceArchive>} without having
+    archives<pyxb_123.namespace.archive.NamespaceArchive>} without having
     to implement a C{__getstate__} method in every class in the
     instance hierarchy.
 
     For an example, see
-    L{pyxb.xmlschema.structures._SchemaComponent_mixin}
+    L{pyxb_123.xmlschema.structures._SchemaComponent_mixin}
 
     If you use this, it is your responsibility to define the
     C{__PrivateTransient} class variable and add to it the required
@@ -1119,8 +1119,8 @@ class PrivateTransient_mixin (pyxb.cscRoot):
         #    import pyxb_123.namespace
         #    import xml.dom
         #    import pyxb_123.xmlschema.structures
-        #    if isinstance(v, (pyxb.namespace.resolution.NamespaceContext, xml.dom.Node, pyxb.xmlschema.structures.Schema)):
-        #        raise pyxb.LogicError('Unexpected instance of %s key %s in %s' % (type(v), k, self))
+        #    if isinstance(v, (pyxb_123.namespace.resolution.NamespaceContext, xml.dom.Node, pyxb_123.xmlschema.structures.Schema)):
+        #        raise pyxb_123.LogicError('Unexpected instance of %s key %s in %s' % (type(v), k, self))
 
         return state
 
@@ -1278,7 +1278,7 @@ class Location (object):
         ctor = '%s.%s' % (t.__module__, t.__name__)
         return '%s(%r, %r, %r)' % (ctor, self.__locationBase, self.__lineNumber, self.__columnNumber)
 
-class Locatable_mixin (pyxb.cscRoot):
+class Locatable_mixin (pyxb_123.cscRoot):
     __location = None
 
     def __init__ (self, *args, **kw):

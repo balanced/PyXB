@@ -22,10 +22,10 @@ def WSDLToSchema (generator, wsdl_uri):
     option may require availability of the WS-* bundle."""
     import pyxb_123.bundles.wssplat.wsdl11 as wsdl
     wsdl.ImportRelatedNamespaces()
-    wsdl_uri = pyxb.utils.utility.NormalizeLocation(wsdl_uri)
+    wsdl_uri = pyxb_123.utils.utility.NormalizeLocation(wsdl_uri)
     print 'Retrieving WSDL from %s' % (wsdl_uri,)
-    xmld = pyxb.utils.utility.DataFromURI(wsdl_uri)
-    spec = wsdl.definitions.createFromDOM(pyxb.utils.domutils.StringToDOM(xmld, location_base=wsdl_uri), process_schema=True, generation_uid=generator.generationUID())
+    xmld = pyxb_123.utils.utility.DataFromURI(wsdl_uri)
+    spec = wsdl.definitions.createFromDOM(pyxb_123.utils.domutils.StringToDOM(xmld, location_base=wsdl_uri), process_schema=True, generation_uid=generator.generationUID())
     return spec.schema()
 
 def _WSDLOptionCallback (option, opt_str, value, parser, *args, **kwargs):
@@ -34,7 +34,7 @@ def _WSDLOptionCallback (option, opt_str, value, parser, *args, **kwargs):
         parser.values.schema_location = []
     parser.values.schema_location.append( (value, WSDLToSchema) )
 
-generator = pyxb.binding.generate.Generator()
+generator = pyxb_123.binding.generate.Generator()
 parser = generator.optionParser()
 group = optparse.OptionGroup(parser, 'WSDL Options', 'Options relevant to generating bindings from WSDL service descriptions')
 group.add_option('-W', '--wsdl-location', metavar='FILE_or_URL',

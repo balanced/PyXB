@@ -9,8 +9,8 @@ import common4app
 
 import pyxb_123.utils.domutils
 
-pyxb.utils.domutils.BindingDOMSupport.DeclareNamespace(app.Namespace, 'app')
-pyxb.utils.domutils.BindingDOMSupport.DeclareNamespace(common4app.Namespace, 'common')
+pyxb_123.utils.domutils.BindingDOMSupport.DeclareNamespace(app.Namespace, 'app')
+pyxb_123.utils.domutils.BindingDOMSupport.DeclareNamespace(common4app.Namespace, 'common')
 
 class Test (unittest.TestCase):
     def testApp (self):

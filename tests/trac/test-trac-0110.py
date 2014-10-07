@@ -26,7 +26,7 @@ xsd='''<?xml version="1.0" encoding="UTF-8"?>
 </xs:schema>'''
 
 
-code = pyxb.binding.generate.GeneratePython(schema_text=xsd)
+code = pyxb_123.binding.generate.GeneratePython(schema_text=xsd)
 #open('code.py', 'w').write(code)
 
 rv = compile(code, 'test', 'exec')
@@ -38,17 +38,17 @@ import unittest
 
 class TestTrac0110 (unittest.TestCase):
     def tearDown (self):
-        pyxb.RequireValidWhenGenerating(True)
-        pyxb.RequireValidWhenParsing(True)
+        pyxb_123.RequireValidWhenGenerating(True)
+        pyxb_123.RequireValidWhenParsing(True)
 
     def testWithValidation (self):
         expectt = '<Single><li>1 2 3</li></Single>'
         expectd = expectt.encode('utf-8')
         s = Single()
-        pyxb.RequireValidWhenGenerating(True)
+        pyxb_123.RequireValidWhenGenerating(True)
         s.li = intList([1,2,3])
         self.assertEqual(s.toxml("utf-8", root_only=True), expectd)
-        pyxb.RequireValidWhenGenerating(False)
+        pyxb_123.RequireValidWhenGenerating(False)
         s.li = intList([1,2,3])
         self.assertEqual(s.toxml("utf-8", root_only=True), expectd)
 

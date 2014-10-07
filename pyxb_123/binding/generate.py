@@ -41,9 +41,9 @@ def PrefixModule (value, text=None):
     if text is None:
         text = value.__name__
     if value.__module__ == datatypes.__name__:
-        return 'pyxb.binding.datatypes.%s' % (text,)
+        return 'pyxb_123.binding.datatypes.%s' % (text,)
     if value.__module__ == facets.__name__:
-        return 'pyxb.binding.facets.%s' % (text,)
+        return 'pyxb_123.binding.facets.%s' % (text,)
     raise ValueError('No standard name for module of value', value)
 
 class ReferenceLiteral (object):
@@ -97,7 +97,7 @@ class ReferenceWildcard (ReferenceLiteral):
         super(ReferenceWildcard, self).__init__(**kw)
 
         template_map = { }
-        template_map['Wildcard'] = 'pyxb.binding.content.Wildcard'
+        template_map['Wildcard'] = 'pyxb_123.binding.content.Wildcard'
         if (xs.structures.Wildcard.NC_any == wildcard.namespaceConstraint()):
             template_map['nc'] = templates.replaceInText('%{Wildcard}.NC_any', **template_map)
         elif isinstance(wildcard.namespaceConstraint(), (set, frozenset)):
@@ -143,7 +143,7 @@ class ReferenceExpandedName (ReferenceLiteral):
     def __init__ (self, **kw):
         self.__expandedName = kw['expanded_name']
         super(ReferenceExpandedName, self).__init__(**kw)
-        self.setLiteral('pyxb.namespace.ExpandedName(%s, %s)' % (pythonLiteral(self.__expandedName.namespace(), **kw), pythonLiteral(self.__expandedName.localName(), **kw)))
+        self.setLiteral('pyxb_123.namespace.ExpandedName(%s, %s)' % (pythonLiteral(self.__expandedName.namespace(), **kw), pythonLiteral(self.__expandedName.localName(), **kw)))
 
 class ReferenceFacet (ReferenceLiteral):
     __facet = None
@@ -203,7 +203,7 @@ def pythonLiteral (value, **kw):
         return [ pythonLiteral(_v, **kw) for _v in value ]
 
     # ExpandedName is a tuple, but not here
-    if isinstance(value, pyxb.namespace.ExpandedName):
+    if isinstance(value, pyxb_123.namespace.ExpandedName):
         return pythonLiteral(ReferenceExpandedName(expanded_name=value, **kw))
 
     # For other collection types, do what you do for list
@@ -221,7 +221,7 @@ def pythonLiteral (value, **kw):
     if isinstance(value, basis.simpleTypeDefinition):
         return PrefixModule(value, value.pythonLiteral())
 
-    if isinstance(value, pyxb.namespace.Namespace):
+    if isinstance(value, pyxb_123.namespace.Namespace):
         return pythonLiteral(ReferenceNamespace(namespace=value, **kw))
 
     if isinstance(value, type):
@@ -245,7 +245,7 @@ def pythonLiteral (value, **kw):
     if isinstance(value, facets._EnumerationElement):
         return pythonLiteral(value.value())
 
-    # Wildcards expand to a pyxb.binding.content.Wildcard instance
+    # Wildcards expand to a pyxb_123.binding.content.Wildcard instance
     if isinstance(value, xs.structures.Wildcard):
         return pythonLiteral(ReferenceWildcard(value, **kw))
 
@@ -258,7 +258,7 @@ def pythonLiteral (value, **kw):
         return value.asLiteral()
 
     # Represent namespaces by their URI
-    if isinstance(value, pyxb.namespace.Namespace):
+    if isinstance(value, pyxb_123.namespace.Namespace):
         return repr(value.uri())
 
     # Standard Python types
@@ -334,10 +334,10 @@ def %{name} ():
         else:
             (particle, symbol) = st.symbol
             if isinstance(symbol, xs.structures.Wildcard):
-                au_src.append(templates.replaceInText('    symbol = pyxb.binding.content.WildcardUse(%{wildcard}, %{location})', wildcard=binding_module.literal(symbol, **kw), location=repr(particle._location())))
+                au_src.append(templates.replaceInText('    symbol = pyxb_123.binding.content.WildcardUse(%{wildcard}, %{location})', wildcard=binding_module.literal(symbol, **kw), location=repr(particle._location())))
             elif isinstance(symbol, xs.structures.ElementDeclaration):
                 binding_module.importForDeclaration(symbol)
-                au_src.append(templates.replaceInText('    symbol = pyxb.binding.content.ElementUse(%{ctd}._UseForTag(%{field_tag}), %{location})', field_tag=binding_module.literal(symbol.expandedName(), **kw), location=repr(particle._location()), **template_map))
+                au_src.append(templates.replaceInText('    symbol = pyxb_123.binding.content.ElementUse(%{ctd}._UseForTag(%{field_tag}), %{location})', field_tag=binding_module.literal(symbol.expandedName(), **kw), location=repr(particle._location()), **template_map))
         au_src.append('    %s = fac.State(symbol, is_initial=%r, final_update=final_update, is_unordered_catenation=%r)' % (st_id, st.isInitial, st.isUnorderedCatenation))
         if st.subAutomata is not None:
             au_src.append('    %s._set_subAutomata(*sub_automata)' % (st_id,))
@@ -474,7 +474,7 @@ def GenerateSTD (std, generator):
     parent_classes = [ binding_module.literal(std.baseTypeDefinition(), **kw) ]
     enum_facet = std.facets().get(facets.CF_enumeration)
     if (enum_facet is not None) and (enum_facet.ownerTypeDefinition() == std):
-        parent_classes.append('pyxb.binding.basis.enumeration_mixin')
+        parent_classes.append('pyxb_123.binding.basis.enumeration_mixin')
 
     template_map = { }
     binding_name = template_map['std'] = binding_module.literal(std, **kw)
@@ -525,7 +525,7 @@ class %{std} (%{superclasses}):
         template = '''
 # List simple type: %{qname}
 # superclasses %{superclasses}
-class %{std} (pyxb.binding.basis.STD_list):
+class %{std} (pyxb_123.binding.basis.STD_list):
 ''' + common_template + '''
     _ItemType = %{itemtype}
 '''
@@ -536,7 +536,7 @@ class %{std} (pyxb.binding.basis.STD_list):
         template = '''
 # Union simple type: %{qname}
 # superclasses %{superclasses}
-class %{std} (pyxb.binding.basis.STD_union):
+class %{std} (pyxb_123.binding.basis.STD_union):
 ''' + common_template + '''
     _MemberTypes = ( %{membertypes}, )
 '''
@@ -544,7 +544,7 @@ class %{std} (pyxb.binding.basis.STD_union):
         if not template_map['documentation']:
             template_map['documentation'] = templates.replaceInText('Simple type that is a union of %{membertypes}.', **template_map)
     else:
-        raise pyxb.LogicError("Unhandled STD variety")
+        raise pyxb_123.LogicError("Unhandled STD variety")
 
     outf.write(templates.replaceInText(template, **template_map))
 
@@ -600,7 +600,7 @@ import functools
 # model groups.
 
 def BuildTermTree (node):
-    """Construct a L{FAC term tree<pyxb.utils.fac.Node>} for a L{particle<xs.structures.Particle>}.
+    """Construct a L{FAC term tree<pyxb_123.utils.fac.Node>} for a L{particle<xs.structures.Particle>}.
 
     This translates the XML schema content model of particles, model
     groups, element declarations, and wildcards into a tree expressing
@@ -609,11 +609,11 @@ def BuildTermTree (node):
 
     @param node: An instance of L{xs.structures.Particle}
 
-    @return: An instance of L{pyxb.utils.fac.Node}
+    @return: An instance of L{pyxb_123.utils.fac.Node}
     """
 
     def _generateTermTree_visitor (node, entered, arg):
-        """Helper for constructing a L{FAC term tree<pyxb.utils.fac.Node>}.
+        """Helper for constructing a L{FAC term tree<pyxb_123.utils.fac.Node>}.
 
         This is passed to L{xs.structures.Particle.walkParticleTree}.
 
@@ -624,7 +624,7 @@ def BuildTermTree (node):
 
         @param arg: A list of pairs C{(particle, terms)} where C{particle}
         is the L{xs.structures.Particle} instance containing a list of
-        L{term trees<pyxb.utils.fac.Node>}.
+        L{term trees<pyxb_123.utils.fac.Node>}.
         """
 
         if entered is None:
@@ -632,7 +632,7 @@ def BuildTermTree (node):
             assert isinstance(parent_particle, xs.structures.Particle)
             assert isinstance(node, (xs.structures.ElementDeclaration, xs.structures.Wildcard))
             node._setFacStateSortKey(arg.nextSequenceNumber())
-            terms.append(pyxb.utils.fac.Symbol((parent_particle, node)))
+            terms.append(pyxb_123.utils.fac.Symbol((parent_particle, node)))
         elif entered:
             node._setFacStateSortKey(arg.nextSequenceNumber())
             arg.addNode(node)
@@ -648,14 +648,14 @@ def BuildTermTree (node):
                 # group or a trivial particle we can use the term
                 # directly.
                 if isinstance(node, xs.structures.Particle) and ((1 != node.minOccurs()) or (1 != node.maxOccurs())):
-                    term = pyxb.utils.fac.NumericalConstraint(term, node.minOccurs(), node.maxOccurs(), metadata=node)
+                    term = pyxb_123.utils.fac.NumericalConstraint(term, node.minOccurs(), node.maxOccurs(), metadata=node)
             else:
                 assert isinstance(parent_particle, xs.structures.Particle), 'unexpected %s' % (parent_particle,)
                 assert isinstance(node, xs.structures.ModelGroup)
                 if node.C_CHOICE == node.compositor():
-                    term = pyxb.utils.fac.Choice(*terms, metadata=node)
+                    term = pyxb_123.utils.fac.Choice(*terms, metadata=node)
                 elif node.C_SEQUENCE == node.compositor():
-                    term = pyxb.utils.fac.Sequence(*terms, metadata=node)
+                    term = pyxb_123.utils.fac.Sequence(*terms, metadata=node)
                 else:
                     # The quadratic state explosion and need to clone
                     # terms that results from a naive transformation of
@@ -664,8 +664,8 @@ def BuildTermTree (node):
                     # is not worth the pain.  Create a "symbol" for the
                     # state and hold the alternatives in it.
                     assert node.C_ALL == node.compositor()
-                    assert functools.reduce(operator.and_, map(lambda _s: isinstance(_s, pyxb.utils.fac.Node), terms), True)
-                    term = pyxb.utils.fac.All(*terms, metadata=node)
+                    assert functools.reduce(operator.and_, map(lambda _s: isinstance(_s, pyxb_123.utils.fac.Node), terms), True)
+                    term = pyxb_123.utils.fac.All(*terms, metadata=node)
             siblings.append(term)
 
     class TermTreeArg (object):
@@ -714,7 +714,7 @@ def BuildPluralityData (term_tree):
     is available in the term tree used for the content model
     automaton.
 
-    @param term_tree: A L{FAC term tree<pyxb.utils.fac.Node>}
+    @param term_tree: A L{FAC term tree<pyxb_123.utils.fac.Node>}
     representing the content model for a complex data type.
 
     @return: Plurality data, as a pair C{(singles, multiples)} where
@@ -747,7 +747,7 @@ def BuildPluralityData (term_tree):
     def _ttPrePluralityWalk (node, pos, arg):
         # If there are multiple children, create a new list on which they
         # will be placed.
-        if isinstance(node, pyxb.utils.fac.MultiTermNode):
+        if isinstance(node, pyxb_123.utils.fac.MultiTermNode):
             arg.append([])
 
     def _ttPostPluralityWalk (node, pos, arg):
@@ -755,10 +755,10 @@ def BuildPluralityData (term_tree):
         singles = set()
         multiples = set()
         combined = (singles, multiples)
-        if isinstance(node, pyxb.utils.fac.MultiTermNode):
+        if isinstance(node, pyxb_123.utils.fac.MultiTermNode):
             # Get the list of children, and examine
             term_list = arg.pop()
-            if isinstance(node, pyxb.utils.fac.Choice):
+            if isinstance(node, pyxb_123.utils.fac.Choice):
                 # For choice we aggregate the singles and multiples
                 # separately.
                 for (t1, tm) in term_list:
@@ -766,10 +766,10 @@ def BuildPluralityData (term_tree):
                     singles.update(t1)
             else:
                 # For sequence (ordered or not) we merge the children
-                assert isinstance(node, (pyxb.utils.fac.Sequence, pyxb.utils.fac.All))
+                assert isinstance(node, (pyxb_123.utils.fac.Sequence, pyxb_123.utils.fac.All))
                 for tt in term_list:
                     _ttMergeSets(combined, tt)
-        elif isinstance(node, pyxb.utils.fac.Symbol):
+        elif isinstance(node, pyxb_123.utils.fac.Symbol):
             (particle, term) = node.metadata
             if isinstance(term, xs.structures.ElementDeclaration):
                 # One instance of the base declaration for the element
@@ -782,7 +782,7 @@ def BuildPluralityData (term_tree):
                 for tt in term:
                     _ttMergeSets(combined, BuildPluralityData(tt))
         else:
-            assert isinstance(node, pyxb.utils.fac.NumericalConstraint)
+            assert isinstance(node, pyxb_123.utils.fac.NumericalConstraint)
             # Grab the data for the topmost tree and adjust it based on
             # occurrence data.
             combined = arg[-1].pop()
@@ -890,7 +890,7 @@ def GenerateCTD (ctd, generator, **kw):
 class %{ctd} (%{superclass}):
     """%{documentation}"""
     _TypeDefinition = %{simple_base_type}
-    _ContentTypeTag = pyxb.binding.basis.complexTypeDefinition._CT_%{contentTypeTag}
+    _ContentTypeTag = pyxb_123.binding.basis.complexTypeDefinition._CT_%{contentTypeTag}
     _Abstract = %{is_abstract}
     _ExpandedName = %{expanded_name}
     _XSDLocation = %{xsd_location}
@@ -903,7 +903,7 @@ class %{ctd} (%{superclass}):
     template_map['superclass'] = binding_module.literal(base_type, **kw)
     if ctd._isHierarchyRoot():
         inherits_from_base = False
-        template_map['superclass'] = 'pyxb.binding.basis.complexTypeDefinition'
+        template_map['superclass'] = 'pyxb_123.binding.basis.complexTypeDefinition'
         assert base_type.nameInBinding() is not None
 
     if inherits_from_base:
@@ -968,14 +968,14 @@ class %{ctd} (%{superclass}):
                 _log.warning('Element use %s.%s renamed to %s', ctd.expandedName(), ed.expandedName(), ef_map['id'])
             definitions.append(templates.replaceInText('''
     # Element %{qname} uses Python identifier %{id}
-    %{use} = pyxb.binding.content.ElementDeclaration(%{name_expr}, '%{id}', '%{key}', %{is_plural}, %{decl_location}, %{aux_init})
+    %{use} = pyxb_123.binding.content.ElementDeclaration(%{name_expr}, '%{id}', '%{key}', %{is_plural}, %{decl_location}, %{aux_init})
 ''', name_expr=binding_module.literal(ed.expandedName(), **kw), **ef_map))
 
             definitions.append(templates.replaceInText('''
     %{inspector} = property(%{use}.value, %{use}.set, None, %{documentation})
 ''', **ef_map))
             outf.postscript().append(templates.replaceInText('''
-%{ctd}._AddElement(pyxb.binding.basis.element(%{name_expr}, %{typeDefinition}%{element_aux_init}))
+%{ctd}._AddElement(pyxb_123.binding.basis.element(%{name_expr}, %{typeDefinition}%{element_aux_init}))
 ''', name_expr=binding_module.literal(ed.expandedName(), **kw), ctd=template_map['ctd'], **ef_map))
 
         auto_defn = GenerateAutomaton(ctd, binding_module=binding_module, **kw)
@@ -1044,7 +1044,7 @@ class %{ctd} (%{superclass}):
             _log.warning('Attribute %s.%s renamed to %s', ctd.expandedName(), ad.expandedName(), au_map['id'])
         definitions.append(templates.replaceInText('''
     # Attribute %{qname} uses Python identifier %{id}
-    %{use} = pyxb.binding.content.AttributeUse(%{name_expr}, '%{id}', '%{key}', %{attr_type}%{aux_init})
+    %{use} = pyxb_123.binding.content.AttributeUse(%{name_expr}, '%{id}', '%{key}', %{attr_type}%{aux_init})
     %{use}._DeclarationLocation = %{decl_location}
     %{use}._UseLocation = %{use_location}''', name_expr=binding_module.literal(ad.expandedName(), **kw), **au_map))
         definitions.append(templates.replaceInText('''
@@ -1090,7 +1090,7 @@ def GenerateED (ed, generator, **kw):
 
     binding_module.importForDeclaration(ed)
     outf.write(templates.replaceInText('''
-%{class} = pyxb.binding.basis.element(%{name_expr}, %{typeDefinition}%{element_aux_init})
+%{class} = pyxb_123.binding.basis.element(%{name_expr}, %{typeDefinition}%{element_aux_init})
 %{namespaceReference}.addCategoryObject('elementBinding', %{class}.name().localName(), %{class})
 ''', name_expr=binding_module.literal(ed.expandedName(), **kw), **template_map))
 
@@ -1102,7 +1102,7 @@ def GenerateED (ed, generator, **kw):
 def _PrepareSimpleTypeDefinition (std, generator, nsm, module_context):
     std._templateMap()['_unique'] = nsm.uniqueInClass(std)
     if _useEnumerationTags(std):
-        enum_facet = std.facets().get(pyxb.binding.facets.CF_enumeration)
+        enum_facet = std.facets().get(pyxb_123.binding.facets.CF_enumeration)
         if (enum_facet is not None) and (std == enum_facet.ownerTypeDefinition()):
             for ei in enum_facet.iteritems():
                 assert ei.tag() is None, '%s already has a tag' % (ei,)
@@ -1151,13 +1151,13 @@ class BindingIO (object):
         self.__prolog = []
         self.__postscript = []
         self.__templateMap = kw.copy()
-        encoding = kw.get('encoding', pyxb._OutputEncoding)
+        encoding = kw.get('encoding', pyxb_123._OutputEncoding)
         self.__templateMap.update({ 'date' : str(datetime.datetime.now()),
                                     'filePath' : self.__bindingFilePath,
                                     'coding' : encoding,
                                     'binding_module' : binding_module,
                                     'binding_tag' : binding_module.bindingTag(),
-                                    'pyxbVersion' : pyxb.__version__ })
+                                    'pyxbVersion' : pyxb_123.__version__ })
         self.__stringIO = io.StringIO()
         if self.__bindingFile:
             prefacet = self.expand('''# %{filePath}
@@ -1243,13 +1243,13 @@ class _ModuleNaming_mixin (object):
         self.__uniqueInClass = {}
 
     def _importModule (self, module):
-        assert not isinstance(module, pyxb.namespace.Namespace)
-        assert isinstance(module, (_ModuleNaming_mixin, pyxb.namespace.archive.ModuleRecord)), 'Unexpected type %s' % (type(module),)
+        assert not isinstance(module, pyxb_123.namespace.Namespace)
+        assert isinstance(module, (_ModuleNaming_mixin, pyxb_123.namespace.archive.ModuleRecord)), 'Unexpected type %s' % (type(module),)
         if isinstance(module, NamespaceModule):
-            if pyxb.namespace.XMLSchema == module.namespace():
+            if pyxb_123.namespace.XMLSchema == module.namespace():
                 return
             module = module.moduleRecord()
-        assert isinstance(module, (pyxb.namespace.archive.ModuleRecord, NamespaceGroupModule))
+        assert isinstance(module, (pyxb_123.namespace.archive.ModuleRecord, NamespaceGroupModule))
         if not (module in self.__importModulePathMap):
             module_path = module.modulePath()
             if 'pyxb' == module_path.split('.', 2)[0]:
@@ -1289,7 +1289,7 @@ class _ModuleNaming_mixin (object):
     __moduleUID = None
     def moduleUID (self):
         if self.__moduleUID is None:
-            self.__moduleUID = pyxb.utils.utility.HashForText(self._moduleUID_vx())
+            self.__moduleUID = pyxb_123.utils.utility.HashForText(self._moduleUID_vx())
         return self.__moduleUID
 
     def _moduleUID_vx (self):
@@ -1306,7 +1306,7 @@ class _ModuleNaming_mixin (object):
         return '%s:%s' % (self._bindingTagPrefix_vx(), self.moduleUID())
 
     def _bindingTagPrefix_vx (self):
-        raise pyxb.LogicError('Subclass %s does not define _bindingTagPrefix_vx' % (type(self),))
+        raise pyxb_123.LogicError('Subclass %s does not define _bindingTagPrefix_vx' % (type(self),))
 
     def bindingPreface (self):
         """Return a block of binding text (comment or code) serving as a preface.
@@ -1436,9 +1436,9 @@ class _ModuleNaming_mixin (object):
         self.__referencedFromClass.add(name)
         if definition is None:
             if namespace.isAbsentNamespace():
-                definition = 'pyxb.namespace.CreateAbsentNamespace()'
+                definition = 'pyxb_123.namespace.CreateAbsentNamespace()'
             else:
-                definition = 'pyxb.namespace.NamespaceForURI(%s, create_if_missing=True)' % (repr(namespace.uri()),)
+                definition = 'pyxb_123.namespace.NamespaceForURI(%s, create_if_missing=True)' % (repr(namespace.uri()),)
         self.__namespaceDeclarations.append('%s = %s' % (name, definition))
         self.__namespaceDeclarations.append("%s.configureCategories(['typeBinding', 'elementBinding'])" % (name,))
         self.__referencedNamespaces[namespace] = name
@@ -1467,7 +1467,7 @@ class _ModuleNaming_mixin (object):
                     nsn = 'Namespace'
                 nsdef = None
                 for im in self.__importModulePathMap.iterkeys():
-                    if isinstance(im, pyxb.namespace.archive.ModuleRecord):
+                    if isinstance(im, pyxb_123.namespace.archive.ModuleRecord):
                         if im.namespace() == namespace:
                             nsdef = self.pathFromImport(im, 'Namespace')
                             break
@@ -1479,7 +1479,7 @@ class _ModuleNaming_mixin (object):
                 # and this module is not a namespace group which includes the
                 # namespace as part of its content, something went wrong.
                 if (nsdef is None) and not (isinstance(self, NamespaceGroupModule) and self.moduleForNamespace(namespace) is not None):
-                    raise pyxb.LogicError('MISSING NSDEF: %s cannot be found for %s in imports' % (namespace, nsn))
+                    raise pyxb_123.LogicError('MISSING NSDEF: %s cannot be found for %s in imports' % (namespace, nsn))
 
                 rv =  self.defineNamespace(namespace, nsn, nsdef, protected=True)
                 assert 0 < len(self.__namespaceDeclarations)
@@ -1513,7 +1513,7 @@ class _ModuleNaming_mixin (object):
                     need_import = False
                     break
         else:
-            raise pyxb.LogicError('Unhandled module naming', self)
+            raise pyxb_123.LogicError('Unhandled module naming', self)
         if need_import:
             self._importModule(mr)
 
@@ -1536,7 +1536,7 @@ class _ModuleNaming_mixin (object):
 
     def writeToModuleFile (self):
         if self.bindingFile():
-            self.bindingFile().write(self.moduleContents().encode(pyxb._OutputEncoding))
+            self.bindingFile().write(self.moduleContents().encode(pyxb_123._OutputEncoding))
             self.bindingFile().close()
             _log.info('Saved binding source to %s', self.__bindingFilePath)
         else:
@@ -1616,7 +1616,7 @@ class NamespaceModule (_ModuleNaming_mixin):
              , 'targetNamespace' : repr(self.__namespace.uri())
              , 'namespaceURI' : self.__namespace.uri()
              , 'namespaceReference' : self.referenceNamespace(self.__namespace)
-             , 'pyxb_version' : repr(pyxb.__version__)
+             , 'pyxb_version' : repr(pyxb_123.__version__)
              }
         return kw
 
@@ -1640,8 +1640,8 @@ _GenerationUID = %{generation_uid_expr}
 # Version of PyXB used to generate the bindings
 _PyXBVersion = %{pyxb_version}
 # Generated bindings are not compatible across PyXB versions
-if pyxb.__version__ != _PyXBVersion:
-    raise pyxb.PyXBVersionError(_PyXBVersion)
+if pyxb_123.__version__ != _PyXBVersion:
+    raise pyxb_123.PyXBVersionError(_PyXBVersion)
 
 # Import bindings for namespaces imported into schema
 %{aux_imports}
@@ -1655,29 +1655,29 @@ def CreateFromDocument (xml_text, default_namespace=None, location_base=None):
 
     @param xml_text An XML document.  This should be data (Python 2
     str or Python 3 bytes), or a text (Python 2 unicode or Python 3
-    str) in the L{pyxb._InputEncoding} encoding.
+    str) in the L{pyxb_123._InputEncoding} encoding.
 
-    @keyword default_namespace The L{pyxb.Namespace} instance to use as the
+    @keyword default_namespace The L{pyxb_123.Namespace} instance to use as the
     default namespace where there is no default namespace in scope.
     If unspecified or C{None}, the namespace of the module containing
     this function will be used.
 
     @keyword location_base: An object to be recorded as the base of all
-    L{pyxb.utils.utility.Location} instances associated with events and
+    L{pyxb_123.utils.utility.Location} instances associated with events and
     objects handled by the parser.  You might pass the URI from which
     the document was obtained.
     """
 
-    if pyxb.XMLStyle_saxer != pyxb._XMLStyle:
-        dom = pyxb.utils.domutils.StringToDOM(xml_text)
+    if pyxb_123.XMLStyle_saxer != pyxb_123._XMLStyle:
+        dom = pyxb_123.utils.domutils.StringToDOM(xml_text)
         return CreateFromDOM(dom.documentElement)
     if default_namespace is None:
         default_namespace = Namespace.fallbackNamespace()
-    saxer = pyxb.binding.saxer.make_parser(fallback_namespace=default_namespace, location_base=location_base)
+    saxer = pyxb_123.binding.saxer.make_parser(fallback_namespace=default_namespace, location_base=location_base)
     handler = saxer.getContentHandler()
     xmld = xml_text
     if isinstance(xmld, %{_TextType}):
-        xmld = xmld.encode(pyxb._InputEncoding)
+        xmld = xmld.encode(pyxb_123._InputEncoding)
     saxer.parse(io.BytesIO(xmld))
     instance = handler.rootObject()
     return instance
@@ -1689,7 +1689,7 @@ def CreateFromDOM (node, default_namespace=None):
     @deprecated: Forcing use of DOM interface is unnecessary; use L{CreateFromDocument}."""
     if default_namespace is None:
         default_namespace = Namespace.fallbackNamespace()
-    return pyxb.binding.basis.element.AnyCreateFromDOM(node, default_namespace)
+    return pyxb_123.binding.basis.element.AnyCreateFromDOM(node, default_namespace)
 
 ''', **template_map))
 
@@ -1849,7 +1849,7 @@ class Generator (object):
                 return ('/dev/null', None, None)
             module_path = mr.modulePath()
             assert module_path is not None, 'No path specified for module %s' % (mr,)
-            #if pyxb.namespace.XMLSchema != ns:
+            #if pyxb_123.namespace.XMLSchema != ns:
             #    return ('/dev/null', None, None)
             #module_path="bogus.xsd"
             module_elts = module_path.split('.')
@@ -1858,7 +1858,7 @@ class Generator (object):
                 module_elts.insert(-1, 'raw')
                 if not os.path.exists(import_file_path):
                     raw_module_path = '.'.join(module_elts)
-                    fd = pyxb.utils.utility.OpenOrCreate(import_file_path)
+                    fd = pyxb_123.utils.utility.OpenOrCreate(import_file_path)
                     impt = '''# -*- coding: utf-8 -*-
 from %s import *
 '''  % (raw_module_path,)
@@ -1867,14 +1867,14 @@ from %s import *
                     fd.close()
             binding_file_path = self.__moduleFilePath(module_elts)
             try:
-                binding_file = pyxb.utils.utility.OpenOrCreate(binding_file_path, tag=module.moduleUID())
+                binding_file = pyxb_123.utils.utility.OpenOrCreate(binding_file_path, tag=module.moduleUID())
             except OSError as e:
                 if errno.EEXIST == e.errno:
-                    raise pyxb.BindingGenerationError('Target file %s for module %s bindings exists with other content' % (binding_file_path, mr))
+                    raise pyxb_123.BindingGenerationError('Target file %s for module %s bindings exists with other content' % (binding_file_path, mr))
                 raise
         elif isinstance(module, NamespaceGroupModule):
             if not self.generateToFiles():
-                raise pyxb.BindingGenerationError('Generation of namespace groups requires generate-to-files')
+                raise pyxb_123.BindingGenerationError('Generation of namespace groups requires generate-to-files')
             module_elts = []
             if self.modulePrefix():
                 module_elts.extend(self.modulePrefix().split('.'))
@@ -1882,11 +1882,11 @@ from %s import *
                 module_elts.append('raw')
             in_use = set()
             while True:
-                module_elts.append(pyxb.utils.utility.PrepareIdentifier('nsgroup', in_use, protected=True))
+                module_elts.append(pyxb_123.utils.utility.PrepareIdentifier('nsgroup', in_use, protected=True))
                 try:
                     binding_file_path = self.__moduleFilePath(module_elts)
                     _log.info('Attempting group %s uid %s at %s', module, module.moduleUID(), binding_file_path)
-                    binding_file = pyxb.utils.utility.OpenOrCreate(binding_file_path, tag=module.moduleUID())
+                    binding_file = pyxb_123.utils.utility.OpenOrCreate(binding_file_path, tag=module.moduleUID())
                     break
                 except OSError as e:
                     if errno.EEXIST != e.errno:
@@ -1976,7 +1976,7 @@ from %s import *
         The values in the list are either URIs, or tuples consisting
         of a value and a callable which, when passed the generator
         object and the value, will return a
-        L{pyxb.xmlschema.structures.Schema} instance.  See
+        L{pyxb_123.xmlschema.structures.Schema} instance.  See
         L{addSchemaLocation}.
 
         See also L{addSchemaLocation} and L{schemas}.
@@ -1997,7 +1997,7 @@ from %s import *
 
         @keyword converter: Optional callable that will be invoked
         with the generator instance and the schema location, and is
-        expected to return a L{pyxb.xmlschema.structures.Schema}
+        expected to return a L{pyxb_123.xmlschema.structures.Schema}
         instance.  If absent, the contents of the location are
         converted directly.
 
@@ -2021,7 +2021,7 @@ from %s import *
     def schemas (self):
         """Schema for which bindings should be generated.
 
-        These may be L{Schema<pyxb.xmlschema.structures.Schema>}
+        These may be L{Schema<pyxb_123.xmlschema.structures.Schema>}
         instances, or strings; the latter is preferred, and is parsed
         into a Schema instance when required.
 
@@ -2041,7 +2041,7 @@ from %s import *
     __schemas = None
 
     def namespaces (self):
-        """The set of L{namespaces<pyxb.namespace.Namespace>} for
+        """The set of L{namespaces<pyxb_123.namespace.Namespace>} for
         which bindings will be generated.
 
         This is the set of namespaces read from entrypoint schema,
@@ -2131,7 +2131,7 @@ from %s import *
         The expectation is that any required entities in the namespace
         will be defined by loading schema."""
         self.__noLoadNamespaces.clear()
-        self.__noLoadNamespaces.update([ pyxb.namespace.NamespaceInstance(_ns) for _ns in namespace_set ])
+        self.__noLoadNamespaces.update([ pyxb_123.namespace.NamespaceInstance(_ns) for _ns in namespace_set ])
     def addNoLoadNamespace (self, namespace):
         """Mark that the specified namespace should not be loaded from an archive.
 
@@ -2140,7 +2140,7 @@ from %s import *
         otherwise be read from an archive.  Be aware that this removes
         any knowledge of any archive in which this namespace is
         present as a non-private member."""
-        self.__noLoadNamespaces.add(pyxb.namespace.NamespaceInstance(namespace))
+        self.__noLoadNamespaces.add(pyxb_123.namespace.NamespaceInstance(namespace))
     __noloadNamespaces = None
 
     def importAugmentableNamespaces (self):
@@ -2149,7 +2149,7 @@ from %s import *
     def _setImportAugmentableNamespaces (self, namespace_set):
         """Return the set of namespaces that may be augmented by import directives."""
         self.__importAugmentableNamespaces.clear()
-        self.__importAugmentableNamespaces.update([ pyxb.namespace.NamespaceInstance(_ns) for _ns in namespace_set ])
+        self.__importAugmentableNamespaces.update([ pyxb_123.namespace.NamespaceInstance(_ns) for _ns in namespace_set ])
     def addImportAugmentableNamespace (self, namespace):
         """Mark that the specified namespace may be imported by new bindings.
 
@@ -2163,7 +2163,7 @@ from %s import *
         from the same schemaLocation URI; if the archive was generated
         from a different source component definitions might
         conflict."""
-        self.__importAugmentableNamespaces.add(pyxb.namespace.NamespaceInstance(namespace))
+        self.__importAugmentableNamespaces.add(pyxb_123.namespace.NamespaceInstance(namespace))
     __importAugmentableNamespaces = None
 
     def archiveToFile (self):
@@ -2181,7 +2181,7 @@ from %s import *
     __archiveToFile = None
 
     def setNamespaceVisibility (self, namespace, visibility):
-        namespace = pyxb.namespace.NamespaceInstance(namespace)
+        namespace = pyxb_123.namespace.NamespaceInstance(namespace)
         self.__namespaceVisibilityMap[namespace] = visibility
         pass
     def _setNamespaceVisibilities (self, public, private):
@@ -2323,7 +2323,7 @@ from %s import *
         self.__schemaLocationList = kw.get('schema_location_list', [])[:]
         self.__moduleList = kw.get('module_list', [])[:]
         self.__modulePrefix = kw.get('module_prefix')
-        self.__archivePath = kw.get('archive_path', pyxb.namespace.archive.GetArchivePath())
+        self.__archivePath = kw.get('archive_path', pyxb_123.namespace.archive.GetArchivePath())
         self.__noLoadNamespaces = kw.get('no_load_namespaces', set()).copy()
         self.__importAugmentableNamespaces = kw.get('import_augmentable_namespaces', set()).copy()
         self.__archiveToFile = kw.get('archive_to_file')
@@ -2346,9 +2346,9 @@ from %s import *
             self.applyOptionValues(*self.optionParser().parse_args(argv))
         [ self.addSchemaLocation(_a) for _a in args ]
 
-        self.__generationUID = pyxb.utils.utility.UniqueIdentifier()
+        self.__generationUID = pyxb_123.utils.utility.UniqueIdentifier()
 
-        pyxb.namespace.XML.validateComponentModel()
+        pyxb_123.namespace.XML.validateComponentModel()
 
     __stripSpaces_re = re.compile('\s\s\s+')
     def __stripSpaces (self, string):
@@ -2384,7 +2384,7 @@ from %s import *
         self._setNamespaceVisibilities(public_namespaces, private_namespaces)
         if args is not None:
             self.__schemaLocationList.extend(args)
-        pyxb.utils.utility.SetLocationPrefixRewriteMap(self.locationPrefixRewriteMap())
+        pyxb_123.utils.utility.SetLocationPrefixRewriteMap(self.locationPrefixRewriteMap())
         if self.__loggingConfigFile is not None:
             logging.config.fileConfig(self.__loggingConfigFile)
 
@@ -2398,9 +2398,9 @@ from %s import *
     def generationUID (self):
         """A unique identifier associated with this Generator instance.
 
-        This is an instance of L{pyxb.utils.utility.UniqueIdentifier}.
+        This is an instance of L{pyxb_123.utils.utility.UniqueIdentifier}.
         Its associated objects are
-        L{pyxb.namespace.archive._SchemaOrigin} instances, which
+        L{pyxb_123.namespace.archive._SchemaOrigin} instances, which
         identify schema that contribute to the definition of a
         namespace."""
         return self.__generationUID
@@ -2416,7 +2416,7 @@ from %s import *
         """
         if reset or (self.__optionParser is None):
             parser = optparse.OptionParser(usage="%prog [options] [more schema locations...]",
-                                           version='%%prog from PyXB %s' % (pyxb.__version__,),
+                                           version='%%prog from PyXB %s' % (pyxb_123.__version__,),
                                            description='Generate bindings from a set of XML schemas')
 
             group = optparse.OptionGroup(parser, 'Identifying Schema', 'Specify and locate schema for which bindings should be generated.')
@@ -2571,7 +2571,7 @@ from %s import *
         ssp = self.schemaStrippedPrefix()
         if ssp and sl.startswith(ssp):
             sl = sl[len(ssp):]
-        return pyxb.utils.utility.NormalizeLocation(sl, self.schemaRoot())
+        return pyxb_123.utils.utility.NormalizeLocation(sl, self.schemaRoot())
 
     def assignModulePath (self, module_record, module_path=None):
         """Provide a Python module path for the module record.
@@ -2583,7 +2583,7 @@ from %s import *
         in place.
 
         @param module_record: Information about a collection of related bindings
-        @type module_record: L{pyxb.namespace.archive.ModuleRecord}
+        @type module_record: L{pyxb_123.namespace.archive.ModuleRecord}
 
         @param module_path: Default path to use
         @type module_path: C{str}
@@ -2600,7 +2600,7 @@ from %s import *
             # Prefer an existing assignment over a new one
             module_path = self.namespaceModuleMap().get(namespace.uri(), module_path)
         if (module_path is None) and self.generateToFiles():
-            module_path = pyxb.utils.utility.MakeUnique('binding', self.__unnamedModulePaths)
+            module_path = pyxb_123.utils.utility.MakeUnique('binding', self.__unnamedModulePaths)
         if (module_path is not None) and self.modulePrefix(): # non-empty value
             # Prepend a configured module prefix
             module_path = '.'.join([self.modulePrefix(), module_path])
@@ -2614,20 +2614,20 @@ from %s import *
 
         # Locate all relevant archives and the namespaces they
         # provide.
-        pyxb.namespace.archive.NamespaceArchive.PreLoadArchives(self.archivePath())
+        pyxb_123.namespace.archive.NamespaceArchive.PreLoadArchives(self.archivePath())
 
         # Mark the namespaces we were told not to load.  These may be
         # namespaces for which we already have bindings in the search
         # path, but we want to generate completely new ones.
         for ns in self.noLoadNamespaces():
-            assert isinstance(ns, pyxb.namespace.Namespace)
+            assert isinstance(ns, pyxb_123.namespace.Namespace)
             _log.info("Namespace %s marked not loadable" % (ns,))
             ns.markNotLoadable()
 
         # Mark the namespaces that we permit to be extended by import
         # statements.
         for ns in self.importAugmentableNamespaces():
-            assert isinstance(ns, pyxb.namespace.Namespace)
+            assert isinstance(ns, pyxb_123.namespace.Namespace)
             _log.info("Namespace %s marked import-augmentable" % (ns,))
             ns.setImportAugmentable(True)
 
@@ -2646,7 +2646,7 @@ from %s import *
                 else:
                     schema = converter(self, sl)
                 self.addSchema(schema)
-            except pyxb.SchemaUniquenessError as e:
+            except pyxb_123.SchemaUniquenessError as e:
                 _log.info('Skipped redundant translation of %s defining %s', e.schemaLocation(), e.namespace())
                 self.addSchema(e.existingSchema())
 
@@ -2671,7 +2671,7 @@ from %s import *
 
     def __graphFromComponents (self, components, include_lax):
         components = components.copy()
-        component_graph = pyxb.utils.utility.Graph()
+        component_graph = pyxb_123.utils.utility.Graph()
         need_visit = components.copy()
         bindable_fn = lambda _c: isinstance(_c, xs.structures.ElementDeclaration) or _c.isTypeDefinition()
         while 0 < len(need_visit):
@@ -2684,7 +2684,7 @@ from %s import *
             for cd in br:
                 assert bindable_fn(cd) or include_lax, '%s produced %s in requires' % (type(c), type(cd))
                 if cd._objectOrigin() is None:
-                    assert isinstance(cd, (pyxb.xmlschema.structures.Annotation, pyxb.xmlschema.structures.Wildcard))
+                    assert isinstance(cd, (pyxb_123.xmlschema.structures.Annotation, pyxb_123.xmlschema.structures.Wildcard))
                     continue
                 if (cd._objectOrigin().moduleRecord() in self.__moduleRecords) and not (cd in components):
                     components.add(cd)
@@ -2712,7 +2712,7 @@ from %s import *
             if mr.namespace().isBuiltinNamespace() and not self.allowBuiltinGeneration():
                 continue
             namespaces.add(mr.namespace())
-        pyxb.namespace.resolution.ResolveSiblingNamespaces(namespaces)
+        pyxb_123.namespace.resolution.ResolveSiblingNamespaces(namespaces)
 
         # Mark module visibility.  Entry-point namespaces default to
         # public.
@@ -2732,7 +2732,7 @@ from %s import *
         component_order = []
         root_sets = self.__graphFromComponents(binding_components, False).rootSetOrder()
         if root_sets is None:
-            raise pyxb.BindingGenerationError('Unable to partial-order named components')
+            raise pyxb_123.BindingGenerationError('Unable to partial-order named components')
         for rs in root_sets:
             component_order.extend(sorted(rs, key=lambda _c: _c.schemaOrderSortKey()))
 
@@ -2744,7 +2744,7 @@ from %s import *
     __componentOrder = None
 
     def moduleRecords (self):
-        """The set of L{pyxb.namespace.archive.ModuleRecord} instances
+        """The set of L{pyxb_123.namespace.archive.ModuleRecord} instances
         associated with schema processed in this generation
         instance.
 
@@ -2773,7 +2773,7 @@ from %s import *
         # self.moduleRecords(), if a module has no components that
         # require binding generation.
 
-        module_graph = pyxb.utils.utility.Graph()
+        module_graph = pyxb_123.utils.utility.Graph()
         [ module_graph.addRoot(_mr) for _mr in self.moduleRecords() ]
         for (s, t) in self.componentGraph().edges():
             module_graph.addEdge(s._objectOrigin().moduleRecord(), t._objectOrigin().moduleRecord())
@@ -2788,7 +2788,7 @@ from %s import *
                 mr._setIsPublic(nsvm.get(mr.namespace(), self.defaultNamespacePublic()))
                 self.assignModulePath(mr)
                 if (mr.modulePath() is None) and self.generateToFiles():
-                    raise pyxb.BindingGenerationError('No prefix or module name available for %s' % (mr,))
+                    raise pyxb_123.BindingGenerationError('No prefix or module name available for %s' % (mr,))
                 if (not mr.isPublic()) and (mr.modulePath() is not None):
                     elts = mr.modulePath().split('.')
                     elts[-1] = '_%s' % (elts[-1],)
@@ -2860,9 +2860,9 @@ from %s import *
     def writeNamespaceArchive (self):
         archive_file = self.archiveToFile()
         if archive_file is not None:
-            ns_archive = pyxb.namespace.archive.NamespaceArchive(generation_uid=self.generationUID())
+            ns_archive = pyxb_123.namespace.archive.NamespaceArchive(generation_uid=self.generationUID())
             try:
-                ns_archive.writeNamespaces(pyxb.utils.utility.OpenOrCreate(archive_file))
+                ns_archive.writeNamespaces(pyxb_123.utils.utility.OpenOrCreate(archive_file))
                 _log.info('Saved parsed schema to %s URI', archive_file)
             except Exception as e:
                 _log.exception('Failure saving preprocessed schema to %s', archive_file)

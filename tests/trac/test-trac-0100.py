@@ -32,7 +32,7 @@ xsd='''<?xml version="1.0" encoding="UTF-8"?>
   </element>
 </schema>'''
 
-code = pyxb.binding.generate.GeneratePython(schema_text=xsd)
+code = pyxb_123.binding.generate.GeneratePython(schema_text=xsd)
 #open('code.py', 'w').write(code)
 
 rv = compile(code, 'test', 'exec')

@@ -30,7 +30,7 @@ xsd='''<?xml version="1.0" encoding="UTF-8"?>
     </xs:element>
 </xs:schema>'''
 
-code = pyxb.binding.generate.GeneratePython(schema_text=xsd)
+code = pyxb_123.binding.generate.GeneratePython(schema_text=xsd)
 #open('code.py', 'w').write(code)
 
 rv = compile(code, 'test', 'exec')
@@ -48,10 +48,10 @@ class TestTrac0131 (unittest.TestCase):
     declared_xmlt = u'<?xml version="1.0" encoding="UTF-8"?>' + base_xmlt
 
     def setUp (self):
-        self.__xmlStyle = pyxb._XMLStyle
+        self.__xmlStyle = pyxb_123._XMLStyle
 
     def tearDown (self):
-        pyxb._SetXMLStyle(self.__xmlStyle)
+        pyxb_123._SetXMLStyle(self.__xmlStyle)
 
     def testRepresentation (self):
         self.assertEqual(self.strd, 'Sign of Leser-Tr\xc3\xa9lat') #!python3!
@@ -62,18 +62,18 @@ class TestTrac0131 (unittest.TestCase):
         xmld = xmlt.encode('utf-8')
         self.assertTrue(isinstance(xmlt, types_.TextType))
         self.assertTrue(isinstance(xmld, types_.DataType))
-        pyxb._SetXMLStyle(pyxb.XMLStyle_saxer)
+        pyxb_123._SetXMLStyle(pyxb_123.XMLStyle_saxer)
         instance = CreateFromDocument(xmlt)
         self.assertEqual(instance.e, self.strt)
         instance = CreateFromDocument(xmld)
         self.assertEqual(instance.e, self.strt)
-        pyxb._SetXMLStyle(pyxb.XMLStyle_minidom)
+        pyxb_123._SetXMLStyle(pyxb_123.XMLStyle_minidom)
         instance = CreateFromDocument(xmlt)
         self.assertEqual(instance.e, self.strt)
         instance = CreateFromDocument(xmld)
         self.assertEqual(instance.e, self.strt)
         # saxdom can handle Unicode representation
-        pyxb._SetXMLStyle(pyxb.XMLStyle_saxdom)
+        pyxb_123._SetXMLStyle(pyxb_123.XMLStyle_saxdom)
         instance = CreateFromDocument(xmlt)
         self.assertEqual(instance.e, self.strt)
         instance = CreateFromDocument(xmld)
@@ -84,18 +84,18 @@ class TestTrac0131 (unittest.TestCase):
         xmld = xmlt.encode('utf-8')
         self.assertTrue(isinstance(xmlt, types_.TextType))
         self.assertTrue(isinstance(xmld, types_.DataType))
-        pyxb._SetXMLStyle(pyxb.XMLStyle_saxer)
+        pyxb_123._SetXMLStyle(pyxb_123.XMLStyle_saxer)
         instance = CreateFromDocument(xmlt)
         self.assertEqual(instance.e, self.strt)
         instance = CreateFromDocument(xmld)
         self.assertEqual(instance.e, self.strt)
-        pyxb._SetXMLStyle(pyxb.XMLStyle_minidom)
+        pyxb_123._SetXMLStyle(pyxb_123.XMLStyle_minidom)
         instance = CreateFromDocument(xmlt)
         self.assertEqual(instance.e, self.strt)
         instance = CreateFromDocument(xmld)
         self.assertEqual(instance.e, self.strt)
         # saxdom can handle Unicode representation
-        pyxb._SetXMLStyle(pyxb.XMLStyle_saxdom)
+        pyxb_123._SetXMLStyle(pyxb_123.XMLStyle_saxdom)
         instance = CreateFromDocument(xmlt)
         self.assertEqual(instance.e, self.strt)
         instance = CreateFromDocument(xmld)

@@ -39,14 +39,14 @@ xsd='''<?xml version="1.0" encoding="UTF-8"?>
   <xs:element name="ordered" type="tOrdered"/>
 </xs:schema>'''
 
-code = pyxb.binding.generate.GeneratePython(schema_text=xsd)
+code = pyxb_123.binding.generate.GeneratePython(schema_text=xsd)
 #open('code.py', 'w').write(code)
 
 rv = compile(code, 'test', 'exec')
 eval(rv)
 
 # Assign a shared validation configuration to these types
-gvc = pyxb.GlobalValidationConfig
+gvc = pyxb_123.GlobalValidationConfig
 vc = gvc.copy()
 for cls in [ tText, tBold, tItal, tOrdered ]:
     cls._SetValidationConfig(vc)
@@ -120,9 +120,9 @@ class TestTrac0153 (unittest.TestCase):
         self.assertEqual(vc.orphanElementInContent, vc.RAISE_EXCEPTION)
         self.assertEqual(gvc.orphanElementInContent, gvc.IGNORE_ONCE)
         if sys.version_info[:2] < (2, 7):
-            self.assertRaises(pyxb.OrphanElementContentError, i.toxml, 'utf-8', root_only=True)
+            self.assertRaises(pyxb_123.OrphanElementContentError, i.toxml, 'utf-8', root_only=True)
             return
-        with self.assertRaises(pyxb.OrphanElementContentError) as cm:
+        with self.assertRaises(pyxb_123.OrphanElementContentError) as cm:
             xmld = i.toxml('utf-8', root_only=True)
         e = cm.exception
         self.assertEqual(e.instance, i)
