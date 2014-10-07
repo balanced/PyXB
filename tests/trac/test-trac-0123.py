@@ -4,8 +4,8 @@ if __name__ == '__main__':
     logging.basicConfig()
 _log = logging.getLogger(__name__)
 import sys
-import pyxb.binding.generate
-import pyxb.utils.domutils
+import pyxb_123.binding.generate
+import pyxb_123.utils.domutils
 
 
 xmls = '''<?xml version="1.0"?>
@@ -32,7 +32,7 @@ import unittest
 class TestTrac0123 (unittest.TestCase):
     def testEmpty (self):
         try:
-            import pyxb.bundles.wssplat.ds as dsig
+            import pyxb_123.bundles.wssplat.ds as dsig
         except ImportError as e:
             _log.warning('%s: skipping test, error importing dsig', __file__)
             return

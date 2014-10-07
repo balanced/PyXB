@@ -1,4 +1,4 @@
-import pyxb
+import pyxb_123
 import introspect as custom
 import raw.custom as raw_custom
 

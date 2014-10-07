@@ -4,7 +4,7 @@ if __name__ == '__main__':
     logging.basicConfig()
 _log = logging.getLogger(__name__)
 import xml.dom.minidom
-import pyxb.utils.domutils
+import pyxb_123.utils.domutils
 
 import unittest
 

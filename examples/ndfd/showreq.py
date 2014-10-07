@@ -1,8 +1,8 @@
 from __future__ import print_function
-import pyxb.utils.domutils
+import pyxb_123.utils.domutils
 import xml.dom
 import xml.dom.minidom
-import pyxb.namespace
+import pyxb_123.namespace
 
 # Structure
 #import DWML
@@ -18,7 +18,7 @@ print(body_dom)
 import ndfd
 
 # WSDL
-import pyxb.bundles.wssplat.wsdl11 as wsdl
+import pyxb_123.bundles.wssplat.wsdl11 as wsdl
 
 uri_src = open('ndfdXML.wsdl')
 doc = xml.dom.minidom.parse(uri_src)

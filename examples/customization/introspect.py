@@ -17,7 +17,7 @@ def _isSupersedable (cls):
 
 def _injectClasses ():
     import sys
-    import pyxb.binding.basis
+    import pyxb_123.binding.basis
     
     # All PyXB complex type definitions in the original module
     raw_classes = set([_o for (_, _o) in inspect.getmembers(raw_custom) if _isSupersedable(_o)])

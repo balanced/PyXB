@@ -4,7 +4,7 @@
 
 from __future__ import print_function
 import os.path
-import pyxb.utils.saxutils
+import pyxb_123.utils.saxutils
 import fgd_gml
 import unittest
 

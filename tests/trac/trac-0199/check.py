@@ -4,7 +4,7 @@ if __name__ == '__main__':
     logging.basicConfig()
 _log = logging.getLogger(__name__)
 import unittest
-import pyxb
+import pyxb_123
 
 class TestTrac0199 (unittest.TestCase):
 

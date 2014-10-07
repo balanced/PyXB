@@ -1,6 +1,6 @@
 This directory contains an example of processing Unicode XML, where both the
 schemas and the documents are in various encodings.  It derives from the
-PyXB ticket: http://sourceforge.net/apps/trac/pyxb/ticket/139
+PyXB ticket: http://sourceforge.net/apps/trac/pyxb_123/ticket/139
 
 The files in the data subdirectory include a schema and a sample document,
 in each of the encodings shift_jis, euc-jp, iso-2022-jp, and utf-8.  The
@@ -70,4 +70,4 @@ Note: Because the package depends on OpenGIS, and OpenGIS bindings are no
 longer provided in the PyXB distribution, you should generate these bindings
 first.  If they are missing, the test script will emit a warning and PyXB
 will download and build them for you, but that is the wrong way to use
-OpenGIS.  See the README.txt in the pyxb/bundles/opengis directory.
+OpenGIS.  See the README.txt in the pyxb_123/bundles/opengis directory.

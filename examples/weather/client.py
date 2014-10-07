@@ -2,7 +2,7 @@ from __future__ import print_function
 import weather
 import time
 import sys
-import pyxb.bundles.wssplat.soap11 as soapenv
+import pyxb_123.bundles.wssplat.soap11 as soapenv
 import urllib2
 
 zip = 55113

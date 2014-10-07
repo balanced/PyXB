@@ -8,7 +8,7 @@ import unittest
 import wsse
 import wsu
 
-from pyxb.utils.domutils import BindingDOMSupport
+from pyxb_123.utils.domutils import BindingDOMSupport
 
 BindingDOMSupport.DeclareNamespace(wsu.Namespace, 'wsu')
 BindingDOMSupport.DeclareNamespace(wsse.Namespace, 'wsse')

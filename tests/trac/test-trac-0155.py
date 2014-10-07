@@ -3,10 +3,10 @@ import logging
 if __name__ == '__main__':
     logging.basicConfig()
 _log = logging.getLogger(__name__)
-import pyxb.binding.generate
-import pyxb.binding.datatypes as xs
-import pyxb.binding.basis
-import pyxb.utils.domutils
+import pyxb_123.binding.generate
+import pyxb_123.binding.datatypes as xs
+import pyxb_123.binding.basis
+import pyxb_123.utils.domutils
 
 import os.path
 xsd='''<?xml version="1.0" encoding="UTF-8"?>
@@ -36,14 +36,14 @@ code = pyxb.binding.generate.GeneratePython(schema_text=xsd)
 rv = compile(code, 'test', 'exec')
 eval(rv)
 
-from pyxb.exceptions_ import *
+from pyxb_123.exceptions_ import *
 
 import unittest
 # Note: Without this, there's an exception thrown below because the
 # binding for the namespace isn't available; PyXB falls back to a raw
 # DOM model there.  With this, though, you run afoul of trac/153 which
 # may not be fixed in the PyXB 1.1.x series.
-#import pyxb.bundles.common.xhtml1
+#import pyxb_123.bundles.common.xhtml1
 
 class TestTrac0155 (unittest.TestCase):
     testxml = """<?xml version="1.0" encoding="UTF-8"?>

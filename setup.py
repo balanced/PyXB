@@ -36,7 +36,7 @@ class update_version (Command):
 
     # Files in the distribution that need to be rewritten when the
     # version number changes
-    files = ( 'README.txt', 'pyxb/__init__.py', 'doc/conf.py' )
+    files = ( 'README.txt', 'pyxb_123/__init__.py', 'doc/conf.py' )
 
     # The substitutions (key braced by @ signs)
     substitutions = { 'VERSION' : version,
@@ -171,11 +171,11 @@ class test (Command):
 
 import glob
 import sys
-import pyxb.utils.utility
+import pyxb_123.utils.utility
 
 packages = [
-        'pyxb', 'pyxb.namespace', 'pyxb.binding', 'pyxb.utils', 'pyxb.xmlschema',
-        "pyxb.bundles"
+        'pyxb_123', 'pyxb_123.namespace', 'pyxb_123.binding', 'pyxb_123.utils', 'pyxb_123.xmlschema',
+        "pyxb_123.bundles"
         ]
 package_data = {}
 
@@ -222,7 +222,7 @@ setup(name='PyXB',
       author='Peter A. Bigot',
       author_email='pabigot@users.sourceforge.net',
       url='http://pyxb.sourceforge.net',
-      # Also change in README.TXT, pyxb/__init__.py, and doc/conf.py
+      # Also change in README.TXT, pyxb_123/__init__.py, and doc/conf.py
       version=version,
       license='Apache License 2.0',
       long_description='''PyXB is a pure `Python <http://www.python.org>`_ package that generates
@@ -259,8 +259,8 @@ The major goals of PyXB are:
       package_data=package_data,
       # I normally keep these in $purelib, but distutils won't tell me where that is.
       # We don't need them in the installation anyway.
-      #data_files= [ ('pyxb/standard/schemas', glob.glob(os.path.join(*'pyxb/standard/schemas/*.xsd'.split('/'))) ) ],
-      scripts=[ 'scripts/pyxbgen', 'scripts/pyxbwsdl', 'scripts/pyxbdump' ],
+      #data_files= [ ('pyxb_123/standard/schemas', glob.glob(os.path.join(*'pyxb_123/standard/schemas/*.xsd'.split('/'))) ) ],
+      scripts=[ 'scripts/pyxb_123gen', 'scripts/pyxb_123wsdl', 'scripts/pyxb_123dump' ],
       cmdclass = { 'test' : test,
                    'update_version' : update_version },
       classifiers = [ 'Development Status :: 5 - Production/Stable'

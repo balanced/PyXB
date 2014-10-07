@@ -1,9 +1,9 @@
 from __future__ import print_function
 import tmstvd
-import pyxb.utils.domutils as domutils
+import pyxb_123.utils.domutils as domutils
 import xml.dom.minidom
-import pyxb.utils.saxdom
-import pyxb.binding.saxer
+import pyxb_123.utils.saxdom
+import pyxb_123.binding.saxer
 import io
 import time
 #import cProfile

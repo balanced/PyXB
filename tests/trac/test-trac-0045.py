@@ -3,11 +3,11 @@ import logging
 if __name__ == '__main__':
     logging.basicConfig()
 _log = logging.getLogger(__name__)
-import pyxb
-import pyxb.xmlschema.structures
-import pyxb.utils.domutils
+import pyxb_123
+import pyxb_123.xmlschema.structures
+import pyxb_123.utils.domutils
 
-from pyxb.exceptions_ import *
+from pyxb_123.exceptions_ import *
 
 import unittest
 

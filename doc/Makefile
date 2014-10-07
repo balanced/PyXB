@@ -34,7 +34,7 @@ apihtml:
 	mkdir -p html/api
 	PYTHONPATH=.. $(EPYDOC) $(EPYDOCOPTS)
 
-pyxbgen_cli.txt: ../pyxb/binding/generate.py ../maintainer/gendoc
+pyxbgen_cli.txt: ../pyxb_123/binding/generate.py ../maintainer/gendoc
 	PYTHONPATH=.. ../maintainer/gendoc \
         | sed -e 's@  *$$@@' \
         > $@

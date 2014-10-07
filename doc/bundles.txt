@@ -20,7 +20,7 @@ common
 
 The following namespaces are available in support of general XML use:
 
-.. PYXB_ARCHIVE_PATH=${PYXB_ROOT}/pyxb/bundles/common// ${PYXB_ROOT}/scripts/pyxbdump \
+.. PYXB_ARCHIVE_PATH=${PYXB_ROOT}/pyxb_123/bundles/common// ${PYXB_ROOT}/scripts/pyxbdump \
    | awk '$2~/pyxb.bundles.common/ { print $2, $1; }' \
    | sed \
       -e 's@^@``@' \
@@ -46,7 +46,7 @@ WS-*
 The following namespaces are available in support of web service
 development:
 
-.. PYXB_ARCHIVE_PATH=${PYXB_ROOT}/pyxb/bundles/wssplat// ${PYXB_ROOT}/scripts/pyxbdump \
+.. PYXB_ARCHIVE_PATH=${PYXB_ROOT}/pyxb_123/bundles/wssplat// ${PYXB_ROOT}/scripts/pyxbdump \
    | awk '$2~/pyxb.bundles.wssplat/ { print $2, $1; }' \
    | sed \
       -e 's@^@``@' \
@@ -97,7 +97,7 @@ SAML
 The following namespaces are available in support of the `Security Assertion
 Markup Language <http://saml.xml.org/about-saml>`_:
 
-.. PYXB_ARCHIVE_PATH=${PYXB_ROOT}/pyxb/bundles/saml20// ${PYXB_ROOT}/scripts/pyxbdump \
+.. PYXB_ARCHIVE_PATH=${PYXB_ROOT}/pyxb_123/bundles/saml20// ${PYXB_ROOT}/scripts/pyxbdump \
    | awk '$2~/pyxb.bundles.saml20/ { print $2, $1; }' \
    | sed \
       -e 's@^@``@' \
@@ -127,7 +127,7 @@ Dublin Core
 The following namespaces are available in support of the `Dublin Core(R)
 Metadata Initiative <http://dublincore.org/>`_.
 
-.. PYXB_ARCHIVE_PATH=${PYXB_ROOT}/pyxb/bundles/dc// ${PYXB_ROOT}/scripts/pyxbdump \
+.. PYXB_ARCHIVE_PATH=${PYXB_ROOT}/pyxb_123/bundles/dc// ${PYXB_ROOT}/scripts/pyxbdump \
    | awk '$2~/pyxb.bundles.dc/ { print $2, $1; }' \
    | sed \
       -e 's@^@``@' \
@@ -161,7 +161,7 @@ absolute path of the unpacked PyXB distribution (the directory containing
 :file:`setup.py`) and run these commands::
 
   cd ${PYXB_ROOT}
-  pyxb/bundles/ecma376/scripts/genbind
+  pyxb_123/bundles/ecma376/scripts/genbind
 
 This will download the schemas from OGC and generate bindings for both sets
 of namespaces below.
@@ -178,7 +178,7 @@ The first edition of ECMA-376 was a transitional version leading to ISO/IEC
 29500, but is not compatible with that standard.  It may be needed for older
 documents, including those processed by Microsoft Office 2007.
 
-.. PYXB_ARCHIVE_PATH=${PYXB_ROOT}/pyxb/bundles/ecma376/v2006// ${PYXB_ROOT}/scripts/pyxbdump \
+.. PYXB_ARCHIVE_PATH=${PYXB_ROOT}/pyxb_123/bundles/ecma376/v2006// ${PYXB_ROOT}/scripts/pyxbdump \
    | awk '$2~/pyxb.bundles.ecma376.v2006/ { print $2, $1; }' \
    | sed \
       -e 's@^@``@' \
@@ -234,7 +234,7 @@ various editions contain changes intended to increase conformance to ISO/IEC
 29500:2008 and the bundle script is configured to build the 4th edition
 (December 2012).
 
-.. PYXB_ARCHIVE_PATH=${PYXB_ROOT}/pyxb/bundles/ecma376/v2008// ${PYXB_ROOT}/scripts/pyxbdump \
+.. PYXB_ARCHIVE_PATH=${PYXB_ROOT}/pyxb_123/bundles/ecma376/v2008// ${PYXB_ROOT}/scripts/pyxbdump \
    | awk '$2~/pyxb.bundles.ecma376.v2008/ { print $2, $1; }' \
    | sed \
       -e 's@^@``@' \
@@ -326,7 +326,7 @@ absolute path of the unpacked PyXB distribution (the directory containing
 :file:`setup.py`) and run these commands::
 
   cd ${PYXB_ROOT}
-  pyxb/bundles/opengis/scripts/genbind
+  pyxb_123/bundles/opengis/scripts/genbind
   python setup.py install
 
 This will download the schemas from OGC, generate bindings for the
@@ -334,7 +334,7 @@ namespaces below, and (re-)install PyXB including the new bindings.  Other
 namespaces are available and can be added by modifying the ``genbind``
 script and re-running the commands above.
 
-.. PYXB_ARCHIVE_PATH=${PYXB_ROOT}/pyxb/bundles/opengis// ${PYXB_ROOT}/scripts/pyxbdump \
+.. PYXB_ARCHIVE_PATH=${PYXB_ROOT}/pyxb_123/bundles/opengis// ${PYXB_ROOT}/scripts/pyxbdump \
    | awk '$2~/pyxb.bundles.opengis/ { print $2, $1; }' \
    | sed \
       -e 's@^@``@' \
@@ -413,7 +413,7 @@ Binding Module                                    Namespace
 Layout of a Bundle Directory
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The ``pyxb/bundles`` directory contains groups of bindings for related
+The ``pyxb_123/bundles`` directory contains groups of bindings for related
 schema.  These groups are called "bundles", and each subdirectory represents
 a particular bundle.
 
@@ -446,7 +446,7 @@ distribution and run the ``scripts/genbind`` script in the bundle root.  For
 example::
 
   cd ${PYXB_ROOT}
-  pyxb/bundles/wssplat/scripts/genbind
+  pyxb_123/bundles/wssplat/scripts/genbind
 
 will invoke the :manpage:`wget(1)` program to retrieve the XML schema for a
 variety of namespaces related to web services and then generate bindings and

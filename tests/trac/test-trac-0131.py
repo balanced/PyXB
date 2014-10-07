@@ -8,12 +8,12 @@ _log = logging.getLogger(__name__)
 # http://www.evanjones.ca/python-utf8.html
 # http://bytes.com/topic/python/answers/41153-xml-unicode-what-am-i-doing-wrong
 
-import pyxb.binding.generate
-import pyxb.binding.datatypes as xs
-import pyxb.binding.basis
-import pyxb.utils.domutils
+import pyxb_123.binding.generate
+import pyxb_123.binding.datatypes as xs
+import pyxb_123.binding.basis
+import pyxb_123.utils.domutils
 import xml.sax
-import pyxb.utils.types_ as types_
+import pyxb_123.utils.types_ as types_
 import io
 
 import os.path
@@ -36,7 +36,7 @@ code = pyxb.binding.generate.GeneratePython(schema_text=xsd)
 rv = compile(code, 'test', 'exec')
 eval(rv)
 
-from pyxb.exceptions_ import *
+from pyxb_123.exceptions_ import *
 
 import unittest
 

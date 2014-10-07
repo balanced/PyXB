@@ -2,7 +2,7 @@ from __future__ import print_function
 import xml.dom.minidom
 import DWML
 import datetime
-import pyxb.binding.datatypes as xsd
+import pyxb_123.binding.datatypes as xsd
 import urllib2
 import time
 import collections

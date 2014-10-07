@@ -35,7 +35,7 @@ git commit -F 23o -a
     -e '/_str_from_unicode/d' \
     -e 's/\b__unicode__\b/__str__/g' \
     -e '${/^$/d;}' \
-    pyxb/exceptions_.py
+    pyxb_123/exceptions_.py
   # Fix up references to python executable in shell scripts
   (
     git grep -lw python maintainer \

@@ -3,10 +3,10 @@ import logging
 if __name__ == '__main__':
     logging.basicConfig()
 _log = logging.getLogger(__name__)
-import pyxb.binding.generate
-import pyxb.binding.datatypes as xs
-import pyxb.binding.basis
-import pyxb.utils.domutils
+import pyxb_123.binding.generate
+import pyxb_123.binding.datatypes as xs
+import pyxb_123.binding.basis
+import pyxb_123.utils.domutils
 
 import os.path
 schema_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '../schemas/absentns.xsd'))

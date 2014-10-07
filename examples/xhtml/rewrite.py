@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
-import pyxb.bundles.common.xhtml1 as xhtml
-import pyxb.utils.domutils
+import pyxb_123.bundles.common.xhtml1 as xhtml
+import pyxb_123.utils.domutils
 import xml.dom.minidom
 from xml.dom import Node
 

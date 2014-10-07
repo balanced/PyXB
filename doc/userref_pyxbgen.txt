@@ -173,7 +173,7 @@ module ``ndfd`` containing bindings required to communicate with the
 
   pyxbgen \
    --wsdl-location=http://www.weather.gov/forecasts/xml/DWMLgen/wsdl/ndfdXML.wsdl --module=ndfd \
-   --archive-path=${PYXB_ROOT}/pyxb/bundles/wssplat//:+
+   --archive-path=${PYXB_ROOT}/pyxb_123/bundles/wssplat//:+
 
 Note that it will be necessary to have the :ref:`WS-* <bundle_wssplat>`
 bindings available, as provided by the :ref:`pyxbgen--archive-path` option
@@ -200,8 +200,8 @@ are provided in the WS-* support bundle as
 ``pyxb.bundles.wssplat.wsdl11.py``.  An excerpt of the sort of thing done
 there is::
 
-  from pyxb.bundles.wssplat.raw.wsdl11 import *
-  import pyxb.bundles.wssplat.raw.wsdl11 as raw_wsdl11
+  from pyxb_123.bundles.wssplat.raw.wsdl11 import *
+  import pyxb_123.bundles.wssplat.raw.wsdl11 as raw_wsdl11
 
   class tParam (raw_wsdl11.tParam):
     def __getMessageReference (self):

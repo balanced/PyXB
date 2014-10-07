@@ -17,5 +17,5 @@ if [ 0 -lt $# ] ; then
 fi
 
 for bundle in ${BUNDLES} ; do
-  pyxb/bundles/${bundle}/scripts/genbind || (echo 1>&2 Error building bundle ${bundle} ; exit 1 )
+  pyxb_123/bundles/${bundle}/scripts/genbind || (echo 1>&2 Error building bundle ${bundle} ; exit 1 )
 done

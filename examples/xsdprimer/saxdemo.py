@@ -1,7 +1,7 @@
 from __future__ import print_function
 xml_file = 'ipo.xml'
 
-import pyxb.binding.saxer
+import pyxb_123.binding.saxer
 import ipo
 
 def ShowOrder (order):
@@ -10,7 +10,7 @@ def ShowOrder (order):
         print('  Quantity %d of %s at $%s' % (item.quantity(), item.productName(), item.USPrice()))
 
 if False:
-    import pyxb.utils.domutils
+    import pyxb_123.utils.domutils
     xmld = pyxb.utils.domutils.StringToDOM(open(xml_file).read())
     dom_value = ipo.CreateFromDOM(xmld.documentElement)
     ShowOrder(dom_value)

@@ -22,7 +22,7 @@ which is:
  - U{http://www.unicode.org/Public/3.1-Update/Blocks-4.txt}
 
 Invoke this script, redirecting the output to
-C{pyxb/utils/unicode_data.py}.
+C{pyxb_123/utils/unicode_data.py}.
 
 """
 
@@ -150,7 +150,7 @@ def emitBlockMap (data_file):
 print('''# -*- coding: utf-8 -*-
 # Unicode property and category maps.
 
-from pyxb.utils.unicode import CodePointSet
+from pyxb_123.utils.unicode import CodePointSet
 ''')
 
 emitBlockMap('Blocks-4.txt')

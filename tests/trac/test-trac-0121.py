@@ -3,7 +3,7 @@ import logging
 if __name__ == '__main__':
     logging.basicConfig()
 _log = logging.getLogger(__name__)
-import pyxb.binding.datatypes as xsd
+import pyxb_123.binding.datatypes as xsd
 import datetime
 import copy
 

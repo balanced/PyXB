@@ -3,7 +3,7 @@ import logging
 if __name__ == '__main__':
     logging.basicConfig()
 _log = logging.getLogger(__name__)
-import pyxb.binding.generate
+import pyxb_123.binding.generate
 from xml.dom import Node
 
 import os.path
@@ -13,7 +13,7 @@ code = pyxb.binding.generate.GeneratePython(schema_location=schema_path)
 rv = compile(code, 'test', 'exec')
 eval(rv)
 
-from pyxb.exceptions_ import *
+from pyxb_123.exceptions_ import *
 
 import unittest
 

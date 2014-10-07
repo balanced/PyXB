@@ -3,9 +3,9 @@ import logging
 if __name__ == '__main__':
     logging.basicConfig()
 _log = logging.getLogger(__name__)
-import pyxb
-import pyxb.binding.generate
-import pyxb.utils.domutils
+import pyxb_123
+import pyxb_123.binding.generate
+import pyxb_123.utils.domutils
 
 from xml.dom import Node
 

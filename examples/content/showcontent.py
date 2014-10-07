@@ -1,5 +1,5 @@
 from __future__ import print_function
-from pyxb import BIND
+from pyxb_123 import BIND
 import content
 
 v = content.numbers(1, BIND(2), attribute=3)

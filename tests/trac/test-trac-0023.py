@@ -5,8 +5,8 @@ if __name__ == '__main__':
 _log = logging.getLogger(__name__)
 # Undeclared XML namespace
 
-import pyxb.binding.generate
-import pyxb.utils.domutils
+import pyxb_123.binding.generate
+import pyxb_123.utils.domutils
 from xml.dom import Node
 
 import os.path
@@ -26,7 +26,7 @@ code = pyxb.binding.generate.GeneratePython(schema_text=xsd)
 rv = compile(code, 'test', 'exec')
 eval(rv)
 
-from pyxb.exceptions_ import *
+from pyxb_123.exceptions_ import *
 
 import unittest
 

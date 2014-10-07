@@ -3,10 +3,10 @@ import logging
 if __name__ == '__main__':
     logging.basicConfig()
 _log = logging.getLogger(__name__)
-import pyxb
+import pyxb_123
 import unittest
 import datetime
-import pyxb.binding.datatypes as xsd
+import pyxb_123.binding.datatypes as xsd
 
 class Test_duration (unittest.TestCase):
     def testBasic (self):

@@ -3,12 +3,12 @@ import logging
 if __name__ == '__main__':
     logging.basicConfig()
 _log = logging.getLogger(__name__)
-import pyxb.binding.generate
-import pyxb.utils.domutils
+import pyxb_123.binding.generate
+import pyxb_123.utils.domutils
 
 import os.path
 
-from pyxb.exceptions_ import *
+from pyxb_123.exceptions_ import *
 
 import unittest
 

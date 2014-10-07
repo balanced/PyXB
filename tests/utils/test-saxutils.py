@@ -4,10 +4,10 @@ if __name__ == '__main__':
     logging.basicConfig()
 _log = logging.getLogger(__name__)
 import unittest
-from pyxb.utils.saxutils import *
+from pyxb_123.utils.saxutils import *
 from xml.dom import Node
 import xml.dom
-import pyxb.namespace
+import pyxb_123.namespace
 
 class TestState (SAXElementState):
     StateSequence = []

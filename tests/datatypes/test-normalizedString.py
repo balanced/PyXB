@@ -3,9 +3,9 @@ import logging
 if __name__ == '__main__':
     logging.basicConfig()
 _log = logging.getLogger(__name__)
-from pyxb.exceptions_ import *
+from pyxb_123.exceptions_ import *
 import unittest
-import pyxb.binding.datatypes as xsd
+import pyxb_123.binding.datatypes as xsd
 
 class Test_normalizedString (unittest.TestCase):
     Cases = [ ("with\nnewline", 'with newline'),

@@ -1,5 +1,5 @@
 from __future__ import print_function
-import pyxb
+import pyxb_123
 import poc
 
 xml = open('poc.xml').read()

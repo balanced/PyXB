@@ -4,10 +4,10 @@ if __name__ == '__main__':
     logging.basicConfig()
 _log = logging.getLogger(__name__)
 import unittest
-from pyxb.utils.domutils import *
+from pyxb_123.utils.domutils import *
 from xml.dom import Node
 import xml.dom
-import pyxb.namespace
+import pyxb_123.namespace
 
 def NonTextSibling (n):
     while n.TEXT_NODE == n.nodeType:

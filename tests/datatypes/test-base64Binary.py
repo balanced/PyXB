@@ -5,8 +5,8 @@ if __name__ == '__main__':
 _log = logging.getLogger(__name__)
 import unittest
 import binascii
-import pyxb
-import pyxb.binding.datatypes as xsd
+import pyxb_123
+import pyxb_123.binding.datatypes as xsd
 
 class Test_base64Binary (unittest.TestCase):
     RFC4648_S9 = ( (u'14fb9c03d97e', u'FPucA9l+'),

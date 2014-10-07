@@ -3,13 +3,13 @@ import logging
 if __name__ == '__main__':
     logging.basicConfig()
 _log = logging.getLogger(__name__)
-from pyxb.exceptions_ import *
+from pyxb_123.exceptions_ import *
 import unittest
-#import pyxb.binding.facets as facets
-#import pyxb.binding.datatypes as datatypes
-import pyxb.binding
-import pyxb.binding.facets as facets
-import pyxb.binding.datatypes as datatypes
+#import pyxb_123.binding.facets as facets
+#import pyxb_123.binding.datatypes as datatypes
+import pyxb_123.binding
+import pyxb_123.binding.facets as facets
+import pyxb_123.binding.datatypes as datatypes
 import sys
 
 # 4.3.1 length

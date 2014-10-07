@@ -7,7 +7,7 @@ import unittest
 import app
 import common4app
 
-import pyxb.utils.domutils
+import pyxb_123.utils.domutils
 
 pyxb.utils.domutils.BindingDOMSupport.DeclareNamespace(app.Namespace, 'app')
 pyxb.utils.domutils.BindingDOMSupport.DeclareNamespace(common4app.Namespace, 'common')

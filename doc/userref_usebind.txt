@@ -245,7 +245,7 @@ The bundle for XHTML has been modified to use:
   :api:`invalidElementInContent <pyxb.ValidationConfig.invalidElementInContent>`
 
 for all binding classes in that module.  (See
-``pyxb/bundles/common/xhtml1.py`` for the technique used.)  This ensures
+``pyxb_123/bundles/common/xhtml1.py`` for the technique used.)  This ensures
 preservation of element order in cases where no non-element content may appear
 (such as the top-level ``body`` element).
 

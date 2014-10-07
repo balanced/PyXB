@@ -4,12 +4,12 @@ if __name__ == '__main__':
     logging.basicConfig()
 _log = logging.getLogger(__name__)
 import unittest
-import pyxb
-from pyxb.namespace import ExpandedName
+import pyxb_123
+from pyxb_123.namespace import ExpandedName
 import xml.dom
-from pyxb.namespace import XMLSchema as xsd
+from pyxb_123.namespace import XMLSchema as xsd
 xsd.validateComponentModel()
-import pyxb.binding.datatypes as xsd_module
+import pyxb_123.binding.datatypes as xsd_module
 
 class TestExpandedName (unittest.TestCase):
     def testEquivalence (self):

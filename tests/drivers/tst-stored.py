@@ -4,7 +4,7 @@ import logging
 if __name__ == '__main__':
     logging.basicConfig()
 _log = logging.getLogger(__name__)
-import pyxb
+import pyxb_123
 
 print("\n".join([ str(_ns) for _ns in pyxb.namespace.AvailableNamespaces() ]))
 ns = pyxb.namespace.NamespaceForURI('URN:shared-types', True)

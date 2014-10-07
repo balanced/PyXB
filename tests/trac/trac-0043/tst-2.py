@@ -5,7 +5,7 @@ if __name__ == '__main__':
 _log = logging.getLogger(__name__)
 import unittest
 import B
-from pyxb import BIND
+from pyxb_123 import BIND
 
 class Trac43_2 (unittest.TestCase):
 

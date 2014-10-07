@@ -1,8 +1,8 @@
 from __future__ import print_function
-import pyxb
+import pyxb_123
 import po4
 import address
-import pyxb.binding.datatypes as xs
+import pyxb_123.binding.datatypes as xs
 import datetime
 
 po = po4.purchaseOrder(orderDate=xs.date(1999, 10, 20))
@@ -18,7 +18,7 @@ lapis.shipDate = po.orderDate + datetime.timedelta(days=46)
 lapis.comment = 'Want this for the holidays!'
 po.items.item[1].shipDate = po.items.item[0].shipDate + datetime.timedelta(days=19)
 
-import pyxb.utils.domutils
+import pyxb_123.utils.domutils
 pyxb.utils.domutils.BindingDOMSupport.DeclareNamespace(address.Namespace, 'addr')
 pyxb.utils.domutils.BindingDOMSupport.DeclareNamespace(po4.Namespace, 'po')
 

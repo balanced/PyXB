@@ -3,8 +3,8 @@ import logging
 if __name__ == '__main__':
     logging.basicConfig()
 _log = logging.getLogger(__name__)
-import pyxb.binding.generate
-import pyxb.utils.domutils
+import pyxb_123.binding.generate
+import pyxb_123.utils.domutils
 from xml.dom import Node
 
 # Derived from test-trac-0182 which uses wildcards
@@ -27,7 +27,7 @@ code = pyxb.binding.generate.GeneratePython(schema_text=xsd)
 rv = compile(code, 'test', 'exec')
 eval(rv)
 
-from pyxb.exceptions_ import *
+from pyxb_123.exceptions_ import *
 
 import unittest
 

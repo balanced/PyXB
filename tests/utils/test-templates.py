@@ -4,7 +4,7 @@ if __name__ == '__main__':
     logging.basicConfig()
 _log = logging.getLogger(__name__)
 import unittest
-from pyxb.utils.templates import *
+from pyxb_123.utils.templates import *
 
 _dictionary = { 'one' : 'un'
               , 'two' : 'dau'

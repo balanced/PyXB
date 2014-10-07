@@ -83,7 +83,7 @@ The bindings must be able to generate XML that conforms to the schema from
 which they were derived.
 
 A facility must be provided through which custom behavior can be attached to
-the Python objects derived from PyXB.
+the Python objects derived from pyxb_123.
 
 PyXB should support generating a module on a per-namespace basis.  The
 module should include the necessary information to process schemas that

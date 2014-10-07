@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-import pyxb.binding.generate
+import pyxb_123.binding.generate
 import os.path
 import sys
 import textwrap

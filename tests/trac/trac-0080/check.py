@@ -5,8 +5,8 @@ if __name__ == '__main__':
 _log = logging.getLogger(__name__)
 import mr
 import unittest
-import pyxb
-import pyxb.binding.datatypes as xsd
+import pyxb_123
+import pyxb_123.binding.datatypes as xsd
 
 class TestTrac0080 (unittest.TestCase):
 

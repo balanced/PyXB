@@ -3,11 +3,11 @@
 # Stripped down version of pyxbgen incorporating Japanese-to-Romaji
 # transliteration provided by Hiroaki Itoh.
 
-import pyxb.xmlschema
-import pyxb.binding.generate
-import pyxb.utils.utility
-import pyxb.utils.domutils
-import pyxb.utils.saxutils
+import pyxb_123.xmlschema
+import pyxb_123.binding.generate
+import pyxb_123.utils.utility
+import pyxb_123.utils.domutils
+import pyxb_123.utils.saxutils
 import os.path
 import sys
 import optparse

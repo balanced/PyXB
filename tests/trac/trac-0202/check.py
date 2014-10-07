@@ -4,9 +4,9 @@ if __name__ == '__main__':
     logging.basicConfig()
 _log = logging.getLogger(__name__)
 import unittest
-import pyxb
+import pyxb_123
 import sample
-from pyxb.namespace.builtin import XMLSchema_instance as xsi
+from pyxb_123.namespace.builtin import XMLSchema_instance as xsi
 
 class TestTrac0202 (unittest.TestCase):
     def tearDown (self):

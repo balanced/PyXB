@@ -4,8 +4,8 @@ if __name__ == '__main__':
     logging.basicConfig()
 _log = logging.getLogger(__name__)
 import unittest
-from pyxb.utils.utility import *
-from pyxb.utils.utility import _DeconflictSymbols_mixin
+from pyxb_123.utils.utility import *
+from pyxb_123.utils.utility import _DeconflictSymbols_mixin
 import sys
 
 class DST_base (_DeconflictSymbols_mixin):
@@ -564,7 +564,7 @@ class TestUniqueIdentifier (unittest.TestCase):
         u1 = UniqueIdentifier()
         rep = repr(u1)
         self.assertEqual('pyxb.utils.utility.UniqueIdentifier(%s)' % (repr(u1.uid()),), repr(u1))
-        import pyxb.utils.utility
+        import pyxb_123.utils.utility
         u1b = eval(repr(u1))
         self.assertEqual(id(u1), id(u1b))
 

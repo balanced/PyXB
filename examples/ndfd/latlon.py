@@ -1,15 +1,15 @@
 from __future__ import print_function
 import DWML
 import datetime
-import pyxb
-import pyxb.utils.domutils as domutils
-import pyxb.binding.datatypes as xsd
-import pyxb.xmlschema.structures as structures
+import pyxb_123
+import pyxb_123.utils.domutils as domutils
+import pyxb_123.binding.datatypes as xsd
+import pyxb_123.xmlschema.structures as structures
 import urllib2
 import time
 import sys
 
-import pyxb.bundles.wssplat.soap11 as soapenv
+import pyxb_123.bundles.wssplat.soap11 as soapenv
 
 today = xsd.dateTime.today()
 later = today + datetime.timedelta(days=7)
@@ -31,7 +31,7 @@ import ndfd
 # the schema again here, because we were unable to save the component
 # model for it before, and we need the definition maps in order to
 # resolve part type references in the WSDL messages.
-import pyxb.bundles.wssplat.wsdl11 as wsdl
+import pyxb_123.bundles.wssplat.wsdl11 as wsdl
 uri_src = open('ndfdXML.wsdl')
 doc = domutils.StringToDOM(uri_src.read())
 spec = wsdl.definitions.createFromDOM(doc.documentElement, process_schema=True)

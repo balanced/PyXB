@@ -3,8 +3,8 @@ import logging
 if __name__ == '__main__':
     logging.basicConfig()
 _log = logging.getLogger(__name__)
-import pyxb.binding.generate
-import pyxb.utils.domutils
+import pyxb_123.binding.generate
+import pyxb_123.utils.domutils
 from xml.dom import Node
 
 import os.path
@@ -14,11 +14,11 @@ rv = compile(code, 'test', 'exec')
 eval(rv)
 Namespace.setPrefix('tca')
 
-from pyxb.exceptions_ import *
+from pyxb_123.exceptions_ import *
 
 import unittest
 
-from pyxb.utils import domutils
+from pyxb_123.utils import domutils
 def ToDOM (instance):
     return instance.toDOM().documentElement
 

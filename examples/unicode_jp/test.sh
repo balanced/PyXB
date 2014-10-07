@@ -8,14 +8,14 @@ fail () {
 # Because this is an OpenGIS application, the OpenGIS bundle must be
 # made available during binding generation.  OpenGIS also depends
 # on XLink which is in the common bundle.
-export PYXB_ARCHIVE_PATH='&pyxb/bundles/opengis//:&pyxb/bundles/common//:+'
+export PYXB_ARCHIVE_PATH='&pyxb_123/bundles/opengis//:&pyxb_123/bundles/common//:+'
 
 # Attempt to get romkan.py if not already available
 [ -f romkan.py ] || wget http://mhagiwara.googlecode.com/svn/trunk/nltk/jpbook/romkan.py
 
 python -c 'import drv_libxml2' || fail python-libxml2 not installed
 
-if python -c 'import pyxb.bundles.opengis.gml_3_2' ; then
+if python -c 'import pyxb_123.bundles.opengis.gml_3_2' ; then
   echo 1>&2 "OpenGIS bundle present and will be used"
 else
   cat 1>&2 <<EOText

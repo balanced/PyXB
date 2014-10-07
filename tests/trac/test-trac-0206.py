@@ -3,9 +3,9 @@ import logging
 if __name__ == '__main__':
     logging.basicConfig()
 _log = logging.getLogger(__name__)
-import pyxb
-import pyxb.utils.utility
-import pyxb.binding.datatypes as xsd
+import pyxb_123
+import pyxb_123.utils.utility
+import pyxb_123.binding.datatypes as xsd
 
 import unittest
 

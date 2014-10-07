@@ -3,8 +3,8 @@ import logging
 if __name__ == '__main__':
     logging.basicConfig()
 _log = logging.getLogger(__name__)
-import pyxb.utils.xmlre as xmlre
-import pyxb.utils.unicode as unicode
+import pyxb_123.utils.xmlre as xmlre
+import pyxb_123.utils.unicode as unicode
 import re
 
 import unittest

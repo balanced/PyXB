@@ -4,10 +4,10 @@ import logging
 if __name__ == '__main__':
     logging.basicConfig()
 _log = logging.getLogger(__name__)
-import pyxb
+import pyxb_123
 import unittest
-import pyxb.binding.datatypes as xsd
-from pyxb.utils.utility import UTCOffsetTimeZone
+import pyxb_123.binding.datatypes as xsd
+from pyxb_123.utils.utility import UTCOffsetTimeZone
 import datetime
 
 class Test_dateTime (unittest.TestCase):

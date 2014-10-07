@@ -8,7 +8,7 @@ import unittest
 import base
 import absent
 
-import pyxb.utils.domutils
+import pyxb_123.utils.domutils
 pyxb.utils.domutils.BindingDOMSupport.DeclareNamespace(base.Namespace, 'base')
 
 class TestTrac0119 (unittest.TestCase):

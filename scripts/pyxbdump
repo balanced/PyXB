@@ -1,9 +1,9 @@
 #!/usr/bin/env python
 
-import pyxb.namespace
+import pyxb_123.namespace
 import sys
 import traceback
-import pyxb.xmlschema.structures
+import pyxb_123.xmlschema.structures
 import logging
 
 logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")

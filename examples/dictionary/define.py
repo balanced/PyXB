@@ -1,7 +1,7 @@
 from __future__ import print_function
 import dict
 import urllib2
-import pyxb.utils.domutils as domutils
+import pyxb_123.utils.domutils as domutils
 import sys
 
 word = 'xml'

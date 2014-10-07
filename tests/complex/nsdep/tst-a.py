@@ -3,7 +3,7 @@ import logging
 if __name__ == '__main__':
     logging.basicConfig()
 _log = logging.getLogger(__name__)
-from pyxb.utils.domutils import BindingDOMSupport
+from pyxb_123.utils.domutils import BindingDOMSupport
 import unittest
 
 import bindings._A as A

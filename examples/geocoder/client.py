@@ -1,10 +1,10 @@
 from __future__ import print_function
 import GeoCoder
-from pyxb import BIND
+from pyxb_123 import BIND
 import sys
-import pyxb.utils.domutils as domutils
-import pyxb.bundles.wssplat.soap11 as soapenv
-import pyxb.bundles.wssplat.soapenc as soapenc
+import pyxb_123.utils.domutils as domutils
+import pyxb_123.bundles.wssplat.soap11 as soapenv
+import pyxb_123.bundles.wssplat.soapenc as soapenc
 import urllib2
 
 address = '1600 Pennsylvania Ave., Washington, DC'

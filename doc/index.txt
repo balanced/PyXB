@@ -31,12 +31,12 @@ Getting Help
 PyXB is distributed on `SourceForge <http://sourceforge.net/projects/pyxb>`_.
 
 For support, consult the `Help Forum
-<https://sourceforge.net/projects/pyxb/forums/forum/956708>`_, or subscribe to
+<https://sourceforge.net/projects/pyxb_123/forums/forum/956708>`_, or subscribe to
 and email the `mailing list
 <https://sourceforge.net/mailarchive/forum.php?forum_name=pyxb-users>`_.
 
 To file a bug report or see the status of defects reported against the current
-release, visit the `Trac database <http://sourceforge.net/apps/trac/pyxb/>`_.
+release, visit the `Trac database <http://sourceforge.net/apps/trac/pyxb_123/>`_.
 
 For a history of releases, see :ref:`releases`.
 

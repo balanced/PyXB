@@ -5,8 +5,8 @@ if __name__ == '__main__':
 _log = logging.getLogger(__name__)
 import types
 import datetime
-import pyxb.binding.generate
-import pyxb.binding.datatypes as xs
+import pyxb_123.binding.generate
+import pyxb_123.binding.datatypes as xs
 
 import os.path
 xsd='''<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
@@ -20,7 +20,7 @@ code = pyxb.binding.generate.GeneratePython(schema_text=xsd)
 rv = compile(code, 'test', 'exec')
 eval(rv)
 
-from pyxb.exceptions_ import *
+from pyxb_123.exceptions_ import *
 
 import unittest
 

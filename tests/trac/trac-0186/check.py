@@ -3,7 +3,7 @@ import logging
 if __name__ == '__main__':
     logging.basicConfig()
 _log = logging.getLogger(__name__)
-import pyxb.utils.domutils
+import pyxb_123.utils.domutils
 
 import resources
 

@@ -4,7 +4,7 @@ if __name__ == '__main__':
     logging.basicConfig()
 _log = logging.getLogger(__name__)
 import unittest
-import pyxb.binding.basis
+import pyxb_123.binding.basis
 
 class TestReserved (unittest.TestCase):
     def testSTD (self):

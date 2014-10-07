@@ -8,18 +8,18 @@ include MANIFEST
 
 # Include the abstract (version-independent) stuff, for completeness
 include README.txt.in
-include pyxb/__init__.py.in
+include pyxb_123/__init__.py.in
 include doc/conf.py.in
 
 # Include the pre-built bindings for standard schema, excepting schema we
 # downloaded.
-graft pyxb/bundles
-prune pyxb/bundles/core/schemas
-prune pyxb/bundles/core/remote
-prune pyxb/bundles/wssplat/schemas
-prune pyxb/bundles/wssplat/remote
-prune pyxb/bundles/opengis/schemas
-prune pyxb/bundles/opengis/remote
+graft pyxb_123/bundles
+prune pyxb_123/bundles/core/schemas
+prune pyxb_123/bundles/core/remote
+prune pyxb_123/bundles/wssplat/schemas
+prune pyxb_123/bundles/wssplat/remote
+prune pyxb_123/bundles/opengis/schemas
+prune pyxb_123/bundles/opengis/remote
 
 # Include all the unit tests
 recursive-include tests *.py *.xsd *.xml *.sh logging.cfg

@@ -6,7 +6,7 @@ if __name__ == '__main__':
 _log = logging.getLogger(__name__)
 import noi
 import unittest
-import pyxb
+import pyxb_123
 import io
 import xml.dom.minidom
 

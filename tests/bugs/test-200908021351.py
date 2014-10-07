@@ -3,10 +3,10 @@ import logging
 if __name__ == '__main__':
     logging.basicConfig()
 _log = logging.getLogger(__name__)
-import pyxb.binding.generate
-import pyxb.binding.datatypes as xs
-import pyxb.binding.basis
-import pyxb.utils.domutils
+import pyxb_123.binding.generate
+import pyxb_123.binding.datatypes as xs
+import pyxb_123.binding.basis
+import pyxb_123.utils.domutils
 
 whatever = 'whatever200908021351'
 import os.path

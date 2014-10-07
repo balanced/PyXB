@@ -17,7 +17,7 @@ Git Repository
 PyXB is developed using `git <http://gitscm.org>`_.  You can check out the
 development branch with::
 
- git clone git://pyxb.git.sourceforge.net/gitroot/pyxb/pyxb
+ git clone git://pyxb.git.sourceforge.net/gitroot/pyxb_123/pyxb
 
 Public development is mostly done on the ``next`` branch, which is the
 default for checkouts from SourceForge.  The ``master`` branch contains

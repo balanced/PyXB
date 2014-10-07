@@ -7,7 +7,7 @@ import unittest
 
 import trac169
 
-import pyxb.utils.domutils
+import pyxb_123.utils.domutils
 
 class TestTrac0169 (unittest.TestCase):
 

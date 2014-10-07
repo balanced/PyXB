@@ -1,9 +1,9 @@
 #!/usr/bin/env python
 
-import pyxb.xmlschema
-import pyxb.binding.generate
-import pyxb.utils.utility
-import pyxb.utils.domutils
+import pyxb_123.xmlschema
+import pyxb_123.binding.generate
+import pyxb_123.utils.utility
+import pyxb_123.utils.domutils
 import os.path
 import sys
 import optparse
@@ -20,7 +20,7 @@ def WSDLToSchema (generator, wsdl_uri):
     extracting the schema part of its C{types} block to a file, and
     using that file as a C{--schema-location}.  Note that use of this
     option may require availability of the WS-* bundle."""
-    import pyxb.bundles.wssplat.wsdl11 as wsdl
+    import pyxb_123.bundles.wssplat.wsdl11 as wsdl
     wsdl.ImportRelatedNamespaces()
     wsdl_uri = pyxb.utils.utility.NormalizeLocation(wsdl_uri)
     print 'Retrieving WSDL from %s' % (wsdl_uri,)

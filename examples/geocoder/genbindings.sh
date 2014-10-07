@@ -13,4 +13,4 @@ pyxbgen \
   --wsdl-location=${GEO_WSDL} \
   --module=${GEO_PREFIX} \
   --write-for-customization \
-  --archive-path=${PYXB_ROOT}/pyxb/bundles/wssplat//:+
+  --archive-path=${PYXB_ROOT}/pyxb_123/bundles/wssplat//:+
